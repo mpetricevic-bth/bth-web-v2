@@ -1,0 +1,1532 @@
+/**
+ * Brodotehna site styles
+ * Built on top of Bootstrap (full bootstrap.min.css: grid + the real
+ * navbar component, restyled here rather than reimplemented) and AOS
+ * for scroll animations. Deliberately does NOT load the template's
+ * main.css on this page - main.css has its own .navbar/.header rules
+ * for the template's original nav pattern that collide with
+ * Bootstrap's .navbar class (see references.html for details); the
+ * handful of bits still needed from it (preloader, scroll-top base,
+ * one AOS tweak) are inlined below instead.
+ * Everything else is scoped under .bth- classes.
+ */
+
+:root {
+  --bth-primary: #07b5f0;
+  --bth-teal: #2dd0b2;
+  --bth-dark: #26343e;
+  --bth-nav-text: #082135;
+  --bth-muted: #778188;
+  --bth-label-muted: #9ba0a5;
+  --bth-bg-light: #f6f9fb;
+  /* Was a distinct #f0f3f5 (a literal per-page Figma reading) - now
+     matches --bth-bg-light exactly so the header/intro sections on
+     Solutions and References render the same background, as
+     requested, without hunting down every individual usage. */
+  --bth-bg-page: #f6f9fb;
+  --bth-border: #d7dce1;
+  --bth-icon-bg: #def6fe;
+  --bth-font-heading: "Lexend", sans-serif;
+  --bth-font-label: "Kanit", sans-serif;
+}
+
+.bth-page,
+.bth-page *,
+.bth-page *::before,
+.bth-page *::after {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0;
+}
+
+.bth-page {
+  margin: 0;
+  background: #ffffff;
+  color: var(--bth-dark);
+  font-family: var(--bth-font-heading);
+  overflow-x: hidden;
+}
+
+.bth-page img {
+  max-width: 100%;
+  display: block;
+}
+
+.bth-page ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* main.css's generic "section { padding: 80px 0; overflow: hidden }"
+   applies to every <section> on the page. A blanket ".bth-page section"
+   reset would out-specificity (and silently break) any section that
+   sets its own padding via a single class, like .bth-page-header and
+   .bth-partners below - so each section that needs different spacing
+   overrides it individually instead, at matching specificity. */
+.bth-reference-cards {
+  padding: 0;
+  overflow: visible;
+}
+
+.bth-container {
+  width: 100%;
+  max-width: 2400px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 7.3vw, 140px);
+}
+
+/*--------------------------------------------------------------
+# Menu
+--------------------------------------------------------------*/
+/* This is Bootstrap's own .navbar component (navbar-expand-xl in the
+   markup) restyled - not a rebuilt nav. Bootstrap's compiled CSS
+   already handles showing the toggler vs. the full nav at exactly
+   1200px (its "xl" breakpoint) and the collapse/expand mechanics;
+   everything here is visual restyling on top of that, plus turning
+   the collapsed panel into a full-screen overlay (below). */
+.bth-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 998;
+  background: #fff;
+  box-shadow: 0 0 15px rgba(0, 89, 158, 0.15);
+  padding: 0;
+}
+
+.bth-navbar__inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 82px;
+  padding: 12px clamp(24px, 2.7vw, 40px);
+}
+
+.bth-navbar__brand {
+  flex-shrink: 0;
+  margin: 0 clamp(20px, 1.9vw, 41px) 0 0;
+  padding: 0;
+}
+
+.bth-navbar__brand img {
+  width: 170px;
+  height: auto;
+}
+
+/* #bthNavMain (Bootstrap's .navbar-collapse) takes the remaining
+   width next to the brand, so the nav links stay clustered next to
+   the logo while the button below gets pushed to the far right via
+   margin-left:auto within that remaining space - not just centered
+   in the gap between two flex children. Desktop only: below 1200px
+   #bthNavMain becomes the full-screen mobile panel instead (see the
+   1199.98px breakpoint block further down), with its own alignment. */
+@media (min-width: 1200px) {
+  #bthNavMain.navbar-collapse {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+}
+
+.bth-navbar__nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 1.9vw, 28px);
+  margin: 0;
+}
+
+.bth-navbar .nav-link {
+  display: flex;
+  align-items: center;
+  height: 82px;
+  padding: 0 clamp(10px, 1.1vw, 16px);
+  font-family: var(--bth-font-heading);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.42px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--bth-nav-text);
+  border-bottom: 2px solid transparent;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.bth-navbar .nav-link:hover {
+  color: var(--bth-primary);
+}
+
+.bth-navbar .nav-link.active {
+  color: var(--bth-primary);
+  border-bottom-color: var(--bth-primary);
+}
+
+.bth-navbar .bth-btn--secondary {
+  flex-shrink: 0;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.bth-navbar__toggler {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: none !important;
+}
+
+.bth-navbar__toggler img {
+  width: 24px;
+  height: 24px;
+}
+
+.bth-navbar__toggler .bth-icon-close {
+  display: none;
+}
+
+.bth-navbar__toggler[aria-expanded="true"] .bth-icon-menu {
+  display: none;
+}
+
+.bth-navbar__toggler[aria-expanded="true"] .bth-icon-close {
+  display: block;
+}
+
+/* Buttons */
+.bth-btn {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 15px;
+  height: 53px;
+  padding: 16px 10px 16px 20px;
+  border-radius: 30px;
+  border: 1px solid transparent;
+  background: linear-gradient(65deg, var(--bth-primary) 24.5%, var(--bth-teal) 140%);
+  background-clip: padding-box;
+  color: #fff;
+  font-family: var(--bth-font-label);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 2.1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.bth-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border-color: rgba(255, 255, 255, 0.42);
+  color: #fff;
+}
+
+/* The frosted-glass hover above only reads correctly on a dark photo
+   background (like the full-bleed CTA on References) - white text on
+   a barely-tinted white overlay is invisible on a plain light page
+   background. Keep the same frosted treatment there, just force the
+   text back to dark so it stays legible. */
+.bth-solutions-intro .bth-btn:hover,
+.bth-solutions-cta .bth-btn:hover {
+  color: var(--bth-nav-text);
+}
+
+.bth-btn__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 39px;
+  height: 39px;
+  border-radius: 50%;
+  background: #fff;
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+
+.bth-btn__icon img {
+  /* icon-arrow.svg already points right as authored - no rotation
+     needed (Figma's own -rotate-90 on this icon actually turns it
+     to point up, not right). It's authored white, which is invisible
+     on this button's white circle - invert it to read, then let it
+     go back to native white on hover once the circle switches to the
+     gradient fill (see below). */
+  width: 17px;
+  height: 17px;
+  filter: invert(1);
+  transition: filter 0.3s;
+}
+
+.bth-btn:not(.bth-btn--secondary):hover .bth-btn__icon {
+  background: linear-gradient(83deg, var(--bth-primary) 24.5%, var(--bth-teal) 140%);
+}
+
+.bth-btn:not(.bth-btn--secondary):hover .bth-btn__icon img {
+  filter: none;
+}
+
+/* Some icons (Arrow-up-side.svg on "Explore solutions") are already
+   authored in the dark navy color, not white like icon-arrow.svg/
+   Download.svg - inverting an already-dark icon produces a wrong
+   yellowish tint, not black. Skip the default invert for these, and
+   go the other way on hover (force white) since the circle behind it
+   switches to the gradient fill then. */
+.bth-btn__icon img.bth-icon-dark {
+  filter: none;
+}
+
+.bth-btn:not(.bth-btn--secondary):hover .bth-btn__icon img.bth-icon-dark {
+  filter: brightness(0) invert(1);
+}
+
+.bth-btn--secondary {
+  background: var(--bth-bg-light);
+  border: 1.5px solid var(--bth-primary);
+  color: var(--bth-nav-text);
+  padding: 8px 8px 8px 20px;
+  gap: 10px;
+}
+
+.bth-btn--secondary:hover {
+  background: #e0f7ff;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-color: rgba(7, 181, 240, 0.3);
+  color: var(--bth-nav-text);
+}
+
+.bth-btn--secondary .bth-btn__icon {
+  width: 39px;
+  height: 39px;
+  background: linear-gradient(83deg, var(--bth-primary) 24.5%, var(--bth-teal) 140%);
+}
+
+.bth-btn--secondary .bth-btn__icon img {
+  filter: brightness(0) invert(1);
+}
+
+.bth-btn--block {
+  width: 100%;
+  justify-content: space-between;
+}
+
+/* Mobile nav overlay - this is Bootstrap's #bthNavMain (.navbar-collapse)
+   below its xl breakpoint (1200px), restyled as a full-screen panel
+   instead of Bootstrap's small dropdown. Bootstrap's JS still toggles
+   the .show/.collapsing classes; we're just redefining what those mean
+   visually. Above 1200px, Bootstrap's own navbar-expand-xl CSS takes
+   over and none of this applies. */
+@media (max-width: 1199.98px) {
+  .bth-navbar__inner {
+    min-height: 0;
+    padding: 21px clamp(20px, 5vw, 25px);
+  }
+
+  #bthNavMain {
+    position: fixed;
+    inset: 66px 0 0 0;
+    z-index: 997;
+    background: #fff;
+    padding: 40px 25px;
+    display: flex !important;
+    flex-direction: column;
+    /* Bootstrap's own base .navbar-collapse rule sets
+       align-items:center unconditionally (not scoped to any
+       breakpoint) - override it here or both the nav list and the
+       button get centered/shrink-wrapped instead of left-aligned
+       and full-width. #bthNavMain (an ID) beats .navbar-collapse
+       (a class) regardless of load order, so this is enough. */
+    align-items: stretch;
+    justify-content: space-between;
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.35s ease, opacity 0.35s ease, visibility 0s linear 0.35s;
+    overflow-y: auto;
+  }
+
+  #bthNavMain.show {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    transition: transform 0.35s ease, opacity 0.35s ease, visibility 0s;
+  }
+
+  #bthNavMain.collapsing {
+    height: auto !important;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+  }
+
+  .bth-navbar__nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    margin: 0 0 40px;
+  }
+
+  .bth-navbar .nav-link {
+    height: 40px;
+    font-size: 16px;
+    letter-spacing: 0.48px;
+    width: fit-content;
+  }
+
+  .bth-navbar .bth-btn--secondary {
+    width: fit-content;
+    margin-left: 0;
+  }
+}
+
+/*--------------------------------------------------------------
+# Page header
+--------------------------------------------------------------*/
+/* min-height (not a per-page height) is what keeps this section the
+   same size on every page that uses it - padding alone lets a page
+   with a shorter heading (References: "Explore Our Work") end up
+   shorter than one with a longer heading that wraps to a second line
+   (Solutions: "Solutions for Smarter Energy Systems"). Sized to
+   comfortably fit a two-line heading at the current font-size, so
+   any page's content fits inside it and centers rather than being
+   clipped or stretching it further. */
+.bth-page-header {
+  background: var(--bth-bg-light);
+  padding: 87px 0 100px;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 991px) {
+  .bth-page-header {
+    padding: 40px 0;
+    min-height: 320px;
+  }
+}
+
+.bth-eyebrow {
+  font-family: var(--bth-font-label);
+  font-weight: 500;
+  font-size: 24px;
+  letter-spacing: 1.92px;
+  text-transform: uppercase;
+  color: var(--bth-primary);
+  margin: 0 0 15px;
+}
+
+@media (max-width: 991px) {
+  .bth-eyebrow {
+    font-size: 14px;
+    letter-spacing: 1.12px;
+    margin-bottom: 15px;
+    background: linear-gradient(61deg, var(--bth-primary) 24.5%, var(--bth-teal) 140%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+.bth-page-header h1 {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  /* Fluid between the mobile (36px) and desktop (64px) values instead
+     of jumping at a single breakpoint - at tablet widths (e.g.
+     ~1122px) the old fixed 64px read oversized for the viewport. */
+  font-size: clamp(36px, 1.85vw + 28.5px, 64px);
+  letter-spacing: -1.92px;
+  color: var(--bth-dark);
+  margin: 0 0 15px;
+  max-width: 908px;
+}
+
+@media (max-width: 991px) {
+  .bth-page-header h1 {
+    letter-spacing: -1.08px;
+    line-height: 40px;
+  }
+}
+
+.bth-page-header p:not(.bth-eyebrow) {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 24px;
+  color: var(--bth-dark);
+  max-width: 908px;
+  margin: 0;
+}
+
+@media (max-width: 991px) {
+  .bth-page-header p:not(.bth-eyebrow) {
+    font-size: 16px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Reference cards
+--------------------------------------------------------------*/
+/* Bootstrap's row/col-lg-6/col-lg-6, an even 50/50 split (see the
+   skeleton) - not a hand-built grid. Column widths and the stack-to-
+   one-column-below-992px behavior both come from Bootstrap's own
+   responsive column classes, so there's nothing here to get wrong at
+   some in-between viewport width.
+   The photo/text gap is deliberately NOT built from Bootstrap's row
+   gutter (--bs-gutter-x): that column-padding formula kept producing
+   inconsistent results (a stray tinted band in the gutter, then
+   height/stretch weirdness). Instead the row keeps g-0 (zero gutter,
+   see the HTML) and the gap is just plain padding on the text div
+   itself (.bth-reference-card__content, below) - simpler and nothing
+   to get wrong. */
+@media (min-width: 992px) {
+  /* The row's height comes from the row's OWN width via aspect-ratio -
+     not from either column's content. A fixed ratio on the row itself
+     is unambiguous - both columns just stretch to match it, full
+     stop. 1920/633 is 2x the 960-wide photo's own width : its 633
+     height, since each column is half the row's width. */
+  .bth-reference-card .row {
+    aspect-ratio: 1920 / 633;
+  }
+}
+
+.bth-reference-card__media-col {
+  order: 1;
+}
+
+.bth-reference-card__content-col {
+  order: 2;
+}
+
+.bth-reference-card:nth-child(even) .bth-reference-card__media-col {
+  order: 2;
+}
+
+.bth-reference-card:nth-child(even) .bth-reference-card__content-col {
+  order: 1;
+}
+
+@media (max-width: 991px) {
+  .bth-reference-card__media-col {
+    aspect-ratio: 960 / 633;
+  }
+
+  .bth-reference-card__media-col,
+  .bth-reference-card:nth-child(even) .bth-reference-card__media-col {
+    order: 1;
+  }
+
+  .bth-reference-card__content-col,
+  .bth-reference-card:nth-child(even) .bth-reference-card__content-col {
+    order: 2;
+  }
+}
+
+.bth-reference-card__media {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.bth-reference-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bth-reference-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(18, 43, 61, 0.2), rgba(18, 43, 61, 0.6));
+}
+
+.bth-reference-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  /* box-sizing:border-box means max-width includes padding, so this
+     is 700px of actual text (the readability cap Figma intends) plus
+     up to ~260px of padding (100 inner + up to 160 outer) on top. */
+  max-width: 960px;
+  /* Inner (image-facing) side: fixed 100px gap. Outer (screen-edge)
+     side: Figma's 160px, fluid. */
+  padding: 10px clamp(30px, 8.3vw, 160px) 10px 100px;
+}
+
+.bth-reference-card:nth-child(even) .bth-reference-card__content {
+  padding: 10px 100px 10px clamp(30px, 8.3vw, 160px);
+}
+
+@media (max-width: 991px) {
+  .bth-reference-card__content,
+  .bth-reference-card:nth-child(even) .bth-reference-card__content {
+    padding: 40px 20px;
+    gap: 20px;
+    max-width: none;
+  }
+}
+
+.bth-reference-card__content h2 {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: clamp(28px, 0.79vw + 24.8px, 40px);
+  letter-spacing: -1.2px;
+  color: var(--bth-dark);
+  margin: 0;
+}
+
+@media (max-width: 991px) {
+  .bth-reference-card__content h2 {
+    letter-spacing: -0.56px;
+    line-height: 32px;
+  }
+}
+
+.bth-reference-card__content p {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--bth-dark);
+  margin: 0;
+}
+
+@media (max-width: 991px) {
+  .bth-reference-card__content p {
+    font-size: 16px;
+  }
+}
+
+.bth-reference-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+@media (max-width: 991px) {
+  .bth-reference-card__meta {
+    gap: 8px;
+  }
+}
+
+.bth-reference-card__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bth-bg-light);
+  border-radius: 20px;
+  padding: 12px 15px;
+  white-space: nowrap;
+}
+
+@media (max-width: 991px) {
+  .bth-reference-card__meta span {
+    padding: 8px 12px;
+  }
+}
+
+.bth-reference-card__meta b {
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  color: var(--bth-label-muted);
+}
+
+@media (max-width: 991px) {
+  .bth-reference-card__meta b {
+    font-size: 14px;
+    letter-spacing: 2.1px;
+  }
+}
+
+.bth-reference-card__meta em {
+  font-style: normal;
+  font-size: 18px;
+  color: var(--bth-dark);
+}
+
+@media (max-width: 991px) {
+  .bth-reference-card__meta em {
+    font-size: 16px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Partners
+--------------------------------------------------------------*/
+.bth-partners {
+  background: var(--bth-bg-light);
+  padding: 75px 0;
+}
+
+.bth-partners .bth-container {
+  display: flex;
+  align-items: center;
+  gap: 91px;
+}
+
+@media (max-width: 991px) {
+  .bth-partners .bth-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 0;
+  }
+}
+
+.bth-partners__label {
+  font-family: var(--bth-font-label);
+  font-weight: 500;
+  font-size: 24px;
+  letter-spacing: 1.92px;
+  text-transform: uppercase;
+  color: var(--bth-primary);
+  white-space: nowrap;
+  margin: 0;
+}
+
+@media (max-width: 991px) {
+  .bth-partners__label {
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 1.28px;
+    padding: 0 25px;
+  }
+}
+
+.bth-partners__viewport {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 60px, #000 calc(100% - 60px), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 60px, #000 calc(100% - 60px), transparent);
+}
+
+.bth-partners__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 991px) {
+  .bth-partners__viewport {
+    width: 100%;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 25px, #000 calc(100% - 25px), transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 25px, #000 calc(100% - 25px), transparent);
+  }
+}
+
+.bth-partners__row {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 20px;
+  width: max-content;
+  animation: bth-marquee 28s linear infinite;
+}
+
+.bth-partners__viewport:hover .bth-partners__row {
+  animation-play-state: paused;
+}
+
+@keyframes bth-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-100% - 20px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bth-partners__row {
+    animation: none;
+  }
+
+  .bth-partners__viewport {
+    overflow-x: auto;
+  }
+
+  .bth-partners__row[aria-hidden="true"] {
+    display: none;
+  }
+}
+
+.bth-partners__row img {
+  width: 220px;
+  height: 87px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 991px) {
+  .bth-partners__row img {
+    width: 150px;
+    height: 60px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Contact CTA
+--------------------------------------------------------------*/
+.bth-contact-cta {
+  position: relative;
+  overflow: hidden;
+  background-image: url("../img/brodotehna/background-contact.png");
+  background-size: cover;
+  background-position: center bottom;
+  padding: clamp(60px, 9vw, 120px) 0;
+}
+
+.bth-contact-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(18, 43, 61, 0.34) 100%),
+    linear-gradient(90deg, rgba(20, 24, 40, 0.58), rgba(28, 35, 70, 0) 95%),
+    rgba(0, 0, 0, 0.1);
+}
+
+.bth-contact-cta__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 43, 61, 0.16);
+  backdrop-filter: blur(5.55px);
+  -webkit-backdrop-filter: blur(5.55px);
+}
+
+.bth-contact-cta__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.bth-contact-cta__heading {
+  flex: 1 1 400px;
+  max-width: 550px;
+  margin: 0;
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: clamp(28px, 1.19vw + 23.2px, 46px);
+  letter-spacing: -0.48px;
+  color: #fff;
+}
+
+.bth-contact-cta__heading span {
+  color: #6eceee;
+}
+
+.bth-contact-cta__body {
+  flex: 1 1 500px;
+  max-width: 895px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 39px;
+}
+
+.bth-contact-cta__body p {
+  margin: 0;
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 20px;
+  color: #fff;
+}
+
+@media (max-width: 991px) {
+  .bth-contact-cta__heading {
+    line-height: 30px;
+    letter-spacing: -0.56px;
+    max-width: 340px;
+  }
+
+  .bth-contact-cta__body {
+    gap: 24px;
+  }
+
+  .bth-contact-cta__body p {
+    font-size: 14px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Footer
+--------------------------------------------------------------*/
+.bth-footer {
+  background: #fff;
+  padding: 100px 0 20px;
+}
+
+@media (max-width: 991px) {
+  .bth-footer {
+    padding: 60px 0 30px;
+  }
+}
+
+/* Column widths/wrapping below are handled by Bootstrap's grid
+   (.row / .col-*, loaded via bootstrap-grid.min.css) rather than
+   fixed pixel widths - percentage-based columns always fit the
+   viewport instead of needing a breakpoint to be guessed correctly
+   for every screen size. */
+/* Explicit, equal gutter on both the outer row (brand vs. link
+   columns) and the inner row (between the 4 link columns) - without
+   this they both fall back to Bootstrap's default 24px, which read
+   fine between plain text columns but too tight next to the visually
+   heavier logo/social-icon block. */
+/* One row, 5 equal columns (row-cols-2/row-cols-md-5 in the HTML) -
+   a single --bs-gutter-x here is the only gutter now, so all 5
+   columns (brand included) get the exact same spacing by
+   construction, not by coincidentally-matching separate values. */
+.bth-footer__top {
+  --bs-gutter-x: 60px;
+  padding-bottom: 45px;
+}
+
+.bth-footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 31px;
+}
+
+.bth-footer__brand img {
+  width: 170px;
+  height: auto;
+}
+
+.bth-footer__social {
+  display: flex;
+  gap: 12px;
+}
+
+.bth-footer__social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 49px;
+  height: 49px;
+  border-radius: 50%;
+  background: linear-gradient(83deg, var(--bth-primary) 24.5%, var(--bth-teal) 140%);
+}
+
+/* Between 768px (row-cols-md-5 switches to 5 columns in one row) and
+   1200px, each column can be narrower than 3 unshrinkable 49px icons
+   need (171px) - flex-shrink:0 stops them distorting into ovals, but
+   without this they'd overflow into the next column instead. Shrink
+   width and height together so they stay perfectly circular, just
+   smaller, only in this specific tight range. */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+  .bth-footer__social {
+    gap: 8px;
+  }
+
+  .bth-footer__social a {
+    width: 36px;
+    height: 36px;
+  }
+
+  .bth-footer__social img {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.bth-footer__social img {
+  width: 19px;
+  height: 19px;
+}
+
+.bth-footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bth-footer__col h4 {
+  font-family: var(--bth-font-heading);
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.42px;
+  text-transform: uppercase;
+  color: var(--bth-muted);
+  margin: 0;
+}
+
+@media (max-width: 991px) {
+  .bth-footer__col h4 {
+    font-size: 12px;
+    letter-spacing: 0.36px;
+  }
+}
+
+.bth-footer__col ul {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+@media (max-width: 991px) {
+  .bth-footer__col ul {
+    gap: 16px;
+  }
+}
+
+.bth-footer__col a {
+  font-size: 14px;
+  color: var(--bth-dark);
+  text-decoration: none;
+}
+
+.bth-footer__col a:hover {
+  color: var(--bth-primary);
+}
+
+.bth-footer__contact-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.bth-footer__contact-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bth-icon-bg);
+  flex-shrink: 0;
+}
+
+.bth-footer__contact-icon img {
+  width: 18px;
+  height: 18px;
+}
+
+.bth-footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--bth-border);
+  padding-top: 40px;
+  font-size: 13px;
+  color: var(--bth-dark);
+}
+
+@media (max-width: 991px) {
+  .bth-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    border-top: none;
+    padding-top: 0;
+  }
+}
+
+.bth-footer__legal {
+  display: flex;
+  gap: 40px;
+}
+
+@media (max-width: 991px) {
+  .bth-footer__legal {
+    gap: 24px;
+    font-size: 12px;
+    border-top: 1px solid var(--bth-border);
+    padding-top: 20px;
+    width: 100%;
+  }
+}
+
+.bth-footer__legal a {
+  color: var(--bth-dark);
+  text-decoration: none;
+}
+
+.bth-footer__legal a:hover {
+  color: var(--bth-primary);
+}
+
+/*--------------------------------------------------------------
+# Scroll-top override to match brand color
+--------------------------------------------------------------*/
+/* Base positioning/visibility (previously from main.css's .scroll-top,
+   now inlined here - see the note above main.css was dropped entirely
+   to avoid its .navbar collision). */
+.scroll-top {
+  position: fixed;
+  visibility: hidden;
+  opacity: 0;
+  right: 15px;
+  bottom: 15px;
+  z-index: 99999;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+}
+
+.scroll-top.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.bth-page .scroll-top {
+  background: var(--bth-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+}
+
+.bth-page .scroll-top img {
+  transition: filter 0.3s;
+}
+
+.bth-page .scroll-top:hover {
+  background: #059bce;
+}
+
+.bth-page .scroll-top:hover img {
+  /* Arrow-up.svg is authored dark navy - force it white on hover so
+     it stays visible against the darker hover background. */
+  filter: brightness(0) invert(1);
+}
+
+/* Preloader (previously from main.css) */
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  overflow: hidden;
+  background: #fff;
+  transition: all 0.6s ease-out;
+}
+
+#preloader::before {
+  content: "";
+  position: fixed;
+  top: calc(50% - 30px);
+  left: calc(50% - 30px);
+  border: 6px solid #fff;
+  border-color: var(--bth-primary) transparent var(--bth-primary) transparent;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: bth-preloader-spin 1.5s linear infinite;
+}
+
+@keyframes bth-preloader-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Disable AOS animation delay on mobile (previously from main.css) */
+@media screen and (max-width: 768px) {
+  [data-aos-delay] {
+    transition-delay: 0 !important;
+  }
+}
+
+/* The old hand-picked 1350px breakpoint is gone - navbar-expand-xl
+   in the markup + Bootstrap's own compiled CSS now owns the
+   toggler/full-nav switch at exactly 1200px, and the "what does
+   collapsed actually look like" styling lives with #bthNavMain
+   above, at the matching breakpoint. */
+
+/*--------------------------------------------------------------
+# Solutions page
+--------------------------------------------------------------*/
+.bth-page-header--page-bg {
+  background: var(--bth-bg-page);
+}
+
+.bth-page-header--page-bg p:not(.bth-eyebrow) {
+  color: var(--bth-nav-text);
+}
+
+/* White pill button ("Download Brochure"): dark text, gradient icon
+   circle with a white icon (no invert filter needed - Download.svg
+   is already authored white). */
+.bth-btn--white {
+  background: #fff;
+  color: var(--bth-nav-text);
+}
+
+/* Hover deliberately NOT customized here - it inherits the same
+   frosted-glass .bth-btn:hover behavior as every other button on the
+   site (the "Contact us" pattern), rather than a one-off state. */
+
+/* No icon-circle overrides here on purpose: Download.svg is authored
+   white, same as icon-arrow.svg, so it gets exactly the same
+   treatment as "Explore solutions" from the base .bth-btn__icon
+   rules - white circle + inverted (dark) icon by default, swapping
+   to the gradient circle + native white icon on hover. Same button,
+   same behavior, just a white pill instead of the gradient one. */
+
+/* Photo strip below the header */
+.bth-solutions-photo {
+  width: 100%;
+  aspect-ratio: 1920 / 370;
+  overflow: hidden;
+}
+
+.bth-solutions-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Section 1: intro (step number + eyebrow, heading left, copy +
+   buttons right) */
+.bth-solutions-intro {
+  background: var(--bth-bg-page);
+  padding: clamp(50px, 7vw, 100px) 0;
+}
+
+.bth-solutions-intro__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.bth-solutions-intro__eyebrow span {
+  font-family: var(--bth-font-label);
+  font-weight: 500;
+  font-size: 24px;
+  letter-spacing: 1.92px;
+  text-transform: uppercase;
+  color: var(--bth-primary);
+}
+
+.bth-solutions-intro__heading {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: clamp(32px, 0.92vw + 28.3px, 46px);
+  color: var(--bth-nav-text);
+  margin: 0;
+  max-width: 725px;
+}
+
+.bth-solutions-intro__copy {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--bth-nav-text);
+  margin: 0 0 40px;
+}
+
+.bth-solutions-intro__copy b {
+  font-weight: 600;
+}
+
+.bth-solutions-intro__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+@media (max-width: 991px) {
+  .bth-solutions-intro .row > [class*="col-"]:first-child {
+    margin-bottom: 30px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Solutions list (sticky sidebar + scrolling cards)
+--------------------------------------------------------------*/
+.bth-solutions-list {
+  padding: clamp(60px, 8vw, 120px) 0;
+  scroll-margin-top: 90px;
+}
+
+.bth-solutions-sidebar {
+  position: sticky;
+  top: 140px;
+  padding-bottom: 40px;
+}
+
+@media (max-width: 991px) {
+  .bth-solutions-sidebar {
+    /* Stays sticky on mobile too - only the name/title text below the
+       tabs is hidden (see further down), so what's actually stuck to
+       the top here is just the tab row. */
+    top: 76px;
+    padding-bottom: 20px;
+  }
+}
+
+.bth-solutions-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+  background: #fff;
+}
+
+.bth-solutions-tabs button {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--bth-font-label);
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: #c4c4c4;
+  transition: color 0.3s;
+}
+
+.bth-solutions-tabs button.active,
+.bth-solutions-tabs button:hover {
+  color: var(--bth-primary);
+}
+
+@media (max-width: 991px) {
+  .bth-solutions-tabs {
+    margin-bottom: 0;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--bth-border);
+  }
+
+  .bth-solutions-tabs button {
+    font-size: 16px;
+    letter-spacing: 1.28px;
+  }
+
+  .bth-solutions-sidebar__name,
+  .bth-solutions-sidebar__title {
+    display: none;
+  }
+}
+
+.bth-solutions-sidebar__name {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: clamp(32px, 1.05vw + 27.8px, 48px);
+  color: var(--bth-nav-text);
+  margin: 0 0 18px;
+}
+
+.bth-solutions-sidebar__title {
+  font-family: var(--bth-font-heading);
+  font-weight: 400;
+  font-size: 24px;
+  color: var(--bth-nav-text);
+  margin: 0;
+}
+
+.bth-solutions-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+}
+
+@media (max-width: 991px) {
+  .bth-solutions-cards {
+    gap: 60px;
+  }
+}
+
+.bth-solutions-card {
+  scroll-margin-top: 110px;
+}
+
+.bth-solutions-card h3 {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: clamp(26px, 0.66vw + 23.3px, 36px);
+  letter-spacing: -0.72px;
+  color: var(--bth-nav-text);
+  margin: 0 0 18px;
+}
+
+.bth-solutions-card p {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--bth-nav-text);
+  margin: 0 0 40px;
+}
+
+@media (max-width: 991px) {
+  .bth-solutions-card p {
+    font-size: 16px;
+    margin-bottom: 24px;
+  }
+}
+
+.bth-solutions-card__media {
+  border-radius: 20px;
+  overflow: hidden;
+  background: #eff1f5;
+  min-height: 300px;
+}
+
+.bth-solutions-card__media img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Temporary stand-in image (aEMS.png reused) until each solution has
+   its own real picture - object-fit:cover crops it to the same
+   proportions the real image will use, rather than stretching it. */
+.bth-solutions-card__media--placeholder {
+  aspect-ratio: 948 / 486;
+}
+
+.bth-solutions-card__media--placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Solution 1 only: a real "Key features" list (not baked into an
+   image) next to the actual aEMS dashboard screenshot, both inside a
+   light card background - matching Figma's layout without flattening
+   editable/accessible text into a picture. The checkmark is a plain
+   generic circle-check, not a recreation of Figma's specific icon -
+   the real one can be swapped in later (see chat). */
+.bth-solutions-card__showcase {
+  background: #eff1f5;
+  border-radius: 20px;
+  padding: clamp(20px, 3vw, 40px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 30px;
+}
+
+.bth-solutions-card__features {
+  flex: 0 0 auto;
+  width: 230px;
+}
+
+@media (max-width: 767px) {
+  .bth-solutions-card__features {
+    width: 100%;
+  }
+}
+
+.bth-solutions-card__features h4 {
+  font-family: var(--bth-font-label);
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1.28px;
+  text-transform: uppercase;
+  color: var(--bth-nav-text);
+  margin: 0 0 20px;
+}
+
+.bth-solutions-card__features ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bth-solutions-card__features li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--bth-font-heading);
+  font-size: 16px;
+  color: var(--bth-nav-text);
+}
+
+.bth-solutions-card__features li svg {
+  flex-shrink: 0;
+  color: var(--bth-nav-text);
+}
+
+.bth-solutions-card__showcase-media {
+  flex: 1 1 400px;
+  min-width: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(18, 43, 61, 0.12);
+}
+
+.bth-solutions-card__showcase-media img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/*--------------------------------------------------------------
+# Solutions CTA (photo card + text, not the full-bleed dark one)
+--------------------------------------------------------------*/
+.bth-solutions-cta {
+  background: linear-gradient(180deg, var(--bth-bg-page) 6%, #fff 100%);
+}
+
+.bth-solutions-cta__media {
+  width: 100%;
+  aspect-ratio: 960 / 633;
+  overflow: hidden;
+}
+
+.bth-solutions-cta__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bth-solutions-cta__content {
+  padding: 40px clamp(30px, 8vw, 140px) 40px 100px;
+  max-width: 780px;
+}
+
+@media (max-width: 991px) {
+  .bth-solutions-cta__content {
+    padding: 40px 20px;
+    max-width: none;
+  }
+}
+
+.bth-solutions-cta__content h2 {
+  font-family: var(--bth-font-heading);
+  font-size: clamp(32px, 0.92vw + 28.3px, 46px);
+  color: var(--bth-nav-text);
+  margin: 0 0 24px;
+  line-height: 1.2;
+}
+
+.bth-solutions-cta__content h2 .bth-fw-light {
+  display: block;
+  font-weight: 300;
+}
+
+.bth-solutions-cta__content h2 .bth-fw-semibold {
+  font-weight: 600;
+}
+
+.bth-solutions-cta__content p {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--bth-nav-text);
+  margin: 0 0 40px;
+}
