@@ -85,6 +85,42 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
+   * Services page: horizontal tab switcher. Clicking a tab (or the
+   * prev/next circular buttons flanking the image) shows the matching
+   * panel and hides the rest. Simple click-driven show/hide - no
+   * scroll-tracking needed here, unlike the Solutions page's sidebar.
+   */
+  const servicesTabs = document.querySelectorAll('.bth-services-tabs button');
+  const servicesPanels = document.querySelectorAll('.bth-services-panel');
+  if (servicesTabs.length && servicesPanels.length) {
+    const activate = (panelId) => {
+      servicesTabs.forEach(tab => tab.classList.toggle('active', tab.dataset.panel === panelId));
+      servicesPanels.forEach(panel => {
+        const isActive = panel.dataset.panelId === panelId;
+        panel.hidden = !isActive;
+      });
+      const activeTab = document.querySelector(`.bth-services-tabs button[data-panel="${panelId}"]`);
+      if (activeTab && activeTab.scrollIntoView) {
+        activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    };
+
+    servicesTabs.forEach(tab => {
+      tab.addEventListener('click', () => activate(tab.dataset.panel));
+    });
+
+    document.querySelectorAll('.bth-services-nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tabsArray = Array.from(servicesTabs);
+        const currentIndex = tabsArray.findIndex(tab => tab.classList.contains('active'));
+        const direction = btn.classList.contains('bth-services-nav-btn--prev') ? -1 : 1;
+        const nextIndex = (currentIndex + direction + tabsArray.length) % tabsArray.length;
+        activate(tabsArray[nextIndex].dataset.panel);
+      });
+    });
+  }
+
+  /**
    * Animation on scroll
    */
   function aosInit() {
