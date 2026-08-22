@@ -330,7 +330,20 @@ html {
 
   #bthNavMain {
     position: fixed;
-    inset: 66px 0 0 0;
+    top: 66px;
+    left: 0;
+    right: 0;
+    /* height (not inset's bottom:0) on purpose: mobile browsers size a
+       fixed element's bottom:0 against the LARGEST possible viewport
+       (address bar hidden), not the one currently visible. On a long,
+       scrolled page the address bar has collapsed and the layout
+       viewport is at its tallest, so bottom:0 made this panel taller
+       than what's actually on screen - pushing the Contact us button
+       past the visible fold on pages like Solutions, while shorter
+       pages (where you're still near the top, address bar showing)
+       looked fine. dvh tracks the real visible viewport instead. */
+    height: calc(100vh - 66px);
+    height: calc(100dvh - 66px);
     z-index: 997;
     background: #fff;
     padding: 40px 25px;
@@ -1374,29 +1387,29 @@ html {
   }
 }
 
+/* Same card treatment as the aEMS showcase below (padded light-gray
+   background, image inset with rounded corners + shadow) - these 6
+   solutions don't have a features list yet, but they still need to
+   read as a card, not a bare edge-to-edge picture. */
 .bth-solutions-card__media {
-  border-radius: 20px;
-  overflow: hidden;
   background: #eff1f5;
-  min-height: 300px;
+  border-radius: 20px;
+  padding: clamp(20px, 3vw, 40px);
 }
 
 .bth-solutions-card__media img {
   width: 100%;
   height: auto;
   display: block;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(18, 43, 61, 0.12);
 }
 
 /* Temporary stand-in image (aEMS.png reused) until each solution has
    its own real picture - object-fit:cover crops it to the same
    proportions the real image will use, rather than stretching it. */
-.bth-solutions-card__media--placeholder {
-  aspect-ratio: 948 / 486;
-}
-
 .bth-solutions-card__media--placeholder img {
-  width: 100%;
-  height: 100%;
+  aspect-ratio: 948 / 486;
   object-fit: cover;
 }
 
@@ -1627,6 +1640,13 @@ html {
   transition: background 0.3s, color 0.3s;
 }
 
+@media (max-width: 991px) {
+  .bth-services-tabs button {
+    padding: 12px 20px;
+    font-size: 15px;
+  }
+}
+
 .bth-services-tabs button.active {
   background: linear-gradient(60deg, var(--bth-primary) 24.5%, var(--bth-teal) 140%);
   color: #fff;
@@ -1709,6 +1729,12 @@ html {
   margin: 0 0 30px;
 }
 
+@media (max-width: 991px) {
+  .bth-services-panel__lead {
+    font-size: 16px;
+  }
+}
+
 /* Figma's per-panel CTA icon is a diagonal "up-right" arrow
    (rotate -135deg off a down-pointing source), unlike the straight
    right-pointing arrow every other .bth-btn on the site uses (whose
@@ -1777,6 +1803,10 @@ html {
     max-width: none;
     margin-bottom: 40px;
   }
+
+  .bth-tech-intro p {
+    font-size: 16px;
+  }
 }
 
 .bth-tech-list {
@@ -1835,6 +1865,16 @@ html {
   margin: 0 0 20px;
 }
 
+@media (max-width: 575px) {
+  .bth-tech-row h4 {
+    font-size: 20px;
+  }
+
+  .bth-tech-row__content > p {
+    font-size: 15px;
+  }
+}
+
 .bth-tag-list {
   display: flex;
   flex-wrap: wrap;
@@ -1872,6 +1912,12 @@ html {
   color: var(--bth-nav-text);
   margin: 0 0 30px;
   max-width: 667px;
+}
+
+@media (max-width: 991px) {
+  .bth-industries__copy p {
+    font-size: 16px;
+  }
 }
 
 .bth-industries__lists {
