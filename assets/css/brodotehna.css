@@ -2269,6 +2269,7 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   .bth-locations__pin--zagreb .bth-locations__card {
     width: min(280px, 82vw);
     left: -90px;
+    top: -45px;
   }
 }
 
