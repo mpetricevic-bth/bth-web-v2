@@ -1,0 +1,2515 @@
+/**
+ * Brodotehna site styles
+ * Built on top of Bootstrap (full bootstrap.min.css: grid + the real
+ * navbar component, restyled here rather than reimplemented) and AOS
+ * for scroll animations. Deliberately does NOT load the template's
+ * main.css on this page - main.css has its own .navbar/.header rules
+ * for the template's original nav pattern that collide with
+ * Bootstrap's .navbar class (see references.html for details); the
+ * handful of bits still needed from it (preloader, scroll-top base,
+ * one AOS tweak) are inlined below instead.
+ * Everything else is scoped under .bth- classes.
+ */
+
+:root {
+  --bth-primary: #07b5f0;
+  --bth-teal: #2dd0b2;
+  --bth-dark: #26343e;
+  --bth-nav-text: #082135;
+  --bth-muted: #778188;
+  --bth-label-muted: #9ba0a5;
+  --bth-bg-light: #f6f9fb;
+  /* Back to the distinct #f0f3f5 it originally was (briefly unified
+     with --bth-bg-light for a while) - #f6f9fb sat too close to white
+     to give white buttons/cards on top of it enough contrast. */
+  --bth-bg-page: #f0f3f5;
+  --bth-border: #d7dce1;
+  --bth-icon-bg: #def6fe;
+  --bth-font-heading: "Lexend", sans-serif;
+  --bth-font-label: "Kanit", sans-serif;
+}
+
+.bth-page,
+.bth-page *,
+.bth-page *::before,
+.bth-page *::after {
+  box-sizing: border-box;
+}
+
+html {
+  margin: 0;
+}
+
+.bth-page {
+  margin: 0;
+  background: #ffffff;
+  color: var(--bth-dark);
+  font-family: var(--bth-font-heading);
+  overflow-x: hidden;
+}
+
+.bth-page img {
+  max-width: 100%;
+  display: block;
+}
+
+.bth-page ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* main.css's generic "section { padding: 80px 0; overflow: hidden }"
+   applies to every <section> on the page. A blanket ".bth-page section"
+   reset would out-specificity (and silently break) any section that
+   sets its own padding via a single class, like .bth-page-header and
+   .bth-partners below - so each section that needs different spacing
+   overrides it individually instead, at matching specificity. */
+.bth-reference-cards {
+  padding: 0;
+  overflow: visible;
+}
+
+.bth-container {
+  width: 100%;
+  max-width: 2400px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 7.3vw, 140px);
+}
+
+/*--------------------------------------------------------------
+# Menu
+--------------------------------------------------------------*/
+/* This is Bootstrap's own .navbar component (navbar-expand-xl in the
+   markup) restyled - not a rebuilt nav. Bootstrap's compiled CSS
+   already handles showing the toggler vs. the full nav at exactly
+   1200px (its "xl" breakpoint) and the collapse/expand mechanics;
+   everything here is visual restyling on top of that, plus turning
+   the collapsed panel into a full-screen overlay (below). */
+.bth-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 998;
+  background: #fff;
+  box-shadow: 0 0 15px rgba(0, 89, 158, 0.15);
+  padding: 0;
+}
+
+.bth-navbar__inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 82px;
+  padding: 12px clamp(24px, 2.7vw, 40px);
+}
+
+.bth-navbar__brand {
+  flex-shrink: 0;
+  margin: 0 clamp(20px, 1.9vw, 41px) 0 0;
+  padding: 0;
+}
+
+.bth-navbar__brand img {
+  width: 170px;
+  height: auto;
+}
+
+/* #bthNavMain (Bootstrap's .navbar-collapse) takes the remaining
+   width next to the brand, so the nav links stay clustered next to
+   the logo while the button below gets pushed to the far right via
+   margin-left:auto within that remaining space - not just centered
+   in the gap between two flex children. Desktop only: below 1200px
+   #bthNavMain becomes the full-screen mobile panel instead (see the
+   1199.98px breakpoint block further down), with its own alignment. */
+@media (min-width: 1200px) {
+  #bthNavMain.navbar-collapse {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+}
+
+.bth-navbar__nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 1.9vw, 28px);
+  margin: 0;
+}
+
+.bth-navbar .nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0 clamp(10px, 1.1vw, 16px) 8px;
+  font-family: var(--bth-font-heading);
+  font-weight: 500;
+  font-size: 12.5px;
+  letter-spacing: 0.42px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--bth-nav-text);
+  border-bottom: 2px solid transparent;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.bth-navbar .nav-link:hover {
+  color: var(--bth-primary);
+}
+
+.bth-navbar .nav-link.active {
+  color: var(--bth-primary);
+  border-bottom-color: var(--bth-primary);
+}
+
+.bth-navbar .bth-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+  margin-left: auto;
+}
+
+.bth-navbar__toggler {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: none !important;
+}
+
+.bth-navbar__toggler img {
+  width: 24px;
+  height: 24px;
+}
+
+.bth-navbar__toggler .bth-icon-close {
+  display: none;
+}
+
+.bth-navbar__toggler[aria-expanded="true"] .bth-icon-menu {
+  display: none;
+}
+
+.bth-navbar__toggler[aria-expanded="true"] .bth-icon-close {
+  display: block;
+}
+
+/* Buttons */
+.bth-btn {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 15px;
+  height: 53px;
+  padding: 16px 10px 16px 20px;
+  border-radius: 30px;
+  border: 1px solid transparent;
+  background: linear-gradient(65deg, var(--bth-primary) 24.5%, var(--bth-teal) 140%);
+  background-clip: padding-box;
+  color: #fff;
+  font-family: var(--bth-font-label);
+  font-weight: 500;
+  font-size: 12.5px;
+  letter-spacing: 2.1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.bth-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border-color: rgba(255, 255, 255, 0.42);
+  color: #fff;
+}
+
+/* The frosted-glass hover above only reads correctly on a dark photo
+   background (like the full-bleed CTA on References) - white text on
+   a barely-tinted white overlay is invisible on a plain light page
+   background. On every other (light-bg) .bth-btn context, swap it for
+   a light-gray fill + blue border instead - the same combo
+   .bth-btn--secondary already uses at rest, so the hover state reads
+   as an established part of the button language rather than a new
+   one, and it stays clearly visible against a white/light-gray page
+   background where the frosted look would nearly disappear. */
+.bth-navbar .bth-btn:hover,
+.bth-solutions-intro .bth-btn:hover,
+.bth-solutions-cta .bth-btn:hover,
+.bth-services-panel .bth-btn:hover,
+.bth-contact-form .bth-btn:hover {
+  background: var(--bth-bg-light);
+  border-color: var(--bth-primary);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  color: var(--bth-nav-text);
+}
+
+.bth-btn__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 39px;
+  height: 39px;
+  border-radius: 50%;
+  background: #fff;
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+
+.bth-btn__icon img {
+  /* icon-arrow.svg already points right as authored - no rotation
+     needed (Figma's own -rotate-90 on this icon actually turns it
+     to point up, not right). It's authored white, which is invisible
+     on this button's white circle - invert it to read, then let it
+     go back to native white on hover once the circle switches to the
+     gradient fill (see below). */
+  width: 17px;
+  height: 17px;
+  filter: invert(1);
+  transition: filter 0.3s;
+}
+
+.bth-btn:not(.bth-btn--secondary):hover .bth-btn__icon {
+  background: linear-gradient(83deg, var(--bth-primary) 24.5%, var(--bth-teal) 140%);
+}
+
+.bth-btn:not(.bth-btn--secondary):hover .bth-btn__icon img {
+  filter: none;
+}
+
+/* Some icons (Arrow-up-side.svg on "Explore solutions") are already
+   authored in the dark navy color, not white like icon-arrow.svg/
+   Download.svg - inverting an already-dark icon produces a wrong
+   yellowish tint, not black. Skip the default invert for these, and
+   go the other way on hover (force white) since the circle behind it
+   switches to the gradient fill then. */
+.bth-btn__icon img.bth-icon-dark {
+  filter: none;
+}
+
+.bth-btn:not(.bth-btn--secondary):hover .bth-btn__icon img.bth-icon-dark {
+  filter: brightness(0) invert(1);
+}
+
+.bth-btn--secondary {
+  background: var(--bth-bg-light);
+  border: 1.5px solid var(--bth-primary);
+  color: var(--bth-nav-text);
+  padding: 8px 8px 8px 20px;
+  gap: 10px;
+}
+
+.bth-btn--secondary:hover {
+  background: #e0f7ff;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-color: rgba(7, 181, 240, 0.3);
+  color: var(--bth-nav-text);
+}
+
+.bth-btn--secondary .bth-btn__icon {
+  width: 39px;
+  height: 39px;
+  background: linear-gradient(83deg, var(--bth-primary) 24.5%, var(--bth-teal) 140%);
+}
+
+.bth-btn--secondary .bth-btn__icon img {
+  filter: brightness(0) invert(1);
+}
+
+.bth-btn--block {
+  width: 100%;
+  justify-content: space-between;
+}
+
+/* Mobile nav overlay - this is Bootstrap's #bthNavMain (.navbar-collapse)
+   below its xl breakpoint (1200px), restyled as a full-screen panel
+   instead of Bootstrap's small dropdown. Bootstrap's JS still toggles
+   the .show/.collapsing classes; we're just redefining what those mean
+   visually. Above 1200px, Bootstrap's own navbar-expand-xl CSS takes
+   over and none of this applies. */
+@media (max-width: 1199.98px) {
+  .bth-navbar__inner {
+    min-height: 0;
+    padding: 21px clamp(20px, 5vw, 25px);
+  }
+
+  #bthNavMain {
+    position: fixed;
+    top: 66px;
+    left: 0;
+    right: 0;
+    /* height (not inset's bottom:0) on purpose: mobile browsers size a
+       fixed element's bottom:0 against the LARGEST possible viewport
+       (address bar hidden), not the one currently visible. On a long,
+       scrolled page the address bar has collapsed and the layout
+       viewport is at its tallest, so bottom:0 made this panel taller
+       than what's actually on screen - pushing the Contact us button
+       past the visible fold on pages like Solutions, while shorter
+       pages (where you're still near the top, address bar showing)
+       looked fine. dvh tracks the real visible viewport instead. */
+    height: calc(100vh - 66px);
+    height: calc(100dvh - 66px);
+    z-index: 997;
+    background: #fff;
+    padding: 40px 25px;
+    display: flex !important;
+    flex-direction: column;
+    /* Bootstrap's own base .navbar-collapse rule sets
+       align-items:center unconditionally (not scoped to any
+       breakpoint) - override it here or both the nav list and the
+       button get centered/shrink-wrapped instead of left-aligned
+       and full-width. #bthNavMain (an ID) beats .navbar-collapse
+       (a class) regardless of load order, so this is enough. */
+    align-items: stretch;
+    justify-content: space-between;
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.35s ease, opacity 0.35s ease, visibility 0s linear 0.35s;
+    overflow-y: auto;
+  }
+
+  #bthNavMain.show {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    transition: transform 0.35s ease, opacity 0.35s ease, visibility 0s;
+  }
+
+  #bthNavMain.collapsing {
+    height: auto !important;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+  }
+
+  .bth-navbar__nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    margin: 0 0 40px;
+  }
+
+  .bth-navbar .nav-link {
+    height: 40px;
+    font-size: 14.5px;
+    letter-spacing: 0.48px;
+    width: fit-content;
+  }
+
+  .bth-navbar .bth-btn {
+    width: fit-content;
+    margin-left: 0;
+  }
+}
+
+/*--------------------------------------------------------------
+# Page header
+--------------------------------------------------------------*/
+/* min-height (not a per-page height) is what keeps this section the
+   same size on every page that uses it - padding alone lets a page
+   with a shorter heading (References: "Explore Our Work") end up
+   shorter than one with a longer heading that wraps to a second line
+   (Solutions: "Solutions for Smarter Energy Systems"). The target
+   height itself is driven by fitting Solutions/Services' header +
+   .bth-photo-strip together into one viewport below the sticky navbar
+   (82px): 100vh - 82px - the strip's own height, which is a fixed
+   19.2708vw since the strip is full-bleed at a 1920/370 aspect-ratio.
+   References and Contact have no strip but share this same class, so
+   the height comes out identical on all four pages either way. Clamped
+   so it never grows past the old 420px ceiling and never shrinks below
+   a floor that still comfortably fits a two-line heading. */
+.bth-page-header {
+  background: var(--bth-bg-page);
+  padding: 40px 0;
+  min-height: clamp(240px, calc(100vh - 82px - 19.2708vw), 420px);
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 991px) {
+  .bth-page-header {
+    padding: 32px 0;
+    min-height: 260px;
+  }
+}
+
+/* Text-fill gradient (same blue-to-teal as the nav's Contact us icon
+   circle) - background-clip:text paints the gradient through the
+   glyph shapes, which only shows through where color is transparent.
+   Sections with their own bright gradient background (.bth-locations)
+   override color back to a plain white further down, which - since
+   opaque text paints over the clipped background - cleanly cancels
+   this effect there without needing to touch this rule. */
+.bth-eyebrow {
+  font-family: var(--bth-font-label);
+  font-weight: 500;
+  font-size: 21.5px;
+  letter-spacing: 1.92px;
+  text-transform: uppercase;
+  /* width:fit-content is load-bearing: .bth-eyebrow is a block-level
+     <p> that would otherwise stretch to its container's full width,
+     so the gradient background would paint across that whole box -
+     text-clipping only shows through the glyphs, which sit in just
+     the first ~90px, so without this the visible slice is only the
+     very start of the gradient (still solid-looking blue). */
+  width: fit-content;
+  background: linear-gradient(90deg, var(--bth-primary) 0%, var(--bth-teal) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin: 0 0 15px;
+}
+
+@media (max-width: 991px) {
+  .bth-eyebrow {
+    font-size: 12.5px;
+    letter-spacing: 1.12px;
+    margin-bottom: 15px;
+    background: linear-gradient(61deg, var(--bth-primary) 24.5%, var(--bth-teal) 140%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+.bth-page-header h1 {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  /* Fluid between the mobile (36px) and desktop (64px) values instead
+     of jumping at a single breakpoint - at tablet widths (e.g.
+     ~1122px) the old fixed 64px read oversized for the viewport. */
+  font-size: clamp(32.5px, 1.67vw + 25.5px, 57.5px);
+  letter-spacing: -1.92px;
+  color: var(--bth-dark);
+  margin: 0 0 15px;
+  max-width: 908px;
+}
+
+@media (max-width: 991px) {
+  .bth-page-header h1 {
+    letter-spacing: -1.08px;
+    line-height: 40px;
+  }
+}
+
+.bth-page-header p:not(.bth-eyebrow) {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 21.5px;
+  color: var(--bth-dark);
+  max-width: 908px;
+  margin: 0;
+}
+
+@media (max-width: 991px) {
+  .bth-page-header p:not(.bth-eyebrow) {
+    font-size: 14.5px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Reference cards
+--------------------------------------------------------------*/
+/* Bootstrap's row/col-lg-6/col-lg-6, an even 50/50 split (see the
+   skeleton) - not a hand-built grid. Column widths and the stack-to-
+   one-column-below-992px behavior both come from Bootstrap's own
+   responsive column classes, so there's nothing here to get wrong at
+   some in-between viewport width.
+   The photo/text gap is deliberately NOT built from Bootstrap's row
+   gutter (--bs-gutter-x): that column-padding formula kept producing
+   inconsistent results (a stray tinted band in the gutter, then
+   height/stretch weirdness). Instead the row keeps g-0 (zero gutter,
+   see the HTML) and the gap is just plain padding on the text div
+   itself (.bth-reference-card__content, below) - simpler and nothing
+   to get wrong. */
+/* A genuinely fixed height (not derived from aspect-ratio, not
+   inherited from the text column via flex stretch) - the same value
+   .bth-industries__media and .bth-solutions-cta__media use on
+   Services, so every "photo half the screen, text the other half"
+   section on the site reads as one consistent pattern. Height being
+   independent of both the source photo's own resolution AND the
+   text column's length means every card - however many get added
+   here later - comes out the same size with no per-card tuning. */
+@media (min-width: 992px) {
+  .bth-reference-card .row {
+    height: clamp(460px, 38vw, 640px);
+  }
+}
+
+.bth-reference-card__media-col {
+  order: 1;
+  height: 100%;
+}
+
+.bth-reference-card__content-col {
+  order: 2;
+}
+
+.bth-reference-card:nth-child(even) .bth-reference-card__media-col {
+  order: 2;
+}
+
+.bth-reference-card:nth-child(even) .bth-reference-card__content-col {
+  order: 1;
+}
+
+/* The alternating left/right order above is desktop-only, on purpose -
+   stacked into one column below 992px, alternating order instead
+   produces text/image/image/text/text/image... as consecutive cards'
+   swapped columns land next to each other. Force every card back to
+   the same text-then-image order regardless of odd/even, and give the
+   now-full-width image its own (shorter) fixed height instead of the
+   desktop clamp. */
+@media (max-width: 991px) {
+  .bth-reference-card__media-col,
+  .bth-reference-card:nth-child(even) .bth-reference-card__media-col {
+    order: 2;
+    height: clamp(280px, 78vw, 400px);
+  }
+
+  .bth-reference-card__content-col,
+  .bth-reference-card:nth-child(even) .bth-reference-card__content-col {
+    order: 1;
+  }
+}
+
+.bth-reference-card__media {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.bth-reference-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bth-reference-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(18, 43, 61, 0.2), rgba(18, 43, 61, 0.6));
+}
+
+.bth-reference-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  /* box-sizing:border-box means max-width includes padding, so this
+     is 700px of actual text (the readability cap Figma intends) plus
+     up to ~260px of padding (100 inner + up to 160 outer) on top. */
+  max-width: 960px;
+  /* Inner (image-facing) side: fixed 100px gap. Outer (screen-edge)
+     side: Figma's 160px, fluid. */
+  padding: 10px clamp(30px, 8.3vw, 160px) 10px 100px;
+}
+
+.bth-reference-card:nth-child(even) .bth-reference-card__content {
+  padding: 10px 100px 10px clamp(30px, 8.3vw, 160px);
+}
+
+@media (max-width: 991px) {
+  .bth-reference-card__content,
+  .bth-reference-card:nth-child(even) .bth-reference-card__content {
+    padding: 40px 20px;
+    gap: 20px;
+    max-width: none;
+  }
+}
+
+.bth-reference-card__content h2 {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: clamp(25px, 0.71vw + 22.5px, 36px);
+  letter-spacing: -1.2px;
+  color: var(--bth-dark);
+  margin: 0;
+}
+
+@media (max-width: 991px) {
+  .bth-reference-card__content h2 {
+    letter-spacing: -0.56px;
+    line-height: 32px;
+  }
+}
+
+.bth-reference-card__content p {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 18px;
+  color: var(--bth-dark);
+  margin: 0;
+}
+
+@media (max-width: 991px) {
+  .bth-reference-card__content p {
+    font-size: 14.5px;
+  }
+}
+
+.bth-reference-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+@media (max-width: 991px) {
+  .bth-reference-card__meta {
+    gap: 8px;
+  }
+}
+
+.bth-reference-card__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bth-bg-light);
+  border-radius: 20px;
+  padding: 12px 15px;
+  white-space: nowrap;
+}
+
+@media (max-width: 991px) {
+  .bth-reference-card__meta span {
+    padding: 8px 12px;
+  }
+}
+
+.bth-reference-card__meta b {
+  font-weight: 400;
+  font-size: 14.5px;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  color: var(--bth-label-muted);
+}
+
+@media (max-width: 991px) {
+  .bth-reference-card__meta b {
+    font-size: 12.5px;
+    letter-spacing: 2.1px;
+  }
+}
+
+.bth-reference-card__meta em {
+  font-style: normal;
+  font-size: 16px;
+  color: var(--bth-dark);
+}
+
+@media (max-width: 991px) {
+  .bth-reference-card__meta em {
+    font-size: 14.5px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Partners
+--------------------------------------------------------------*/
+.bth-partners {
+  background: var(--bth-bg-light);
+  padding: 75px 0;
+}
+
+.bth-partners .bth-container {
+  display: flex;
+  align-items: center;
+  gap: 91px;
+}
+
+@media (max-width: 991px) {
+  .bth-partners .bth-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 0;
+  }
+}
+
+.bth-partners__label {
+  font-family: var(--bth-font-label);
+  font-weight: 500;
+  font-size: 21.5px;
+  letter-spacing: 1.92px;
+  text-transform: uppercase;
+  width: fit-content;
+  background: linear-gradient(90deg, var(--bth-primary) 0%, var(--bth-teal) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+  margin: 0;
+}
+
+@media (max-width: 991px) {
+  .bth-partners__label {
+    font-weight: 600;
+    font-size: 14.5px;
+    letter-spacing: 1.28px;
+    padding: 0 25px;
+  }
+}
+
+.bth-partners__viewport {
+  display: flex;
+  gap: 20px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 60px, #000 calc(100% - 60px), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 60px, #000 calc(100% - 60px), transparent);
+}
+
+.bth-partners__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 991px) {
+  .bth-partners__viewport {
+    width: 100%;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 25px, #000 calc(100% - 25px), transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 25px, #000 calc(100% - 25px), transparent);
+  }
+}
+
+.bth-partners__row {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 20px;
+  width: max-content;
+  animation: bth-marquee 28s linear infinite;
+}
+
+.bth-partners__viewport:hover .bth-partners__row {
+  animation-play-state: paused;
+}
+
+@keyframes bth-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-100% - 20px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bth-partners__row {
+    animation: none;
+  }
+
+  .bth-partners__viewport {
+    overflow-x: auto;
+  }
+
+  .bth-partners__row[aria-hidden="true"] {
+    display: none;
+  }
+}
+
+.bth-partners__row img {
+  width: 220px;
+  height: 87px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 991px) {
+  .bth-partners__row img {
+    width: 150px;
+    height: 60px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Contact CTA
+--------------------------------------------------------------*/
+.bth-contact-cta {
+  position: relative;
+  overflow: hidden;
+  background-image: url("../img/brodotehna/background-contact.png");
+  background-size: cover;
+  background-position: center bottom;
+  padding: clamp(60px, 9vw, 120px) 0;
+}
+
+.bth-contact-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(18, 43, 61, 0.34) 100%),
+    linear-gradient(90deg, rgba(20, 24, 40, 0.58), rgba(28, 35, 70, 0) 95%),
+    rgba(0, 0, 0, 0.1);
+}
+
+.bth-contact-cta__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 43, 61, 0.16);
+  backdrop-filter: blur(5.55px);
+  -webkit-backdrop-filter: blur(5.55px);
+}
+
+.bth-contact-cta__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.bth-contact-cta__heading {
+  flex: 1 1 400px;
+  max-width: 550px;
+  margin: 0;
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: clamp(25px, 1.07vw + 21px, 41.5px);
+  letter-spacing: -0.48px;
+  color: #fff;
+}
+
+.bth-contact-cta__heading span {
+  color: #6eceee;
+}
+
+.bth-contact-cta__body {
+  flex: 1 1 500px;
+  max-width: 895px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 39px;
+}
+
+.bth-contact-cta__body p {
+  margin: 0;
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 18px;
+  color: #fff;
+}
+
+@media (max-width: 991px) {
+  .bth-contact-cta__heading {
+    line-height: 30px;
+    letter-spacing: -0.56px;
+    max-width: 340px;
+  }
+
+  .bth-contact-cta__body {
+    gap: 24px;
+  }
+
+  .bth-contact-cta__body p {
+    font-size: 12.5px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Footer
+--------------------------------------------------------------*/
+.bth-footer {
+  background: #fff;
+  padding: 100px 0 20px;
+}
+
+@media (max-width: 991px) {
+  .bth-footer {
+    padding: 60px 0 30px;
+  }
+}
+
+/* Column widths/wrapping below are handled by Bootstrap's grid
+   (.row / .col-*, loaded via bootstrap-grid.min.css) rather than
+   fixed pixel widths - percentage-based columns always fit the
+   viewport instead of needing a breakpoint to be guessed correctly
+   for every screen size. */
+/* Explicit, equal gutter on both the outer row (brand vs. link
+   columns) and the inner row (between the 4 link columns) - without
+   this they both fall back to Bootstrap's default 24px, which read
+   fine between plain text columns but too tight next to the visually
+   heavier logo/social-icon block. */
+/* One row, 5 equal columns (row-cols-2/row-cols-md-5 in the HTML) -
+   a single --bs-gutter-x here is the only gutter now, so all 5
+   columns (brand included) get the exact same spacing by
+   construction, not by coincidentally-matching separate values. */
+.bth-footer__top {
+  --bs-gutter-x: 60px;
+  padding-bottom: 45px;
+}
+
+.bth-footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 31px;
+}
+
+.bth-footer__brand img {
+  width: 170px;
+  height: auto;
+}
+
+.bth-footer__social {
+  display: flex;
+  gap: 12px;
+}
+
+.bth-footer__social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 49px;
+  height: 49px;
+  border-radius: 50%;
+  background: linear-gradient(83deg, var(--bth-primary) 24.5%, var(--bth-teal) 140%);
+}
+
+/* Between 768px (row-cols-md-5 switches to 5 columns in one row) and
+   1200px, each column can be narrower than 3 unshrinkable 49px icons
+   need (171px) - flex-shrink:0 stops them distorting into ovals, but
+   without this they'd overflow into the next column instead. Shrink
+   width and height together so they stay perfectly circular, just
+   smaller, only in this specific tight range. */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+  .bth-footer__social {
+    gap: 8px;
+  }
+
+  .bth-footer__social a {
+    width: 36px;
+    height: 36px;
+  }
+
+  .bth-footer__social img {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+.bth-footer__social img {
+  width: 19px;
+  height: 19px;
+}
+
+.bth-footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bth-footer__col h4 {
+  font-family: var(--bth-font-heading);
+  font-weight: 400;
+  font-size: 12.5px;
+  letter-spacing: 0.42px;
+  text-transform: uppercase;
+  color: var(--bth-muted);
+  margin: 0;
+}
+
+@media (max-width: 991px) {
+  .bth-footer__col h4 {
+    font-size: 11px;
+    letter-spacing: 0.36px;
+  }
+}
+
+.bth-footer__col ul {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+@media (max-width: 991px) {
+  .bth-footer__col ul {
+    gap: 16px;
+  }
+}
+
+.bth-footer__col a {
+  font-size: 12.5px;
+  color: var(--bth-dark);
+  text-decoration: none;
+}
+
+.bth-footer__col a:hover {
+  color: var(--bth-primary);
+}
+
+.bth-footer__contact-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.bth-footer__contact-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bth-icon-bg);
+  flex-shrink: 0;
+}
+
+.bth-footer__contact-icon img {
+  width: 18px;
+  height: 18px;
+}
+
+/* email-icon2.svg's own viewBox is 14x11 (vs. ~18x18 for the phone/pin
+   icons next to it) - stretched up to the same 18px box, its strokes
+   scale up proportionally too and end up visibly thicker/bolder than
+   the other two. Sized close to its native dimensions instead, so its
+   line weight actually matches instead of just its bounding box. */
+.bth-footer__contact-icon img[src*="email-icon2"] {
+  width: 15px;
+  height: auto;
+}
+
+.bth-footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--bth-border);
+  padding-top: 40px;
+  font-size: 11.5px;
+  color: var(--bth-dark);
+}
+
+@media (max-width: 991px) {
+  .bth-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    border-top: none;
+    padding-top: 0;
+  }
+}
+
+.bth-footer__legal {
+  display: flex;
+  gap: 40px;
+}
+
+@media (max-width: 991px) {
+  .bth-footer__legal {
+    gap: 24px;
+    font-size: 11px;
+    border-top: 1px solid var(--bth-border);
+    padding-top: 20px;
+    width: 100%;
+  }
+}
+
+.bth-footer__legal a {
+  color: var(--bth-dark);
+  text-decoration: none;
+}
+
+.bth-footer__legal a:hover {
+  color: var(--bth-primary);
+}
+
+/*--------------------------------------------------------------
+# Scroll-top override to match brand color
+--------------------------------------------------------------*/
+/* Base positioning/visibility (previously from main.css's .scroll-top,
+   now inlined here - see the note above main.css was dropped entirely
+   to avoid its .navbar collision). */
+.scroll-top {
+  position: fixed;
+  visibility: hidden;
+  opacity: 0;
+  right: 15px;
+  bottom: 15px;
+  z-index: 99999;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+}
+
+.scroll-top.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Same blue-to-teal gradient circle as the nav's Contact us icon
+   (.bth-btn--secondary .bth-btn__icon) - reused here for visual
+   consistency between the two. */
+.bth-page .scroll-top {
+  background: linear-gradient(83deg, var(--bth-primary) 24.5%, var(--bth-teal) 140%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.3s;
+}
+
+.bth-page .scroll-top img {
+  /* Arrow-up.svg is authored dark navy - force it white so it reads
+     against the gradient fill. */
+  filter: brightness(0) invert(1);
+}
+
+.bth-page .scroll-top:hover {
+  filter: brightness(0.92);
+}
+
+/* Preloader (previously from main.css) */
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  overflow: hidden;
+  background: #fff;
+  transition: all 0.6s ease-out;
+}
+
+#preloader::before {
+  content: "";
+  position: fixed;
+  top: calc(50% - 30px);
+  left: calc(50% - 30px);
+  border: 6px solid #fff;
+  border-color: var(--bth-primary) transparent var(--bth-primary) transparent;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: bth-preloader-spin 1.5s linear infinite;
+}
+
+@keyframes bth-preloader-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Disable AOS animation delay on mobile (previously from main.css) */
+@media screen and (max-width: 768px) {
+  [data-aos-delay] {
+    transition-delay: 0 !important;
+  }
+}
+
+/* The old hand-picked 1350px breakpoint is gone - navbar-expand-xl
+   in the markup + Bootstrap's own compiled CSS now owns the
+   toggler/full-nav switch at exactly 1200px, and the "what does
+   collapsed actually look like" styling lives with #bthNavMain
+   above, at the matching breakpoint. */
+
+/*--------------------------------------------------------------
+# Solutions page
+--------------------------------------------------------------*/
+.bth-page-header--page-bg p:not(.bth-eyebrow) {
+  color: var(--bth-nav-text);
+}
+
+/* White pill button ("Download Brochure"): dark text, gradient icon
+   circle with a white icon (no invert filter needed - Download.svg
+   is already authored white). */
+.bth-btn--white {
+  background: #fff;
+  color: var(--bth-nav-text);
+}
+
+/* Hover deliberately NOT customized here - it inherits the same
+   frosted-glass .bth-btn:hover behavior as every other button on the
+   site (the "Contact us" pattern), rather than a one-off state. */
+
+/* No icon-circle overrides here on purpose: Download.svg is authored
+   white, same as icon-arrow.svg, so it gets exactly the same
+   treatment as "Explore solutions" from the base .bth-btn__icon
+   rules - white circle + inverted (dark) icon by default, swapping
+   to the gradient circle + native white icon on hover. Same button,
+   same behavior, just a white pill instead of the gradient one. */
+
+/* Photo strip below the header */
+.bth-photo-strip {
+  width: 100%;
+  aspect-ratio: 1920 / 370;
+  overflow: hidden;
+}
+
+.bth-photo-strip img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Section 1: intro (step number + eyebrow, heading left, copy +
+   buttons right) */
+.bth-solutions-intro {
+  background: var(--bth-bg-page);
+  padding: clamp(50px, 7vw, 100px) 0;
+}
+
+.bth-solutions-intro__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.bth-solutions-intro__eyebrow span {
+  font-family: var(--bth-font-label);
+  font-weight: 500;
+  font-size: 21.5px;
+  letter-spacing: 1.92px;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, var(--bth-primary) 0%, var(--bth-teal) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.bth-solutions-intro__heading {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: clamp(29px, 0.83vw + 25.5px, 41.5px);
+  color: var(--bth-nav-text);
+  margin: 0;
+  max-width: 725px;
+}
+
+.bth-solutions-intro__copy {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 18px;
+  color: var(--bth-nav-text);
+  margin: 0 0 40px;
+}
+
+.bth-solutions-intro__copy b {
+  font-weight: 600;
+}
+
+.bth-solutions-intro__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+@media (max-width: 991px) {
+  .bth-solutions-intro .row > [class*="col-"]:first-child {
+    margin-bottom: 30px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Solutions list (sticky sidebar + scrolling cards)
+--------------------------------------------------------------*/
+.bth-solutions-list {
+  padding: clamp(60px, 8vw, 120px) 0;
+  scroll-margin-top: 90px;
+}
+
+.bth-solutions-sidebar {
+  position: sticky;
+  top: 140px;
+  padding-bottom: 40px;
+}
+
+@media (max-width: 991px) {
+  .bth-solutions-sidebar {
+    /* Stays sticky on mobile too - only the name/title text below the
+       tabs is hidden (see further down), so what's actually stuck to
+       the top here is just the tab row. */
+    top: 76px;
+    padding-bottom: 20px;
+  }
+}
+
+.bth-solutions-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+  background: #fff;
+}
+
+.bth-solutions-tabs button {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--bth-font-label);
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: #c4c4c4;
+  transition: color 0.3s;
+}
+
+.bth-solutions-tabs button.active,
+.bth-solutions-tabs button:hover {
+  color: var(--bth-primary);
+}
+
+@media (max-width: 991px) {
+  .bth-solutions-tabs {
+    margin-bottom: 0;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--bth-border);
+  }
+
+  .bth-solutions-tabs button {
+    font-size: 14.5px;
+    letter-spacing: 1.28px;
+  }
+
+  .bth-solutions-sidebar__name,
+  .bth-solutions-sidebar__title {
+    display: none;
+  }
+}
+
+.bth-solutions-sidebar__name {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: clamp(29px, 0.95vw + 25px, 43px);
+  color: var(--bth-nav-text);
+  margin: 0 0 18px;
+}
+
+.bth-solutions-sidebar__title {
+  font-family: var(--bth-font-heading);
+  font-weight: 400;
+  font-size: 21.5px;
+  color: var(--bth-nav-text);
+  margin: 0;
+}
+
+.bth-solutions-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+}
+
+@media (max-width: 991px) {
+  .bth-solutions-cards {
+    gap: 60px;
+  }
+}
+
+.bth-solutions-card {
+  scroll-margin-top: 110px;
+}
+
+.bth-solutions-card h3 {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: clamp(23.5px, 0.59vw + 21px, 32.5px);
+  letter-spacing: -0.72px;
+  color: var(--bth-nav-text);
+  margin: 0 0 18px;
+}
+
+.bth-solutions-card p {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 18px;
+  color: var(--bth-nav-text);
+  margin: 0 0 40px;
+}
+
+@media (max-width: 991px) {
+  .bth-solutions-card p {
+    font-size: 14.5px;
+    margin-bottom: 24px;
+  }
+}
+
+/* Same card treatment as the aEMS showcase below (padded light-gray
+   background, image inset with rounded corners + shadow) - these 6
+   solutions don't have a features list yet, but they still need to
+   read as a card, not a bare edge-to-edge picture. */
+.bth-solutions-card__media {
+  background: #eff1f5;
+  border-radius: 20px;
+  padding: clamp(20px, 3vw, 40px);
+}
+
+.bth-solutions-card__media img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(18, 43, 61, 0.12);
+}
+
+/* Temporary stand-in image (aEMS.png reused) until each solution has
+   its own real picture - object-fit:cover crops it to the same
+   proportions the real image will use, rather than stretching it. */
+.bth-solutions-card__media--placeholder img {
+  aspect-ratio: 948 / 486;
+  object-fit: cover;
+}
+
+/* Solution 1 only: a real "Key features" list (not baked into an
+   image) next to the actual aEMS dashboard screenshot, both inside a
+   light card background - matching Figma's layout without flattening
+   editable/accessible text into a picture. The checkmark is a plain
+   generic circle-check, not a recreation of Figma's specific icon -
+   the real one can be swapped in later (see chat). */
+.bth-solutions-card__showcase {
+  background: #eff1f5;
+  border-radius: 20px;
+  padding: clamp(20px, 3vw, 40px);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 30px;
+}
+
+.bth-solutions-card__features {
+  flex: 0 0 auto;
+  width: 230px;
+}
+
+@media (max-width: 767px) {
+  .bth-solutions-card__features {
+    width: 100%;
+  }
+}
+
+.bth-solutions-card__features h4 {
+  font-family: var(--bth-font-label);
+  font-weight: 500;
+  font-size: 14.5px;
+  letter-spacing: 1.28px;
+  text-transform: uppercase;
+  color: var(--bth-nav-text);
+  margin: 0 0 20px;
+}
+
+.bth-solutions-card__features ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bth-solutions-card__features li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--bth-font-heading);
+  font-size: 14.5px;
+  color: var(--bth-nav-text);
+}
+
+.bth-solutions-card__features li svg {
+  flex-shrink: 0;
+  color: var(--bth-nav-text);
+}
+
+.bth-solutions-card__showcase-media {
+  flex: 1 1 400px;
+  min-width: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(18, 43, 61, 0.12);
+}
+
+.bth-solutions-card__showcase-media img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/*--------------------------------------------------------------
+# Solutions CTA (photo card + text, not the full-bleed dark one)
+--------------------------------------------------------------*/
+.bth-solutions-cta {
+  background: var(--bth-bg-light);
+}
+
+/* Fixed height, not aspect-ratio - same value used for the reference
+   cards and .bth-industries__media, so this "photo half the screen"
+   pattern is one consistent height sitewide regardless of the photo's
+   own resolution or how much text sits next to it. */
+.bth-solutions-cta__media {
+  width: 100%;
+  height: clamp(460px, 38vw, 640px);
+  overflow: hidden;
+}
+
+@media (max-width: 991px) {
+  .bth-solutions-cta__media {
+    height: clamp(280px, 78vw, 400px);
+  }
+}
+
+.bth-solutions-cta__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bth-solutions-cta__content {
+  padding: 40px clamp(30px, 8vw, 140px) 40px 100px;
+  max-width: 780px;
+}
+
+@media (max-width: 991px) {
+  .bth-solutions-cta__content {
+    padding: 40px 20px;
+    max-width: none;
+  }
+}
+
+.bth-solutions-cta__content h2 {
+  font-family: var(--bth-font-heading);
+  font-size: clamp(29px, 0.83vw + 25.5px, 41.5px);
+  color: var(--bth-nav-text);
+  margin: 0 0 24px;
+  line-height: 1.2;
+}
+
+.bth-solutions-cta__content h2 .bth-fw-light {
+  display: block;
+  font-weight: 300;
+}
+
+.bth-solutions-cta__content h2 .bth-fw-semibold {
+  font-weight: 600;
+}
+
+.bth-solutions-cta__content p {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 18px;
+  color: var(--bth-nav-text);
+  margin: 0 0 40px;
+}
+
+/*--------------------------------------------------------------
+# Services page
+--------------------------------------------------------------*/
+/* Shared "eyebrow + big title" section heading, reused by the
+   Services/Technologies/Industries sections below (.bth-eyebrow
+   already exists from the page-header component - just adding the
+   title size here so both pieces are reusable independently of
+   .bth-page-header). */
+.bth-section-title {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: clamp(29px, 0.83vw + 25.5px, 41.5px);
+  color: var(--bth-nav-text);
+  margin: 0;
+}
+
+.bth-section-title .bth-fw-light {
+  font-weight: 300;
+}
+
+/* A generic brand-blue bullet, built from icon-arrow.svg via CSS
+   mask (recolors it exactly, unlike relying on filter guesses) -
+   used by both the service feature list and the industries list. */
+.bth-icon-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bth-icon-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--bth-font-heading);
+  font-weight: 400;
+  font-size: 14.5px;
+  color: var(--bth-nav-text);
+}
+
+.bth-icon-list__bullet {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  background-color: var(--bth-primary);
+  -webkit-mask-image: url("../img/brodotehna/icon-arrow.svg");
+  mask-image: url("../img/brodotehna/icon-arrow.svg");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* --- Services intro + tab switcher --- */
+.bth-services-intro {
+  padding: clamp(60px, 8vw, 100px) 0 40px;
+  background: #f0f3f5;
+}
+
+.bth-services-intro__heading {
+  margin-bottom: 40px;
+}
+
+.bth-services-tabs-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #fff;
+  border-radius: 70px;
+  padding: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.bth-services-tabs-row::-webkit-scrollbar {
+  display: none;
+}
+
+.bth-services-tabs {
+  display: flex;
+  gap: 15px;
+}
+
+.bth-services-tabs button {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  border-radius: 30px;
+  padding: 16px 25px;
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--bth-nav-text);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.3s, color 0.3s;
+}
+
+@media (max-width: 991px) {
+  .bth-services-tabs button {
+    padding: 12px 20px;
+    font-size: 13.5px;
+  }
+}
+
+.bth-services-tabs button.active {
+  background: linear-gradient(60deg, var(--bth-primary) 24.5%, var(--bth-teal) 140%);
+  color: #fff;
+}
+
+.bth-services-tabs button:hover:not(.active) {
+  color: var(--bth-primary);
+}
+
+.bth-services-nav-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bth-bg-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+  transition: background 0.3s;
+}
+
+.bth-services-nav-btn:hover {
+  background: linear-gradient(83deg, var(--bth-primary) 24.5%, var(--bth-teal) 140%);
+}
+
+.bth-services-nav-btn img {
+  width: 18px;
+  height: 18px;
+  filter: invert(1);
+  transition: filter 0.3s;
+}
+
+.bth-services-nav-btn:hover img {
+  filter: none;
+}
+
+.bth-services-nav-btn--prev img {
+  transform: rotate(180deg);
+}
+
+.bth-services-panel {
+  padding-bottom: clamp(60px, 8vw, 100px);
+  background: #f0f3f5;
+}
+
+.bth-services-panel__body {
+  background: #fff;
+  border-radius: 30px;
+  padding: clamp(30px, 4vw, 80px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(24px, 4vw, 60px);
+  align-items: center;
+}
+
+@media (max-width: 991px) {
+  .bth-services-panel__body {
+    grid-template-columns: 1fr;
+    padding: 30px;
+  }
+}
+
+.bth-services-panel h3 {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: clamp(23.5px, 0.54vw + 20px, 32.5px);
+  letter-spacing: -0.4px;
+  color: var(--bth-nav-text);
+  margin: 0 0 20px;
+}
+
+.bth-services-panel__lead {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 18px;
+  color: var(--bth-nav-text);
+  margin: 0 0 30px;
+}
+
+@media (max-width: 991px) {
+  .bth-services-panel__lead {
+    font-size: 14.5px;
+  }
+}
+
+/* Figma's per-panel CTA icon is a diagonal "up-right" arrow
+   (rotate -135deg off a down-pointing source), unlike the straight
+   right-pointing arrow every other .bth-btn on the site uses (whose
+   icon-arrow.svg is already authored pointing right). Rotate just
+   this button's icon to match. */
+.bth-services-panel__content .bth-btn__icon img {
+  transform: rotate(-45deg);
+}
+
+.bth-services-panel__lists {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 575px) {
+  .bth-services-panel__lists {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bth-services-panel__media {
+  aspect-ratio: 741 / 505;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #eff1f5;
+}
+
+.bth-services-panel__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bth-services-panel__controls {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+/* --- Technologies --- */
+.bth-technologies {
+  padding: clamp(60px, 8vw, 120px) 0;
+  background: linear-gradient(180deg, #f6f9fb 0%, #f0f3f5 100%);
+}
+
+.bth-tech-intro {
+  max-width: 468px;
+}
+
+.bth-tech-intro__title {
+  margin: 15px 0 20px;
+}
+
+.bth-tech-intro p:not(.bth-eyebrow) {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 18px;
+  color: var(--bth-nav-text);
+  margin: 0;
+}
+
+@media (max-width: 991px) {
+  .bth-tech-intro {
+    max-width: none;
+    margin-bottom: 40px;
+  }
+
+  .bth-tech-intro p:not(.bth-eyebrow) {
+    font-size: 14.5px;
+  }
+}
+
+.bth-tech-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bth-tech-row {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 35px 30px 30px;
+}
+
+@media (max-width: 575px) {
+  .bth-tech-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 24px;
+  }
+}
+
+.bth-tech-row__number {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: clamp(43px, 5.4vw, 81px);
+  line-height: 1;
+  color: #e6eef3;
+  flex-shrink: 0;
+  width: 90px;
+  text-align: center;
+}
+
+.bth-tech-row__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.bth-tech-row h4 {
+  font-family: var(--bth-font-heading);
+  font-weight: 500;
+  font-size: 21.5px;
+  color: var(--bth-nav-text);
+  margin: 0 0 8px;
+}
+
+.bth-tech-row__content > p {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 14.5px;
+  color: var(--bth-nav-text);
+  margin: 0 0 20px;
+}
+
+@media (max-width: 575px) {
+  .bth-tech-row h4 {
+    font-size: 18px;
+  }
+
+  .bth-tech-row__content > p {
+    font-size: 13.5px;
+  }
+}
+
+.bth-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.bth-tag-pill {
+  background: var(--bth-bg-light);
+  border-radius: 21px;
+  padding: 4px 15px;
+  font-family: var(--bth-font-heading);
+  font-weight: 500;
+  font-size: 12.5px;
+  color: #04aae3;
+  white-space: nowrap;
+}
+
+/* --- Industries --- */
+.bth-industries {
+  background: #fff;
+}
+
+.bth-industries__copy {
+  padding: clamp(60px, 8vw, 120px) clamp(24px, 6vw, 60px) clamp(60px, 8vw, 120px) clamp(20px, 7.3vw, 140px);
+}
+
+.bth-industries__title {
+  margin: 15px 0 20px;
+}
+
+.bth-industries__copy p:not(.bth-eyebrow) {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 18px;
+  color: var(--bth-nav-text);
+  margin: 0 0 30px;
+  max-width: 667px;
+}
+
+@media (max-width: 991px) {
+  .bth-industries__copy p:not(.bth-eyebrow) {
+    font-size: 14.5px;
+  }
+}
+
+.bth-industries__lists {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 620px;
+}
+
+@media (max-width: 575px) {
+  .bth-industries__lists {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Fixed height (not inherited from the copy column via flex stretch,
+   which is what let this run noticeably taller than .bth-solutions-cta
+   right below it) - same value used there and for the reference
+   cards, so this pattern is one consistent height sitewide. */
+.bth-industries__media {
+  position: relative;
+  height: clamp(460px, 38vw, 640px);
+  overflow: hidden;
+}
+
+@media (max-width: 991px) {
+  .bth-industries__media {
+    height: clamp(280px, 78vw, 400px);
+  }
+}
+
+.bth-industries__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.bth-industries__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(18, 43, 61, 0.2) 0%, rgba(18, 43, 61, 0.6) 100%);
+}
+
+@media (max-width: 991px) {
+  .bth-industries__media {
+    min-height: 300px;
+  }
+}
+
+/*--------------------------------------------------------------
+# Contact page
+--------------------------------------------------------------*/
+.bth-contact-info {
+  padding: 74px 0;
+  background: #fff;
+}
+
+.bth-contact-info__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 991px) {
+  .bth-contact-info__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 575px) {
+  .bth-contact-info__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bth-contact-info__card {
+  background: #f2f6fa;
+  border: 1.5px solid transparent;
+  border-radius: 20px;
+  padding: 27px 22px;
+  min-height: 203px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 36px;
+  text-decoration: none;
+  transition: border-color 0.3s, background 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+/* Only the three cards wrapped in <a> (E-mail/Contact Number/Address)
+   get the interactive hover - Working Hours stays a plain <div> with
+   no destination, so giving it a "this is clickable" hover would be
+   misleading. Matches the highlighted "Hydropower" card treatment
+   from the Figma use-cases reference: blue border + a soft gradient
+   wash replacing the flat fill, plus a slight lift. */
+a.bth-contact-info__card:hover {
+  border-color: var(--bth-primary);
+  background: linear-gradient(135deg, #ffffff 0%, #eaf6fd 100%);
+  box-shadow: 0 14px 34px rgba(7, 181, 240, 0.14);
+  transform: translateY(-3px);
+}
+
+/* Rest state uses the same blue icon files as the footer's contact
+   row (icon-phone.svg, icon-pin.svg, email-icon2.svg) so the colors
+   match exactly, not a filter approximation. Hover swaps to the
+   existing white-stroke file, same pair .bth-btn__icon effectively
+   uses. Two classes in every selector below (not one) on purpose -
+   the global ".bth-page img { display:block }" reset earlier in this
+   file is class+element specificity, which beats a single class
+   regardless of source order; two classes beats it back. */
+.bth-contact-info__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bth-icon-bg);
+  transition: background 0.3s;
+}
+
+.bth-contact-info__icon img {
+  width: 22px;
+  height: 22px;
+}
+
+.bth-contact-info__icon .bth-contact-info__icon-hover {
+  display: none;
+}
+
+a.bth-contact-info__card:hover .bth-contact-info__icon {
+  background: linear-gradient(83deg, var(--bth-primary) 24.5%, var(--bth-teal) 140%);
+}
+
+a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-rest {
+  display: none;
+}
+
+a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-hover {
+  display: block;
+}
+
+.bth-contact-info__card h3 {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: 25px;
+  color: var(--bth-nav-text);
+  margin: 0 0 13px;
+}
+
+.bth-contact-info__card p {
+  font-family: var(--bth-font-heading);
+  font-weight: 400;
+  font-size: 14.5px;
+  color: var(--bth-nav-text);
+  margin: 0;
+}
+
+/* --- Locations (gradient hero with an illustrative map) ---
+   The map markers are baked directly into Croatia-map.svg (drawn by
+   hand at fixed SVG coordinates), not positioned via CSS - so they
+   scale perfectly with the image at any resolution instead of
+   drifting like a separately-overlaid icon would. Only the text cards
+   are overlaid here, positioned as percentages of the map's own box
+   (so they scale and track the image too), using coordinates read
+   directly from the SVG source's two pin paths:
+     Zagreb pin tip  ~ (307.3, 150.3) of a 731x524 viewBox -> 42.0%, 28.7%
+     Zadar pin tip   ~ (227.6, 413.7) of a 731x524 viewBox -> 31.1%, 79.0% */
+.bth-locations {
+  position: relative;
+  /* No reserved bottom padding for card overflow anymore - see the
+     Zadar card comment below for why that's no longer needed. The
+     map is meant to sit flush against the section's bottom edge. */
+  padding: 50px 0 0;
+  background: linear-gradient(54deg, rgb(0, 144, 193) 19.8%, rgb(54, 255, 218) 221.67%);
+  color: #fff;
+  overflow: hidden;
+}
+
+.bth-locations .bth-eyebrow,
+.bth-locations .bth-section-title {
+  color: #fff;
+}
+
+.bth-locations__intro {
+  margin-top: 40px;
+}
+
+.bth-locations__copy {
+  max-width: 528px;
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 18px;
+  color: #fff;
+  margin: 18px 0 0;
+}
+
+/* Map sits at the bottom of its column (.align-self-end in the HTML,
+   on just this column - the text column stays top-aligned via
+   .align-self-start so it isn't dragged down with it) and hugs the
+   right edge - same overlay treatment (image + percentage-positioned
+   cards) at every width, just scaled down, so mobile isn't a
+   different layout, only a smaller one. */
+.bth-locations__map {
+  position: relative;
+  max-width: 380px;
+  margin: 24px 0 0 auto;
+}
+
+@media (min-width: 768px) {
+  .bth-locations__map {
+    max-width: 480px;
+  }
+}
+
+.bth-locations__map img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.bth-locations__pin {
+  position: absolute;
+}
+
+.bth-locations__pin--zagreb {
+  left: 42%;
+  top: 28.7%;
+}
+
+.bth-locations__pin--zadar {
+  left: 31.1%;
+  top: 79%;
+}
+
+.bth-locations__card {
+  position: absolute;
+  background: rgba(30, 80, 110, 0.55);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border-radius: 12px;
+  padding: 8px 10px;
+  width: min(178px, 50vw);
+  box-shadow: -10px -10px 30px rgba(255, 255, 255, 0.15), 10px 10px 34px rgba(12, 23, 42, 0.08);
+}
+
+/* Zagreb sits near the top of the map, so its card opens down-right -
+   plenty of room. Zadar sits near the very bottom (top: 79%), so its
+   card opens up-LEFT instead of down-right: on the left like Figma
+   shows, and growing upward (bottom-anchored, not top-anchored) so it
+   stays within the map's own height instead of hanging off the
+   bottom edge - which is what forced the old extra section padding. */
+.bth-locations__pin--zagreb .bth-locations__card {
+  top: -8px;
+  left: 16px;
+}
+
+.bth-locations__pin--zadar .bth-locations__card {
+  bottom: -8px;
+  right: 16px;
+}
+
+/* Zadar's pin sits only ~31% in from the left, so at narrow widths
+   there isn't enough room for its card to open leftward without
+   running off the edge of the screen - open it to the right like
+   Zagreb instead below 768px (still bottom-anchored so it doesn't
+   hang off the map's lower edge). */
+@media (max-width: 767px) {
+  .bth-locations__pin--zadar .bth-locations__card {
+    right: auto;
+    left: 16px;
+  }
+}
+
+/* Below ~480px the map itself is small enough that Zagreb's long
+   description (the other card's text is one short line, so it never
+   has this problem) needs more width than "hug the pin" leaves room
+   for - too narrow a card forces so many wrapped lines that it grows
+   tall enough to run into Zadar's card below it. Widening it and
+   pulling its left edge out past the pin (rather than growing purely
+   rightward, which would run off the section's edge) keeps the line
+   count - and so the card's height - low enough to stay clear. */
+@media (max-width: 480px) {
+  .bth-locations__pin--zagreb .bth-locations__card {
+    width: min(280px, 82vw);
+    left: -90px;
+  }
+}
+
+@media (min-width: 768px) {
+  .bth-locations__card {
+    border-radius: 16px;
+    padding: 18px 20px;
+    width: 280px;
+  }
+
+  .bth-locations__pin--zagreb .bth-locations__card {
+    left: 20px;
+  }
+
+  .bth-locations__pin--zadar .bth-locations__card {
+    right: 20px;
+  }
+}
+
+.bth-locations__card h4 {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: 13px;
+  color: #fff;
+  margin: 0 0 2px;
+}
+
+.bth-locations__card p {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 10.5px;
+  color: #fff;
+  margin: 0;
+  line-height: 1.3;
+}
+
+@media (min-width: 768px) {
+  .bth-locations__card h4 {
+    font-size: 18px;
+    margin: 0 0 6px;
+  }
+
+  .bth-locations__card p {
+    font-size: 14.5px;
+  }
+}
+
+/* --- Contact form --- */
+.bth-contact-form {
+  padding: 80px 0 90px;
+  background: #fff;
+}
+
+.bth-contact-form__card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 30px 70px rgba(18, 43, 61, 0.1);
+  overflow: hidden;
+}
+
+@media (max-width: 991px) {
+  .bth-contact-form__card {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bth-contact-form__intro {
+  padding: 65px 54px;
+  border-right: 1px solid var(--bth-border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media (max-width: 991px) {
+  .bth-contact-form__intro {
+    border-right: 0;
+    border-bottom: 1px solid var(--bth-border);
+    padding: 40px 30px;
+  }
+}
+
+.bth-contact-form__intro h2 {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: clamp(30px, 2.3vw + 20px, 45px);
+  line-height: 1.2;
+  color: var(--bth-nav-text);
+  margin: 0 0 18px;
+}
+
+.bth-contact-form__intro p {
+  font-family: var(--bth-font-heading);
+  font-weight: 400;
+  font-size: 14.5px;
+  color: var(--bth-nav-text);
+  margin: 0;
+  max-width: 490px;
+}
+
+.bth-contact-form__fields {
+  padding: 65px 54px;
+}
+
+@media (max-width: 991px) {
+  .bth-contact-form__fields {
+    padding: 40px 30px;
+  }
+}
+
+.bth-contact-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 575px) {
+  .bth-contact-form__row {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+.bth-contact-form__field label {
+  display: block;
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: 14.5px;
+  color: #222934;
+  margin-bottom: 9px;
+}
+
+.bth-contact-form__input {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: #f2f6fa;
+  border-radius: 27px;
+  padding: 10px 18px;
+  width: 100%;
+}
+
+.bth-contact-form__input img {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.bth-contact-form__input input,
+.bth-contact-form__input textarea {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  min-width: 0;
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 14.5px;
+  color: var(--bth-nav-text);
+}
+
+.bth-contact-form__input input::placeholder,
+.bth-contact-form__input textarea::placeholder {
+  color: #878798;
+}
+
+.bth-contact-form__input--textarea {
+  border-radius: 16px;
+  align-items: flex-start;
+  padding-top: 12px;
+}
+
+.bth-contact-form__input--textarea img {
+  margin-top: 2px;
+}
+
+.bth-contact-form__input--textarea textarea {
+  resize: none;
+  height: 78px;
+}
+
+.bth-contact-form__captcha-label {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 9px;
+  font-family: var(--bth-font-heading);
+  font-size: 14.5px;
+  color: #222934;
+}
+
+.bth-contact-form__captcha-label strong {
+  font-weight: 600;
+}
+
+.bth-contact-form__captcha-code {
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: var(--bth-primary);
+}
+
+.bth-contact-form__consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+/* Bootstrap's .form-check-input (not accent-color) on purpose - the
+   native accent-color checkmark glyph's color is up to the browser/OS
+   and isn't reliably white, which read as an ugly black tick on some
+   setups. Bootstrap draws its own fixed white checkmark as an SVG
+   background-image on :checked, so it's always white regardless of
+   platform - we just override its size/shape/color to match. */
+.bth-contact-form__consent .form-check-input {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  border: 1px solid var(--bth-border);
+  border-radius: 6px;
+  background-color: #f2f6fa;
+}
+
+.bth-contact-form__consent .form-check-input:checked {
+  background-color: var(--bth-primary);
+  border-color: var(--bth-primary);
+}
+
+.bth-contact-form__consent .form-check-input:focus {
+  border-color: var(--bth-primary);
+  box-shadow: 0 0 0 3px rgba(7, 181, 240, 0.2);
+}
+
+.bth-contact-form__consent label {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 14.5px;
+  color: #222934;
+  line-height: 1.4;
+}
