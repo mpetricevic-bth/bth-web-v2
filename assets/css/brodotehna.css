@@ -248,6 +248,17 @@ html {
   color: var(--bth-nav-text);
 }
 
+/* "Send inquiry" sits on the same light page background as its panel
+   (not a photo/dark section like other .bth-btn contexts), so the rest
+   state swaps the default gradient fill for the page's own bg color -
+   the gradient text would otherwise be unreadable, so the dark nav
+   text color comes along with it. Hover is untouched (still the
+   .bth-services-panel .bth-btn:hover rule above). */
+.bth-services-panel .bth-btn {
+  background: var(--bth-bg-page);
+  color: var(--bth-nav-text);
+}
+
 .bth-btn__icon {
   display: flex;
   align-items: center;
