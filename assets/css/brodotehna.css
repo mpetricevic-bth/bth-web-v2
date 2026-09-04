@@ -93,13 +93,29 @@ html {
   background: #fff;
   box-shadow: 0 0 15px rgba(0, 89, 158, 0.15);
   padding: 0;
-  /* Mitigates a known mobile browser bug where sticky elements can
-     render partially clipped mid-scroll (logo/toggler sliced off,
-     as if the bar got stuck halfway through its own height) -
-     promoting the navbar to its own compositor layer keeps it painted
-     as one unit instead of being repainted piecemeal during scroll. */
-  transform: translateZ(0);
-  will-change: transform;
+}
+
+/* position:sticky on mobile Chrome/Android renders the navbar visibly
+   clipped (logo/toggler sliced off, as if it got stuck partway through
+   its own height) while the browser's own address bar collapses or
+   expands during scroll - a known Chromium bug where a sticky
+   element's offset gets recalculated against a stale intermediate
+   viewport size mid-animation. position:fixed doesn't hit the same
+   bug (fixed elements track the visual viewport more reliably through
+   that transition), so mobile swaps to it here - #main picks up
+   matching top padding below since a fixed element is taken out of
+   normal flow and would otherwise sit under the page content. */
+@media (max-width: 1199.98px) {
+  .bth-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  #main {
+    padding-top: 74px;
+  }
 }
 
 .bth-navbar__inner {
@@ -358,7 +374,7 @@ html {
 
   #bthNavMain {
     position: fixed;
-    top: 66px;
+    top: 74px;
     left: 0;
     right: 0;
     /* height (not inset's bottom:0) on purpose: mobile browsers size a
@@ -370,8 +386,8 @@ html {
        past the visible fold on pages like Solutions, while shorter
        pages (where you're still near the top, address bar showing)
        looked fine. dvh tracks the real visible viewport instead. */
-    height: calc(100vh - 66px);
-    height: calc(100dvh - 66px);
+    height: calc(100vh - 74px);
+    height: calc(100dvh - 74px);
     z-index: 997;
     background: #fff;
     padding: 40px 25px;
@@ -1086,6 +1102,16 @@ html {
   display: flex;
   align-items: center;
   gap: 5px;
+}
+
+/* An email address has no natural break point (no spaces/hyphens), so
+   as a flex item with the default min-width:auto, it forced the whole
+   row wider than its column and ran off the edge instead of wrapping.
+   min-width:0 lets it actually shrink to the column's width, and
+   break-word lets it wrap mid-string once it does. */
+.bth-footer__contact-row a {
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 .bth-footer__contact-icon {
