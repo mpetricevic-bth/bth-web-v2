@@ -38,6 +38,7 @@
 
 html {
   margin: 0;
+  overflow-x: hidden;
 }
 
 .bth-page {
@@ -93,6 +94,13 @@ html {
   background: #fff;
   box-shadow: 0 0 15px rgba(0, 89, 158, 0.15);
   padding: 0;
+  /* Mitigates a known mobile browser bug where sticky elements can
+     render partially clipped mid-scroll (logo/toggler sliced off,
+     as if the bar got stuck halfway through its own height) -
+     promoting the navbar to its own compositor layer keeps it painted
+     as one unit instead of being repainted piecemeal during scroll. */
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .bth-navbar__inner {
@@ -385,16 +393,32 @@ html {
     overflow-y: auto;
   }
 
-  #bthNavMain.show {
+  /* Driven by .bth-nav-open (toggled in brodotehna.js on Bootstrap's
+     show.bs.collapse/hide.bs.collapse events), not .show. Bootstrap's
+     own Collapse plugin only adds .show once its internal .collapsing
+     phase finishes, so gating the slide/fade on .show meant nothing
+     visibly moved until that whole (separately-timed) phase was over -
+     a dead pause up front that read as a jerky, delayed open. Those
+     events fire synchronously the instant open/close is triggered, so
+     this transition now starts immediately instead of waiting on
+     Bootstrap's own timing. */
+  #bthNavMain.bth-nav-open {
     transform: translateY(0);
     opacity: 1;
     visibility: visible;
     transition: transform 0.35s ease, opacity 0.35s ease, visibility 0s;
   }
 
+  /* Only overrides height - .bth-nav-open above is the only visual
+     transition, and .collapsing is present at the same time as
+     .bth-nav-open for the whole opening phase, so this must NOT also
+     declare `transition`: with equal (ID + one class) specificity,
+     whichever of these two rules comes later in the file would win
+     the property outright, and a stray `transition: none` here
+     silently cancelled .bth-nav-open's transition entirely - the
+     panel jumped open in under 100ms instead of sliding over 350ms. */
   #bthNavMain.collapsing {
     height: auto !important;
-    transition: transform 0.35s ease, opacity 0.35s ease;
   }
 
   .bth-navbar__nav {
@@ -1338,12 +1362,28 @@ html {
 }
 
 @media (max-width: 991px) {
+  /* On desktop .bth-solutions-sidebar's own sticky (above) has room to
+     travel because Bootstrap's flex row stretches .col-lg-4 to match
+     .col-lg-8's height (default align-items:stretch for side-by-side
+     flex items). Below 992px the columns wrap onto separate lines
+     instead of sitting side by side, so that stretch no longer
+     applies - .col-lg-4 collapses back to exactly the sidebar's own
+     height, leaving the sidebar's sticky nothing to travel within (its
+     containing block is that same-height parent), so it just scrolls
+     off with the page instead of staying pinned. Moving position:sticky
+     up to .col-lg-4 itself fixes this: THAT element's containing block
+     is .row, which - stacked or not - is still as tall as the sidebar
+     and the (much taller) cards column combined, giving it the travel
+     room the nested sidebar never had. */
   .bth-solutions-sidebar {
-    /* Stays sticky on mobile too - only the name/title text below the
-       tabs is hidden (see further down), so what's actually stuck to
-       the top here is just the tab row. */
-    top: 76px;
+    position: static;
+    top: auto;
     padding-bottom: 20px;
+  }
+
+  .bth-solutions-list .col-lg-4 {
+    position: sticky;
+    top: 76px;
   }
 }
 
@@ -2236,7 +2276,7 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   -webkit-backdrop-filter: blur(30px);
   border-radius: 12px;
   padding: 8px 10px;
-  width: min(178px, 50vw);
+  width: min(170px, 46vw);
   box-shadow: -10px -10px 30px rgba(255, 255, 255, 0.15), 10px 10px 34px rgba(12, 23, 42, 0.08);
 }
 
@@ -2268,27 +2308,11 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   }
 }
 
-/* Below ~480px the map itself is small enough that Zagreb's long
-   description (the other card's text is one short line, so it never
-   has this problem) needs more width than "hug the pin" leaves room
-   for - too narrow a card forces so many wrapped lines that it grows
-   tall enough to run into Zadar's card below it. Widening it and
-   pulling its left edge out past the pin (rather than growing purely
-   rightward, which would run off the section's edge) keeps the line
-   count - and so the card's height - low enough to stay clear. */
-@media (max-width: 480px) {
-  .bth-locations__pin--zagreb .bth-locations__card {
-    width: min(280px, 82vw);
-    left: -90px;
-    top: -45px;
-  }
-}
-
 @media (min-width: 768px) {
   .bth-locations__card {
     border-radius: 16px;
     padding: 18px 20px;
-    width: 280px;
+    width: 220px;
   }
 
   .bth-locations__pin--zagreb .bth-locations__card {

@@ -27,6 +27,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     });
+
+    /**
+     * The slide/fade transition is driven by .bth-nav-open, not
+     * Bootstrap's own .show - Bootstrap only adds .show once its
+     * internal .collapsing phase finishes, so an animation gated on
+     * .show doesn't start until that (separately-timed) phase is over.
+     * show.bs.collapse/hide.bs.collapse fire synchronously the instant
+     * open/close begins, so toggling the class here starts the visual
+     * transition immediately instead of waiting on Bootstrap's timing.
+     */
+    navCollapseEl.addEventListener('show.bs.collapse', () => {
+      navCollapseEl.classList.add('bth-nav-open');
+    });
+    navCollapseEl.addEventListener('hide.bs.collapse', () => {
+      navCollapseEl.classList.remove('bth-nav-open');
+    });
   }
 
   /**
