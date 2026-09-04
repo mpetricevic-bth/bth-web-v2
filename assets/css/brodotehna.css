@@ -1758,6 +1758,21 @@ html {
   display: none;
 }
 
+/* Figma's mobile spec has the tabs sitting directly on the section's
+   own light-gray background with a plain divider below, not housed in
+   their own white pill - that extra nested-pill-on-pill chrome is what
+   read as cramped/heavy at phone widths. Dropped just the container's
+   own background/shape here; the tab buttons' own styling (the active
+   gradient pill, plain text for the rest) is unchanged. */
+@media (max-width: 991px) {
+  .bth-services-tabs-row {
+    background: transparent;
+    border-radius: 0;
+    padding: 0 0 20px;
+    border-bottom: 1px solid var(--bth-border);
+  }
+}
+
 .bth-services-tabs {
   display: flex;
   gap: 15px;
@@ -1912,6 +1927,38 @@ html {
   display: flex;
   gap: 20px;
   margin-bottom: 30px;
+}
+
+/* On desktop .content and .media sit side by side, so nesting the
+   prev/next controls at the top of .content (see the HTML) puts them
+   above the heading but roughly level with the image next to it - by
+   design. Below 992px .body collapses to a single column, so that
+   same nesting put the controls above the heading AND above the image
+   (first thing in the whole stack), disconnected from the image they
+   actually control. display:contents dissolves .content's own box so
+   its children (heading, lead, lists, button) become siblings of
+   .media for ordering purposes, without changing the HTML or any
+   selector that targets .content's descendants - letting .media go
+   before .controls in the stacked order instead. */
+@media (max-width: 991px) {
+  .bth-services-panel__body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bth-services-panel__content {
+    display: contents;
+  }
+
+  .bth-services-panel__media {
+    order: 1;
+  }
+
+  .bth-services-panel__controls {
+    order: 2;
+    margin-top: 30px;
+    margin-bottom: 0;
+  }
 }
 
 /* --- Technologies --- */
