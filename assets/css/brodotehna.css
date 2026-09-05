@@ -400,7 +400,6 @@ html {
        and full-width. #bthNavMain (an ID) beats .navbar-collapse
        (a class) regardless of load order, so this is enough. */
     align-items: stretch;
-    justify-content: space-between;
     transform: translateY(-100%);
     opacity: 0;
     visibility: hidden;
@@ -453,6 +452,15 @@ html {
   .bth-navbar .bth-btn {
     width: fit-content;
     margin-left: 0;
+    /* Pins the button to the bottom of #bthNavMain by itself (an auto
+       margin on the item), instead of the parent's justify-content:
+       space-between having to jointly recompute both children's
+       position against the panel's full height on every reflow -
+       that recalculation, landing right as .collapsing forces
+       height:auto and the transform/opacity slide-in starts, is what
+       produced the jerk right as the mobile menu opened. Same end
+       position, computed per-item instead of by the parent. */
+    margin-top: auto;
   }
 }
 
