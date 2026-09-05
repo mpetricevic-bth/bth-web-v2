@@ -423,16 +423,28 @@ html {
     transition: transform 0.35s ease, opacity 0.35s ease, visibility 0s;
   }
 
-  /* Only overrides height - .bth-nav-open above is the only visual
-     transition, and .collapsing is present at the same time as
-     .bth-nav-open for the whole opening phase, so this must NOT also
-     declare `transition`: with equal (ID + one class) specificity,
-     whichever of these two rules comes later in the file would win
-     the property outright, and a stray `transition: none` here
-     silently cancelled .bth-nav-open's transition entirely - the
-     panel jumped open in under 100ms instead of sliding over 350ms. */
+  /* Overrides height only to cancel Bootstrap's own inline height
+     animation (still set directly on the element by its Collapse
+     plugin) - .bth-nav-open above is the only visual transition, and
+     .collapsing is present at the same time as .bth-nav-open for the
+     whole opening phase, so this must NOT also declare `transition`:
+     with equal (ID + one class) specificity, whichever of these two
+     rules comes later in the file would win the property outright,
+     and a stray `transition: none` here silently cancelled
+     .bth-nav-open's transition entirely - the panel jumped open in
+     under 100ms instead of sliding over 350ms.
+     The value must match the base rule's height exactly (not `auto`,
+     which is shorter, content-sized) - .collapsing is removed right
+     as Bootstrap's own internal timer finishes, which usually lands
+     close to when the slide/fade transition above also looks done;
+     if the height were different here, the panel would visibly resize
+     at that exact moment (and the bottom-pinned Contact us button,
+     using margin-top:auto, would jump again right after the slide-in
+     already looked finished) as it fell back to the base rule's value
+     the instant this override disappeared. */
   #bthNavMain.collapsing {
-    height: auto !important;
+    height: calc(100vh - 74px) !important;
+    height: calc(100dvh - 74px) !important;
   }
 
   .bth-navbar__nav {
