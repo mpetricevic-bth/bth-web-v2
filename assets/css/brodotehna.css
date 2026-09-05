@@ -120,13 +120,18 @@ html {
 
 .bth-navbar__inner {
   display: flex;
-  align-items: center;
+  /* stretch (not center) so #bthNavMain - and, through it, the nav
+     links - can be made exactly as tall as the navbar itself; each
+     stretched child re-centers its own content internally below. */
+  align-items: stretch;
   width: 100%;
-  min-height: 82px;
-  padding: 12px clamp(24px, 2.7vw, 40px);
+  min-height: 70px;
+  padding: 0 clamp(24px, 2.7vw, 40px);
 }
 
 .bth-navbar__brand {
+  display: flex;
+  align-items: center;
   flex-shrink: 0;
   margin: 0 clamp(20px, 1.9vw, 41px) 0 0;
   padding: 0;
@@ -147,22 +152,48 @@ html {
 @media (min-width: 1200px) {
   #bthNavMain.navbar-collapse {
     display: flex;
-    align-items: center;
+    /* stretch so .bth-navbar__nav (and, through it, each nav-link) can
+       reach the navbar's full height - see .bth-navbar__inner. The
+       Contact us button has its own fixed height, so it's unaffected
+       by the stretch and just needs recentering (below). */
+    align-items: stretch;
     flex: 1;
   }
 }
 
 .bth-navbar__nav {
   display: flex;
-  align-items: center;
+  /* stretch, not center - a nav-link only as tall as its own text
+     puts its border-bottom (the active-tab underline) wherever that
+     text ends, with empty navbar height left below it. Stretched to
+     the full navbar height, the border instead lands flush with the
+     navbar's own bottom edge; the link's own align-items:center (see
+     .bth-navbar .nav-link) still keeps its text vertically centered
+     within that taller box. */
+  align-items: stretch;
   gap: clamp(20px, 1.9vw, 28px);
   margin: 0;
+}
+
+/* .bth-navbar__nav's align-items:stretch (above) only stretches its
+   OWN direct children - the <li class="nav-item"> elements, not the
+   <a class="nav-link"> nested one level inside each - and a plain,
+   non-flex <li> doesn't pass that stretch down any further on its
+   own. Without this, the stretched <li> ends up taller than the
+   nav-link's own natural content height, and the nav-link (a normal,
+   non-stretched block inside it) just sits at the LI's top edge -
+   reading as every link having shifted upward, floating above where
+   the underline/bottom border actually lands. */
+@media (min-width: 1200px) {
+  .bth-navbar .nav-item {
+    display: flex;
+    align-items: stretch;
+  }
 }
 
 .bth-navbar .nav-link {
   display: flex;
   align-items: center;
-  padding: 0 clamp(10px, 1.1vw, 16px) 8px;
   font-family: var(--bth-font-heading);
   font-weight: 500;
   font-size: 12.5px;
@@ -187,6 +218,21 @@ html {
   flex-shrink: 0;
   white-space: nowrap;
   margin-left: auto;
+}
+
+/* #bthNavMain.navbar-collapse switched to align-items:stretch (see
+   above) for the nav-link underline fix - the button has its own
+   fixed height so it won't actually stretch, but needs this to stay
+   vertically centered instead of falling back to the cross-start
+   (top) edge. Desktop-only: on mobile #bthNavMain is a COLUMN flex
+   container instead, where align-self instead controls HORIZONTAL
+   position - this rule applying there too (it's not scoped by
+   default) is what pulled the Contact us button into the center
+   instead of staying left-aligned with the nav links above it. */
+@media (min-width: 1200px) {
+  .bth-navbar .bth-btn {
+    align-self: center;
+  }
 }
 
 .bth-navbar__toggler {
@@ -494,7 +540,7 @@ html {
    a floor that still comfortably fits a two-line heading. */
 .bth-page-header {
   background: var(--bth-bg-page);
-  padding: 40px 0;
+  padding: 40px 0 24px;
   min-height: clamp(240px, calc(100vh - 82px - 19.2708vw), 420px);
   display: flex;
   align-items: center;
@@ -502,7 +548,7 @@ html {
 
 @media (max-width: 991px) {
   .bth-page-header {
-    padding: 32px 0;
+    padding: 32px 0 20px;
     min-height: 260px;
   }
 }
@@ -531,14 +577,14 @@ html {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  margin: 0 0 15px;
+  margin: 0 0 8px;
 }
 
 @media (max-width: 991px) {
   .bth-eyebrow {
     font-size: 12.5px;
     letter-spacing: 1.12px;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     background: linear-gradient(61deg, var(--bth-primary) 24.5%, var(--bth-teal) 140%);
     -webkit-background-clip: text;
     background-clip: text;
@@ -1079,6 +1125,21 @@ html {
   gap: 20px;
 }
 
+/* The Industries column is hidden on mobile via Bootstrap's own
+   d-none/d-md-block utilities (see the HTML) - d-md-block is
+   `display:block !important`, which at >=768px silently wins over
+   this class's own display:flex regardless of source order, since
+   only a matching !important can out-rank another !important. Without
+   flex, the gap between the <h4> and <ul> (a flex-only property)
+   collapses to 0 - just for this one column, the heading and its
+   first link end up flush against each other while every other
+   footer column keeps its normal spacing. */
+@media (min-width: 768px) {
+  .bth-footer__col.d-md-block {
+    display: flex !important;
+  }
+}
+
 .bth-footer__col h4 {
   font-family: var(--bth-font-heading);
   font-weight: 400;
@@ -1248,36 +1309,101 @@ html {
   filter: brightness(0.92);
 }
 
-/* Preloader (previously from main.css) */
+/* Preloader - the "b" from the logo fills bottom-to-top on a loop
+   (a clipPath'd rect scaling up inside the letter's own outline),
+   with a soft highlight sweeping through behind it. */
 #preloader {
   position: fixed;
   inset: 0;
   z-index: 999999;
   overflow: hidden;
   background: #fff;
+  display: grid;
+  place-items: center;
   transition: all 0.6s ease-out;
 }
 
-#preloader::before {
-  content: "";
-  position: fixed;
-  top: calc(50% - 30px);
-  left: calc(50% - 30px);
-  border: 6px solid #fff;
-  border-color: var(--bth-primary) transparent var(--bth-primary) transparent;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: bth-preloader-spin 1.5s linear infinite;
+#preloader .loader-wrap {
+  position: relative;
+  width: 210px;
+  height: 210px;
+  display: grid;
+  place-items: center;
 }
 
-@keyframes bth-preloader-spin {
+#preloader .loader-logo {
+  position: relative;
+  z-index: 2;
+  width: 92px;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 0 10px rgba(7, 181, 240, 0.18));
+}
+
+#preloader .loader-logo-base {
+  fill: rgba(7, 181, 240, 0.1);
+  stroke: rgba(7, 181, 240, 0.32);
+  stroke-width: 0.18;
+}
+
+#preloader .loader-logo-fill {
+  fill: var(--bth-primary);
+  filter: url(#bthPreloaderGlow);
+}
+
+#preloader .loader-fill-rect {
+  animation: bth-preloader-fill 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  transform-origin: bottom;
+}
+
+#preloader .loader-shine {
+  opacity: 0.65;
+  animation: bth-preloader-shine 1.8s ease-in-out infinite;
+}
+
+@keyframes bth-preloader-fill {
   0% {
-    transform: rotate(0deg);
+    transform: scaleY(0);
+    opacity: 0.65;
+  }
+
+  55% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+
+  78% {
+    transform: scaleY(1);
+    opacity: 1;
   }
 
   100% {
-    transform: rotate(360deg);
+    transform: scaleY(1);
+    opacity: 0;
+  }
+}
+
+@keyframes bth-preloader-shine {
+  0%, 18% {
+    transform: translateY(38px);
+    opacity: 0;
+  }
+
+  45% {
+    opacity: 0.75;
+  }
+
+  70%, 100% {
+    transform: translateY(-38px);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #preloader .loader-fill-rect,
+  #preloader .loader-shine {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
   }
 }
 
@@ -1327,6 +1453,16 @@ html {
   overflow: hidden;
 }
 
+/* The desktop ratio (1920/370) renders as a barely-there sliver on a
+   narrow phone screen (~75px tall at 390px wide) - a taller ratio
+   here just for mobile keeps the strip actually readable as a photo
+   instead of a thin line. */
+@media (max-width: 767px) {
+  .bth-photo-strip {
+    aspect-ratio: 16 / 9;
+  }
+}
+
 .bth-photo-strip img {
   width: 100%;
   height: 100%;
@@ -1344,7 +1480,7 @@ html {
   display: flex;
   align-items: center;
   gap: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 15px;
 }
 
 .bth-solutions-intro__eyebrow span {
@@ -1357,6 +1493,18 @@ html {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+@media (max-width: 991px) {
+  .bth-solutions-intro__eyebrow {
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .bth-solutions-intro__eyebrow span {
+    font-size: 12.5px;
+    letter-spacing: 1.12px;
+  }
 }
 
 .bth-solutions-intro__heading {
@@ -1428,7 +1576,11 @@ html {
 
   .bth-solutions-list .col-lg-4 {
     position: sticky;
-    top: 76px;
+    /* Matches the fixed navbar's own height exactly (see #main's
+       padding-top) - even a couple px more left a sliver of gap
+       between the two sticky elements where scrolled content peeked
+       through. */
+    top: 74px;
   }
 }
 
@@ -1642,6 +1794,15 @@ html {
   background: var(--bth-bg-light);
 }
 
+/* On Contact, this CTA sits directly above .bth-partners, which uses
+   this exact same light-gray - with no visual boundary between them,
+   the two sections just blend into one another. White only for this
+   specific instance since the shared background otherwise reads fine
+   everywhere else this component is used (Solutions, Services). */
+.bth-solutions-cta--white {
+  background: #fff;
+}
+
 /* Fixed height, not aspect-ratio - same value used for the reference
    cards and .bth-industries__media, so this "photo half the screen"
    pattern is one consistent height sitewide regardless of the photo's
@@ -1740,27 +1901,36 @@ html {
   color: var(--bth-nav-text);
 }
 
+/* A real <img> (icon-arrow-blue.svg, a pre-colored copy of
+   icon-arrow.svg), not a CSS mask-image - mask-image on this site has
+   a track record of not reliably rendering in every real browser even
+   when the code is correct (see the Contact page's info-card icons,
+   which hit the exact same thing and were switched to real image
+   files for the same reason). */
 .bth-icon-list__bullet {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  background-color: var(--bth-primary);
-  -webkit-mask-image: url("../img/brodotehna/icon-arrow.svg");
-  mask-image: url("../img/brodotehna/icon-arrow.svg");
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
 }
 
 /* --- Services intro + tab switcher --- */
 .bth-services-intro {
-  padding: clamp(60px, 8vw, 100px) 0 40px;
+  padding: clamp(60px, 8vw, 100px) 0 24px;
   background: #f0f3f5;
 }
 
 .bth-services-intro__heading {
-  margin-bottom: 40px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 991px) {
+  .bth-services-intro {
+    padding-bottom: 16px;
+  }
+
+  .bth-services-intro__heading {
+    margin-bottom: 16px;
+  }
 }
 
 .bth-services-tabs-row {
@@ -1772,6 +1942,14 @@ html {
   padding: 12px;
   overflow-x: auto;
   scrollbar-width: none;
+  /* Already genuinely scrollable (the hidden native scrollbar is the
+     only thing missing) - without any affordance a cut-off last tab
+     just looks clipped/broken rather than "scroll for more", so fade
+     the trailing edge the same way .bth-partners__viewport already
+     does for its marquee. Fades both edges since the row can overflow
+     on either side once scrolled partway. */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 40px), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 40px), transparent);
 }
 
 .bth-services-tabs-row::-webkit-scrollbar {
@@ -1964,10 +2142,24 @@ html {
   .bth-services-panel__body {
     display: flex;
     flex-direction: column;
+    /* Explicit override - the base (desktop grid) rule's
+       align-items:center never gets reset by either mobile media
+       block, so left unset here it silently carries over into this
+       flex-column context too, where align-items instead controls
+       horizontal position - centering the heading, list and button
+       instead of left-aligning them like normal block content. */
+    align-items: stretch;
   }
 
   .bth-services-panel__content {
     display: contents;
+  }
+
+  /* Stretched full-width like everything else in the column above is
+     correct for text/media, but would turn this pill button into a
+     full-width bar - kept at its own natural (fit-content) size. */
+  .bth-services-panel__content .bth-btn {
+    align-self: flex-start;
   }
 
   .bth-services-panel__media {
@@ -2138,14 +2330,30 @@ html {
   }
 }
 
-/* Fixed height (not inherited from the copy column via flex stretch,
-   which is what let this run noticeably taller than .bth-solutions-cta
-   right below it) - same value used there and for the reference
-   cards, so this pattern is one consistent height sitewide. */
+/* height:100% of the row (stretched by default, since the row no
+   longer forces align-items-center - see the HTML) rather than a
+   fixed clamp: the copy column next to it carries an eyebrow, heading,
+   paragraph AND an 8-item list, easily taller than any fixed value
+   reasonable for .bth-solutions-cta/reference-card media (shorter
+   copy) - centering a fixed-height image inside a row that tall left
+   visible empty padding above and below it. min-height keeps it from
+   going too short if the copy is ever brief. */
 .bth-industries__media {
   position: relative;
-  height: clamp(460px, 38vw, 640px);
+  height: 100%;
+  min-height: 460px;
   overflow: hidden;
+}
+
+/* Swaps to image-first on mobile: CTA (the section right after this
+   one) also stacks image-then-text there, so left as-is (text-first)
+   Industries' own image would land directly above CTA's image with no
+   text between them - two photos back to back at the section
+   boundary, reading like a stray duplicate. */
+@media (max-width: 991px) {
+  .bth-industries .row > .col-lg-6:last-child {
+    order: -1;
+  }
 }
 
 @media (max-width: 991px) {
@@ -2191,12 +2399,7 @@ html {
 @media (max-width: 991px) {
   .bth-contact-info__grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 575px) {
-  .bth-contact-info__grid {
-    grid-template-columns: 1fr;
+    gap: 12px;
   }
 }
 
@@ -2212,6 +2415,18 @@ html {
   gap: 36px;
   text-decoration: none;
   transition: border-color 0.3s, background 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+/* Cards keep the same 2-up grid all the way down to phone widths (not
+   a single full-width column) - shrunk to fit instead of just made
+   wider, since the design's own mobile reference keeps the 2x2 grid. */
+@media (max-width: 991px) {
+  .bth-contact-info__card {
+    padding: 16px 14px;
+    min-height: 0;
+    gap: 18px;
+    border-radius: 14px;
+  }
 }
 
 /* Only the three cards wrapped in <a> (E-mail/Contact Number/Address)
@@ -2282,6 +2497,27 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   font-size: 14.5px;
   color: var(--bth-nav-text);
   margin: 0;
+}
+
+@media (max-width: 991px) {
+  .bth-contact-info__icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .bth-contact-info__icon img {
+    width: 18px;
+    height: 18px;
+  }
+
+  .bth-contact-info__card h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .bth-contact-info__card p {
+    font-size: 12.5px;
+  }
 }
 
 /* --- Locations (gradient hero with an illustrative map) ---
@@ -2462,6 +2698,14 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
 @media (max-width: 991px) {
   .bth-contact-form__card {
     grid-template-columns: 1fr;
+    /* .bth-contact-form's own background is already white, so the
+       card's box-shadow/radius only ever read as a "boxed" card on
+       desktop, where it sits on the page's light-gray background;
+       stacked on mobile it doesn't need to visually separate itself
+       from anything and the shadow/corners just look like an
+       unnecessary floating box. */
+    border-radius: 0;
+    box-shadow: none;
   }
 }
 
@@ -2470,7 +2714,7 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   border-right: 1px solid var(--bth-border);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 @media (max-width: 991px) {
