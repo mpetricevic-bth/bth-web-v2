@@ -149,4 +149,92 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   window.addEventListener('load', aosInit);
 
+
+ /**
+   * Contact form
+   */
+  const contactForm = document.getElementById('contact-form');
+
+  if (contactForm) {
+    const status = document.getElementById('contact-form-status');
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+
+    contactForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      if (!contactForm.reportValidity()) {
+        return;
+      }
+
+      const tokenInput = contactForm.querySelector(
+        'input[name="cf-turnstile-response"]'
+      );
+
+      const token = tokenInput?.value ?? '';
+
+      if (!token) {
+        setStatus('Potvrdite sigurnosnu provjeru.');
+        return;
+      }
+
+      const payload = {
+        name: document.getElementById('cf-name')?.value ?? '',
+        phone: document.getElementById('cf-phone')?.value ?? '',
+        message: document.getElementById('cf-message')?.value ?? '',
+        email: document.getElementById('cf-email')?.value ?? '',
+        website: document.getElementById('cf-website')?.value ?? '',
+        consent: document.getElementById('cf-consent')?.checked ?? false,
+        turnstileToken: token
+      };
+
+      submitButton.disabled = true;
+      setStatus('Šaljem poruku...');
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json().catch(() => null);
+
+        if (!response.ok) {
+          throw new Error(
+            result?.message || 'Slanje poruke nije uspjelo.'
+          );
+        }
+
+        contactForm.reset();
+
+        if (window.turnstile) {
+          window.turnstile.reset();
+        }
+
+        setStatus(result?.message || 'Poruka je uspješno poslana.');
+      }
+      catch (error) {
+        console.error('Contact form error:', error);
+
+        setStatus(
+          error?.message || 'Slanje poruke nije uspjelo.'
+        );
+
+        if (window.turnstile) {
+          window.turnstile.reset();
+        }
+      }
+      finally {
+        submitButton.disabled = false;
+      }
+    });
+
+    function setStatus(message) {
+      if (status) {
+        status.textContent = message;
+      }
+    }
+  }
 });

@@ -3036,6 +3036,15 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   color: var(--bth-nav-text);
 }
 
+.bth-honeypot {
+    position: absolute !important;
+    left: -10000px !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+}
+
+
 @media (max-width: 991px) {
   .bth-legal__content p,
   .bth-legal__content li {
