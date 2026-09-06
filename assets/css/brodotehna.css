@@ -2885,3 +2885,160 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   color: #222934;
   line-height: 1.4;
 }
+
+/*--------------------------------------------------------------
+# Legal pages (Privacy Policy, Terms & Conditions, Cookies)
+--------------------------------------------------------------*/
+.bth-legal {
+  padding: clamp(60px, 8vw, 100px) 0;
+  background: #fff;
+}
+
+.bth-legal__updated {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 14.5px;
+  color: var(--bth-muted);
+  margin: 0 0 50px;
+}
+
+/* Sticky table of contents - the exact same pattern already proven on
+   the Solutions page (.bth-solutions-list .col-lg-4): position:sticky
+   goes on the COLUMN itself, not a nested wrapper, because a sticky
+   element's travel room comes from its own containing block (the row)
+   being taller than it, not from its own height. Nesting it one level
+   deeper collapses that containing block down to the sidebar's own
+   (short) height and the element never has room to actually stick. */
+.bth-legal .row > .col-lg-3 {
+  position: sticky;
+  top: 80px;
+  align-self: start;
+}
+
+.bth-legal__toc-title {
+  font-family: var(--bth-font-label);
+  font-weight: 500;
+  font-size: 12.5px;
+  letter-spacing: 0.42px;
+  text-transform: uppercase;
+  color: var(--bth-label-muted);
+  margin: 0 0 20px;
+}
+
+.bth-legal__toc ol {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  /* The site's global reset only strips list-style/margin/padding from
+     <ul> (see .bth-page ul near the top of this file), not <ol> - left
+     unset here, the browser's own native decimal numbering rendered
+     right alongside this rule's counter-based ::before number below,
+     showing as "1. 1. Introduction". */
+  list-style: none;
+  counter-reset: bth-legal-toc;
+}
+
+.bth-legal__toc li {
+  counter-increment: bth-legal-toc;
+}
+
+.bth-legal__toc a {
+  display: flex;
+  gap: 10px;
+  font-family: var(--bth-font-heading);
+  font-size: 14.5px;
+  color: var(--bth-nav-text);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.bth-legal__toc a::before {
+  content: counter(bth-legal-toc) ".";
+  color: var(--bth-muted);
+  flex-shrink: 0;
+}
+
+.bth-legal__toc a:hover {
+  color: var(--bth-primary);
+}
+
+@media (max-width: 991px) {
+  .bth-legal .row > .col-lg-3 {
+    position: static;
+  }
+
+  .bth-legal__toc {
+    padding: 24px;
+    background: var(--bth-bg-page);
+    border-radius: 16px;
+    margin-bottom: 40px;
+  }
+}
+
+.bth-legal__content {
+  max-width: 760px;
+}
+
+.bth-legal__content section {
+  scroll-margin-top: 80px;
+}
+
+.bth-legal__content section + section {
+  margin-top: 48px;
+}
+
+.bth-legal__content h2 {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: clamp(21.5px, 0.4vw + 19px, 25px);
+  color: var(--bth-nav-text);
+  margin: 0 0 16px;
+}
+
+.bth-legal__content p {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--bth-nav-text);
+  margin: 0 0 16px;
+}
+
+.bth-legal__content p:last-child {
+  margin-bottom: 0;
+}
+
+.bth-legal__content ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 0 16px;
+  padding-left: 20px;
+  list-style: disc;
+}
+
+.bth-legal__content li {
+  font-family: var(--bth-font-heading);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--bth-nav-text);
+}
+
+.bth-legal__content a {
+  color: var(--bth-primary);
+  text-decoration: underline;
+}
+
+.bth-legal__content a:hover {
+  color: var(--bth-nav-text);
+}
+
+@media (max-width: 991px) {
+  .bth-legal__content p,
+  .bth-legal__content li {
+    font-size: 14.5px;
+  }
+}

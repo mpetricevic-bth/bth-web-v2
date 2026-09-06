@@ -1,0 +1,31 @@
+<!-- ======= Menu ======= -->
+  <nav class="navbar navbar-expand-xl bth-navbar sticky-top">
+    <div class="bth-navbar__inner">
+      <a href="index.html" class="navbar-brand bth-navbar__brand">
+        <img src="assets/img/brodotehna/logo-brodotehna.svg" alt="Brodotehna">
+      </a>
+
+      <button type="button" class="navbar-toggler bth-navbar__toggler" data-bs-toggle="collapse" data-bs-target="#bthNavMain" aria-controls="bthNavMain" aria-expanded="false" aria-label="Toggle navigation">
+        <img class="bth-icon-menu" src="assets/img/brodotehna/icon-menu.svg" alt="">
+        <img class="bth-icon-close" src="assets/img/brodotehna/icon-close.svg" alt="">
+      </button>
+
+      <div class="collapse navbar-collapse" id="bthNavMain">
+        <ul class="navbar-nav bth-navbar__nav">
+          <li class="nav-item"><a class="nav-link active" href="index.html">Homepage</a></li>
+          <li class="nav-item"><a class="nav-link" href="solutions.html">Solutions</a></li>
+          <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Company</a></li>
+          <li class="nav-item"><a class="nav-link" href="references.html">References</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Careers</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        </ul>
+        <a href="contact.html" class="bth-btn">
+          <span>Contact us</span>
+          <span class="bth-btn__icon"><img src="assets/img/brodotehna/icon-arrow.svg" alt=""></span>
+        </a>
+      </div>
+    </div>
+  </nav><!-- End Menu -->
+
+  
