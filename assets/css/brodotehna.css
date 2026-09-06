@@ -2825,24 +2825,21 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   height: 78px;
 }
 
-.bth-contact-form__captcha-label {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  margin-bottom: 9px;
-  font-family: var(--bth-font-heading);
-  font-size: 14.5px;
-  color: #222934;
+/* Cloudflare Turnstile - data-size="flexible" (see the HTML) makes
+   Cloudflare's own widget fill whatever width its container gives it
+   instead of the fixed ~300px "normal" size, which was wider than the
+   available column on smaller screens and pushed the form's own
+   fields off the edge of the viewport. This is a defensive backstop
+   for the same problem: whatever width the widget's iframe actually
+   ends up with, it's never allowed to exceed its container's. */
+.cf-turnstile {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
-.bth-contact-form__captcha-label strong {
-  font-weight: 600;
-}
-
-.bth-contact-form__captcha-code {
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  color: var(--bth-primary);
+.cf-turnstile iframe {
+  max-width: 100%;
 }
 
 .bth-contact-form__consent {

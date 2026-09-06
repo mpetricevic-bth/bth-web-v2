@@ -173,7 +173,7 @@
                   <label for="cf-name">Full Name</label>
                   <div class="bth-contact-form__input">
                     <img src="assets/img/brodotehna/User - Seats.svg" alt="">
-                    <input type="text"
+                    <input type="text" placeholder="Name Surname"
 					   id="cf-name"
 					   name="name"
 					   required>
@@ -193,31 +193,33 @@
                   <label for="cf-message">Message</label>
                   <div class="bth-contact-form__input bth-contact-form__input--textarea">
                     <img src="assets/img/brodotehna/Edit.svg" alt="">
-                    <textarea id="cf-message"
+                    <textarea id="cf-message" placeholder="Type your message here"
 					  name="message"
 					  required></textarea>
                   </div>
                 </div>
               </div>
 
-              <div class="bth-contact-form__row">
+              <div class="bth-contact-form__row" style="grid-template-columns: 1fr;">
                 <div class="bth-contact-form__field">
                   <label for="cf-email">E-mail</label>
                   <div class="bth-contact-form__input">
                     <img src="assets/img/brodotehna/Mail.svg" alt="">
-                    <input type="email"
+                    <input type="email" placeholder="your-email@mail.com"
 					   id="cf-email"
 					   name="email"
 					   required>
                   </div>
                 </div>
+              </div>
+
+              <div class="bth-contact-form__row" style="grid-template-columns: 1fr;">
                 <div class="bth-contact-form__field">
-                  <div class="bth-contact-form__captcha-label">
-                    <div class="cf-turnstile"
+                  <div class="cf-turnstile"
 						 data-sitekey="0x4AAAAAAEqNedHkeIEd_UB-"
-						 data-action="contact">
+						 data-action="contact"
+						 data-size="flexible">
 					</div>
-                  </div>
                 </div>
               </div>
 
