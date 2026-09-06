@@ -2745,6 +2745,12 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
 
 .bth-contact-form__fields {
   padding: 65px 54px;
+  /* Backstop for the grid min-width issue below - nothing inside this
+     form is position:sticky, so unlike html/body (see the navbar and
+     Solutions sidebar fixes elsewhere in this file), clipping overflow
+     here can't break anything else on the page. */
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 @media (max-width: 991px) {
@@ -2758,6 +2764,19 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   grid-template-columns: 1fr 1fr;
   gap: 20px;
   margin-bottom: 24px;
+}
+
+/* Grid items default to min-width:auto, which means a child that
+   refuses to shrink below its own intrinsic size (the Cloudflare
+   Turnstile iframe, which - despite width:100%/max-width:100% on it
+   directly, see .cf-turnstile below - still reports its OWN preferred
+   width to the grid track before those rules can constrain it) forces
+   the whole grid TRACK wider instead of the child shrinking to fit.
+   Every other field sharing that row/track gets dragged wider along
+   with it, which is why the overflow cut off the Name/Phone/Message/
+   E-mail fields identically, not just the captcha itself. */
+.bth-contact-form__field {
+  min-width: 0;
 }
 
 @media (max-width: 575px) {
