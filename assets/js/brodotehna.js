@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
       };
 
       submitButton.disabled = true;
-      setStatus('Šaljem poruku...');
+      setStatus('Sending...');
 
       try {
         const response = await fetch('/api/contact', {
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!response.ok) {
           throw new Error(
-            result?.message || 'Slanje poruke nije uspjelo.'
+            result?.message || 'Sending message failed.'
           );
         }
 
@@ -213,13 +213,13 @@ document.addEventListener('DOMContentLoaded', () => {
           window.turnstile.reset();
         }
 
-        setStatus(result?.message || 'Poruka je uspješno poslana.');
+        setStatus(result?.message || 'Message sent successfully.');
       }
       catch (error) {
         console.error('Contact form error:', error);
 
         setStatus(
-          error?.message || 'Slanje poruke nije uspjelo.'
+          error?.message || 'Sending message failed.'
         );
 
         if (window.turnstile) {

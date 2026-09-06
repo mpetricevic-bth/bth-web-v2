@@ -2755,7 +2755,7 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
 
 @media (max-width: 991px) {
   .bth-contact-form__fields {
-    padding: 40px 30px;
+    padding: 40px 5px;
   }
 }
 
