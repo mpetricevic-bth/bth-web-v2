@@ -115,9 +115,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const isActive = panel.dataset.panelId === panelId;
         panel.hidden = !isActive;
       });
+      // Slides the active tab into view within the horizontally-
+      // scrollable tab strip on mobile - scoped to that strip's own
+      // scrollLeft, not scrollIntoView, which scrolls the whole PAGE
+      // (both axes) to bring an element into view. With the prev/next
+      // buttons now sitting near the bottom of the panel on mobile
+      // (below the image), scrollIntoView on a tab back up near the
+      // top of the page yanked the viewport back up to it every time
+      // - exactly what a reader clicking "next" while scrolled down
+      // doesn't want.
       const activeTab = document.querySelector(`.bth-services-tabs button[data-panel="${panelId}"]`);
-      if (activeTab && activeTab.scrollIntoView) {
-        activeTab.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      const tabsRow = activeTab && activeTab.closest('.bth-services-tabs-row');
+      if (tabsRow) {
+        const rowRect = tabsRow.getBoundingClientRect();
+        const tabRect = activeTab.getBoundingClientRect();
+        const delta = (tabRect.left + tabRect.width / 2) - (rowRect.left + rowRect.width / 2);
+        tabsRow.scrollBy({ left: delta, behavior: 'smooth' });
       }
     };
 
