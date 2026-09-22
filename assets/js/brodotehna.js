@@ -150,6 +150,77 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
+   * Company page: timeline connecting line - the track between the
+   * three Who We Are/What We Do/Our Approach rows fills in as you
+   * scroll (like a vertical progress rail). Each row's dot lights up
+   * once the fill has grown past its own position and then STAYS lit
+   * (it's a "reached" marker, not a "currently in view" one) - driven
+   * directly off the fill's own pixel height rather than a separate
+   * IntersectionObserver, so the two can never disagree with each
+   * other.
+   */
+  const timelineList = document.querySelector('.bth-company-timeline__list');
+  if (timelineList) {
+    const fillEl = timelineList.querySelector('.bth-company-timeline__fill');
+    const dots = timelineList.querySelectorAll('.bth-company-timeline__dot');
+
+    const updateFill = () => {
+      if (!fillEl) return;
+      const listRect = timelineList.getBoundingClientRect();
+      const progress = Math.min(Math.max((window.innerHeight / 2 - listRect.top) / listRect.height, 0), 1);
+      const fillPx = progress * listRect.height;
+      fillEl.style.height = `${progress * 100}%`;
+
+      dots.forEach(dot => {
+        const dotOffset = dot.getBoundingClientRect().top - listRect.top;
+        dot.classList.toggle('active', dotOffset <= fillPx);
+      });
+    };
+
+    updateFill();
+    window.addEventListener('scroll', updateFill, { passive: true });
+    window.addEventListener('resize', updateFill);
+  }
+
+  /**
+   * Company page timeline stats (2013 / 60 / 42+) and Homepage's own
+   * stats strip (same 3 numbers, standalone instead of overlaid on
+   * photos) count up from zero the first time they scroll into view,
+   * instead of just appearing as static text.
+   */
+  const timelineCounters = document.querySelectorAll('.bth-company-timeline__stat strong[data-count-to], .bth-home-stats strong[data-count-to]');
+  if (timelineCounters.length) {
+    const animateCount = (el) => {
+      const target = parseInt(el.dataset.countTo, 10);
+      const suffix = el.dataset.countSuffix || '';
+      const duration = 1200;
+      const start = performance.now();
+
+      const step = (now) => {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(eased * target) + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+
+    const counterObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCount(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+
+    timelineCounters.forEach(el => {
+      el.textContent = `0${el.dataset.countSuffix || ''}`;
+      counterObserver.observe(el);
+    });
+  }
+
+  /**
    * Animation on scroll
    */
   function aosInit() {
@@ -162,6 +233,67 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   window.addEventListener('load', aosInit);
 
+  /**
+   * Open Application page: "What to expect" card row - same scrollBy-
+   * on-click idea as the Services page's tab strip, just scoped to a
+   * plain card row instead of a tab list (no active-tab state to
+   * track here).
+   */
+  const expectRow = document.querySelector('.bth-careers-expect__row');
+  if (expectRow) {
+    const firstCard = expectRow.querySelector('.bth-careers-expect__card');
+    document.querySelectorAll('.bth-careers-expect__nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const step = (firstCard?.offsetWidth ?? 300) + 20;
+        const direction = btn.classList.contains('bth-careers-expect__nav-btn--prev') ? -1 : 1;
+        expectRow.scrollBy({ left: step * direction, behavior: 'smooth' });
+      });
+    });
+  }
+
+  /**
+   * Homepage: Selected References carousel - unlike every other
+   * carousel on the site (free horizontal scroll), this one has a
+   * real "1/5" page counter in the design, so prev/next step through
+   * discrete pages (2 cards each) via [hidden] instead of scrollBy.
+   * Wraps around at both ends rather than disabling the buttons.
+   */
+  const referencesPages = document.querySelectorAll('.bth-home-references__page');
+  if (referencesPages.length) {
+    const counterCurrent = document.querySelector('.bth-home-references__counter-current');
+    let currentPage = 0;
+
+    const showPage = (index) => {
+      referencesPages[currentPage].hidden = true;
+      currentPage = (index + referencesPages.length) % referencesPages.length;
+      referencesPages[currentPage].hidden = false;
+      if (counterCurrent) counterCurrent.textContent = currentPage + 1;
+    };
+
+    document.querySelectorAll('.bth-home-references__nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const direction = btn.classList.contains('bth-home-references__nav-btn--prev') ? -1 : 1;
+        showPage(currentPage + direction);
+      });
+    });
+  }
+
+  /**
+   * Open Application page: file upload field shows the chosen file's
+   * name in place of its placeholder text once one is picked.
+   */
+  const uploadInput = document.getElementById('cf-documents');
+  if (uploadInput) {
+    const uploadLabel = uploadInput.closest('.bth-contact-form__upload');
+    const uploadText = uploadLabel?.querySelector('span');
+    const defaultText = uploadText?.textContent ?? '';
+
+    uploadInput.addEventListener('change', () => {
+      if (uploadText) {
+        uploadText.textContent = uploadInput.files?.[0]?.name || defaultText;
+      }
+    });
+  }
 
  /**
    * Contact form
@@ -186,9 +318,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const token = tokenInput?.value ?? '';
 
       if (!token) {
-        setStatus('Potvrdite sigurnosnu provjeru.');
+        setStatus('Confirm security check.');
         return;
       }
+
+      // position/documentName only exist on the Open Application form -
+      // optional chaining keeps this the same handler for contact.html's
+      // plain inquiry form, where they're just absent from the payload.
+      const documentFile = document.getElementById('cf-documents')?.files?.[0];
 
       const payload = {
         name: document.getElementById('cf-name')?.value ?? '',
@@ -199,6 +336,16 @@ document.addEventListener('DOMContentLoaded', () => {
         consent: document.getElementById('cf-consent')?.checked ?? false,
         turnstileToken: token
       };
+
+      const position = document.getElementById('cf-position')?.value;
+      if (position) payload.position = position;
+
+      // The actual file's bytes aren't sent here - JSON.stringify can't
+      // carry a File, and switching this endpoint to multipart/form-data
+      // is a backend contract change outside this form's scope. The
+      // filename travels as a signal so a reviewer at least knows a CV
+      // was attached; wiring the real upload needs backend support.
+      if (documentFile) payload.documentName = documentFile.name;
 
       submitButton.disabled = true;
       setStatus('Sending...');

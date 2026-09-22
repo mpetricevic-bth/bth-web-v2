@@ -46,9 +46,9 @@
           <li class="nav-item"><a class="nav-link active" href="index.html">Homepage</a></li>
           <li class="nav-item"><a class="nav-link" href="solutions.html">Solutions</a></li>
           <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Company</a></li>
+          <li class="nav-item"><a class="nav-link" href="company.html">Company</a></li>
           <li class="nav-item"><a class="nav-link" href="references.html">References</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Careers</a></li>
+          <li class="nav-item"><a class="nav-link" href="careers.html">Careers</a></li>
           <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
         </ul>
         <a href="contact.html" class="bth-btn">
@@ -61,13 +61,386 @@
 
   <main id="main">
 
-    <!-- ======= Placeholder body - homepage design not built yet ======= -->
-    <section class="bth-page-header">
-      <div class="bth-container" data-aos="fade-up">
-        <p class="bth-eyebrow">Brodotehna</p>
-        <h1>Homepage coming soon</h1>
+    <!-- ======= Hero =======
+         Full-bleed photo hero, same overlay technique as the
+         full-bleed Contact CTA (.bth-contact-cta) - gradient ::before
+         + blurred tint overlay - just with page-header-scale heading
+         text instead of a CTA heading, since this is the top of the
+         homepage rather than a closing banner. -->
+    <section class="bth-home-hero">
+      <div class="bth-home-hero__overlay"></div>
+      <div class="bth-container bth-home-hero__inner" data-aos="fade-up">
+        <p class="bth-eyebrow">Energy Control Systems</p>
+        <h1>Control Systems for a Smarter Energy Future</h1>
+        <p class="bth-home-hero__copy"><span class="bth-home-hero__accent">B</span>rodotehna designs and commissions reliable control systems for energy, industry and mission-critical operations.</p>
+        <div class="bth-home-hero__buttons" data-aos="fade-up" data-aos-delay="200">
+          <a href="contact.html" class="bth-btn">
+            <span>Contact Us</span>
+            <span class="bth-btn__icon"><img src="assets/img/brodotehna/icon-arrow.svg" alt=""></span>
+          </a>
+        </div>
       </div>
-    </section><!-- End Placeholder -->
+    </section><!-- End Hero -->
+
+    <!-- ======= Stats ("Built on Performance") =======
+         Same gradient band .bth-locations uses, seamlessly continuing
+         the hero's photo (no gap between them). Count-up-on-scroll
+         numbers reuse the same [data-count-to] script as Company's
+         timeline stats - see brodotehna.js. -->
+    <section class="bth-home-stats">
+      <div class="bth-container bth-home-stats__row" data-aos="fade-up">
+        <div class="bth-home-stats__intro">
+          <h2><span class="bth-home-stats__accent">B</span>uilt on Performance You Can Measure</h2>
+          <a href="company.html" class="bth-btn bth-btn--outline">
+            <span>More About Us</span>
+            <span class="bth-btn__icon"><img src="assets/img/brodotehna/icon-arrow.svg" alt=""></span>
+          </a>
+        </div>
+        <div class="bth-home-stats__grid">
+          <div class="bth-home-stats__item">
+            <strong data-count-to="15" data-count-suffix="+">15+</strong>
+            <span>Years of engineering experience</span>
+          </div>
+          <div class="bth-home-stats__item">
+            <strong data-count-to="60">60</strong>
+            <span>Projects delivered</span>
+          </div>
+          <div class="bth-home-stats__item">
+            <strong data-count-to="42" data-count-suffix="+">42+</strong>
+            <span>Power Plants supported</span>
+          </div>
+          <div class="bth-home-stats__item">
+            <strong data-count-to="23">23</strong>
+            <span>Control System Specialists</span>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Stats -->
+
+    <!-- ======= Solutions bento =======
+         5 primary solutions (the same 5 the footer's Solutions column
+         links to) as a photo bento - 1 tall featured tile + 4 regular
+         in a 3-equal-column grid, same gradient-overlay-on-photo
+         technique as .bth-company-timeline__media/__stat. -->
+    <section class="bth-home-solutions">
+      <div class="bth-container">
+        <div class="bth-home-solutions__head" data-aos="fade-up">
+          <p class="bth-eyebrow">Our Solutions</p>
+          <h2 class="bth-section-title">Engineering Solutions for Energy and Industry</h2>
+        </div>
+        <div class="bth-home-solutions__grid" data-aos="fade-up">
+          <a href="solutions.html#solution-1" class="bth-home-solutions__item bth-home-solutions__item--featured">
+            <img src="assets/img/brodotehna/homepage-solution-avpp-optimized.jpg" alt="Solar and battery storage site">
+            <span class="bth-home-solutions__icon"><img src="assets/img/brodotehna/icon-settings-filter.svg" alt=""></span>
+            <span class="bth-home-solutions__label">
+              <b>aEMS - advanced Energy Management System</b>
+              <em>Optimize the way energy is produced, stored and consumed across complex industrial and energy systems.</em>
+            </span>
+          </a>
+          <a href="solutions.html#solution-2" class="bth-home-solutions__item">
+            <img src="assets/img/brodotehna/homepage-solution-amgc-optimized.jpg" alt="High-voltage transmission tower">
+            <span class="bth-home-solutions__icon"><img src="assets/img/brodotehna/icon-filter-settings-sort.svg" alt=""></span>
+            <span class="bth-home-solutions__label">
+              <b>aVPP - advanced Virtual Power Plant</b>
+            </span>
+          </a>
+          <a href="solutions.html#solution-3" class="bth-home-solutions__item">
+            <img src="assets/img/brodotehna/homepage-solution-scada-optimized.jpg" alt="Solar panel array close-up">
+            <span class="bth-home-solutions__icon"><img src="assets/img/brodotehna/icon-cellular-network.svg" alt=""></span>
+            <span class="bth-home-solutions__label">
+              <b>aMGC - advanced Microgrid Controller</b>
+            </span>
+          </a>
+          <a href="solutions.html#solution-4" class="bth-home-solutions__item">
+            <img src="assets/img/brodotehna/homepage-solution-ahydrobess-optimized.jpg" alt="Battery energy storage cabinet">
+            <span class="bth-home-solutions__icon"><img src="assets/img/brodotehna/icon-battery-generator.svg" alt=""></span>
+            <span class="bth-home-solutions__label">
+              <b>aHydro<span class="bth-home-solutions__accent">B</span>ESS - Hydro &amp; <span class="bth-home-solutions__accent">B</span>attery Optimization System</b>
+            </span>
+          </a>
+          <a href="solutions.html#solution-5" class="bth-home-solutions__item">
+            <img src="assets/img/brodotehna/homepage-solution-aems-optimized.jpg" alt="Software code overlaying a server room">
+            <span class="bth-home-solutions__icon"><img src="assets/img/brodotehna/icon-imac-computer.svg" alt=""></span>
+            <span class="bth-home-solutions__label">
+              <b>SCADA - Supervisory Control &amp; Data Acquisition</b>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section><!-- End Solutions bento -->
+
+    <!-- ======= Use cases =======
+         Masonry-style bento of icon+text cards mixed with photo tiles,
+         light-gray background - a different shape than the Solutions
+         bento above, so it's its own grid rather than a reuse. -->
+    <section class="bth-home-usecases">
+      <div class="bth-container">
+        <div class="bth-home-usecases__intro" data-aos="fade-up">
+          <p class="bth-eyebrow">Use Cases</p>
+          <h2 class="bth-section-title">Where Our Solutions Are Applied</h2>
+          <p>Our solutions support energy and industrial environments where reliability, visibility and intelligent control are essential.</p>
+        </div>
+        <div class="bth-home-usecases__grid" data-aos="fade-up">
+          <div class="bth-home-usecases__row">
+            <div class="bth-home-usecases__card" style="flex-basis:399px">
+              <span class="bth-home-usecases__icon"><img src="assets/img/brodotehna/icon-water-energy.svg" alt=""></span>
+              <div class="bth-home-usecases__card-text">
+                <h3>Hydropower</h3>
+                <p>Intelligent hydropower automation.</p>
+              </div>
+            </div>
+            <div class="bth-home-usecases__card" style="flex-basis:399px">
+              <span class="bth-home-usecases__icon"><img src="assets/img/brodotehna/icon-solar-panel-03.svg" alt=""></span>
+              <div class="bth-home-usecases__card-text">
+                <h3>Solar PV</h3>
+                <p>Advanced solar plant control.</p>
+              </div>
+            </div>
+            <div class="bth-home-usecases__photo" style="flex-basis:467px"><img src="assets/img/brodotehna/homepage-usecases-solar-optimized.jpg" alt="Solar panel close-up"></div>
+            <div class="bth-home-usecases__card" style="flex-basis:330px">
+              <span class="bth-home-usecases__icon"><img src="assets/img/brodotehna/icon-automotive-battery.svg" alt=""></span>
+              <div class="bth-home-usecases__card-text">
+                <h3>Battery Storage</h3>
+                <p>Smart battery energy management.</p>
+              </div>
+            </div>
+          </div>
+          <div class="bth-home-usecases__row">
+            <div class="bth-home-usecases__photo" style="flex-basis:675px"><img src="assets/img/brodotehna/homepage-usecases-dam-optimized.jpg" alt="Hydropower dam"></div>
+            <div class="bth-home-usecases__card" style="flex-basis:468px">
+              <span class="bth-home-usecases__icon"><img src="assets/img/brodotehna/icon-solar-panel-01.svg" alt=""></span>
+              <div class="bth-home-usecases__card-text">
+                <h3>Microgrids</h3>
+                <p>Resilient microgrid solutions.</p>
+              </div>
+            </div>
+            <div class="bth-home-usecases__card" style="flex-basis:468px">
+              <span class="bth-home-usecases__icon"><img src="assets/img/brodotehna/icon-cloud-zap.svg" alt=""></span>
+              <div class="bth-home-usecases__card-text">
+                <h3>Virtual Power Plants</h3>
+                <p>Real-time DER orchestration.</p>
+              </div>
+            </div>
+          </div>
+          <div class="bth-home-usecases__row">
+            <div class="bth-home-usecases__card" style="flex-basis:330px">
+              <span class="bth-home-usecases__icon"><img src="assets/img/brodotehna/icon-factory.svg" alt=""></span>
+              <div class="bth-home-usecases__card-text">
+                <h3>Industrial Plants</h3>
+                <p>Industrial automation excellence.</p>
+              </div>
+            </div>
+            <div class="bth-home-usecases__card" style="flex-basis:330px">
+              <span class="bth-home-usecases__icon"><img src="assets/img/brodotehna/icon-electric-tower.svg" alt=""></span>
+              <div class="bth-home-usecases__card-text">
+                <h3>Utility Substations</h3>
+                <p>Secure digital substation solutions.</p>
+              </div>
+            </div>
+            <div class="bth-home-usecases__card" style="flex-basis:399px">
+              <span class="bth-home-usecases__icon"><img src="assets/img/brodotehna/icon-fire.svg" alt=""></span>
+              <div class="bth-home-usecases__card-text">
+                <h3>CHP, Biomass &amp; Waste-to-Energy</h3>
+                <p>Efficient combined heat and power systems.</p>
+              </div>
+            </div>
+            <div class="bth-home-usecases__photo" style="flex-basis:537px"><img src="assets/img/brodotehna/homepage-usecases-industrial-optimized.jpg" alt="Industrial plant at night"></div>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Use cases -->
+
+    <!-- ======= Selected References =======
+         Intro column (eyebrow/heading/copy/prev-next+counter) fixed
+         width, same recipe as .bth-company-defines__row/__intro, next
+         to a paginated carousel - 5 pages of 2 cards each (10 projects
+         total), only one page visible at a time, advanced via
+         brodotehna.js instead of free horizontal scroll like the other
+         carousels on the site, to match the "1/5" counter in the
+         design. Card content/photos reused verbatim from
+         references.html where a project already has a page there. -->
+    <section class="bth-home-references">
+      <div class="bth-container bth-home-references__row">
+        <div class="bth-home-references__intro" data-aos="fade-up">
+          <p class="bth-eyebrow">Selected References</p>
+          <h2 class="bth-section-title">Projects That Prove the Work</h2>
+          <p class="bth-home-references__copy">Brodotehna solutions are implemented worldwide - from modernization to complete system delivery.</p>
+        </div>
+        <!-- Own grid area (not nested in .intro) so it can sit below
+             the intro column on desktop but move below the cards on
+             mobile via grid-template-areas, instead of being stuck
+             wherever its DOM position puts it in the stacked column. -->
+        <div class="bth-home-references__nav">
+          <button type="button" class="bth-home-references__nav-btn bth-home-references__nav-btn--prev" aria-label="Previous">
+            <img src="assets/img/brodotehna/icon-arrow-dark.svg" alt="">
+          </button>
+          <span class="bth-home-references__counter"><span class="bth-home-references__counter-current">1</span>/<span class="bth-home-references__counter-total">5</span></span>
+          <button type="button" class="bth-home-references__nav-btn bth-home-references__nav-btn--next" aria-label="Next">
+            <img src="assets/img/brodotehna/icon-arrow-dark.svg" alt="">
+          </button>
+        </div>
+        <div class="bth-home-references__pages" data-aos="fade-up">
+          <div class="bth-home-references__page">
+            <article class="bth-home-references__card">
+              <div class="bth-home-references__media"><img src="assets/img/brodotehna/perucica-optimized.jpg" alt="HPP Perućica"></div>
+              <div class="bth-home-references__body">
+                <h3>HPP Perućica</h3>
+                <p>Modernization of turbine governors and unit control systems</p>
+                <div class="bth-home-references__tags"><span>Montenegro</span><span>Hydropower</span><span>Modernization</span></div>
+              </div>
+            </article>
+            <article class="bth-home-references__card">
+              <div class="bth-home-references__media"><img src="assets/img/brodotehna/moco-moco-optimized.jpg" alt="HPP Moco Moco"></div>
+              <div class="bth-home-references__body">
+                <h3>HPP Moco Moco</h3>
+                <p>Engineering and commissioning of control, protection and electrical systems for a new hydropower plant.</p>
+                <div class="bth-home-references__tags"><span>Guyana</span><span>Hydropower</span><span>New Plant</span></div>
+              </div>
+            </article>
+          </div>
+          <div class="bth-home-references__page" hidden>
+            <article class="bth-home-references__card">
+              <div class="bth-home-references__media"><img src="assets/img/brodotehna/kumu-optimized.jpg" alt="HPP Kumu"></div>
+              <div class="bth-home-references__body">
+                <h3>HPP Kumu</h3>
+                <p>Control, protection and electrical systems for a new hydropower plant.</p>
+                <div class="bth-home-references__tags"><span>Guyana</span><span>Hydropower</span><span>New Plant</span></div>
+              </div>
+            </article>
+            <article class="bth-home-references__card">
+              <div class="bth-home-references__media"><img src="assets/img/brodotehna/zimbabwe-optimized.jpg" alt="HPP Great Zimbabwe"></div>
+              <div class="bth-home-references__body">
+                <h3>HPP Great Zimbabwe</h3>
+                <p>Engineering and delivery of control, protection and electrical systems for a new hydropower plant.</p>
+                <div class="bth-home-references__tags"><span>Zimbabwe</span><span>Hydropower</span><span>New Plant</span></div>
+              </div>
+            </article>
+          </div>
+          <div class="bth-home-references__page" hidden>
+            <article class="bth-home-references__card">
+              <div class="bth-home-references__media"><img src="assets/img/brodotehna/nam-mit-luong-optimized.jpg" alt="HPP Nam Mit Luong"></div>
+              <div class="bth-home-references__body">
+                <h3>HPP Nam Mit Luong</h3>
+                <p>Control, protection and medium-voltage systems for a new hydropower plant.</p>
+                <div class="bth-home-references__tags"><span>Vietnam</span><span>Hydropower</span><span>New Plant</span></div>
+              </div>
+            </article>
+            <article class="bth-home-references__card">
+              <div class="bth-home-references__media"><img src="assets/img/brodotehna/rdf-albioma-optimized.jpg" alt="RDF Albioma Les Bois Rouge"></div>
+              <div class="bth-home-references__body">
+                <h3>RDF Albioma Les Bois Rouge</h3>
+                <p>Automation and electrical systems for a new RDF boiler as part of a plant expansion.</p>
+                <div class="bth-home-references__tags"><span>Reunion</span><span>Waste-to-Energy</span><span>Plant Expansion</span></div>
+              </div>
+            </article>
+          </div>
+          <div class="bth-home-references__page" hidden>
+            <article class="bth-home-references__card">
+              <div class="bth-home-references__media"><img src="assets/img/brodotehna/montsinery-optimized.jpg" alt="BE Montsinery"></div>
+              <div class="bth-home-references__body">
+                <h3>BE Montsinery</h3>
+                <p>Control and instrumentation systems for a new biomass power plant.</p>
+                <div class="bth-home-references__tags"><span>French Guiana</span><span>Biomass</span><span>New Plant</span></div>
+              </div>
+            </article>
+            <article class="bth-home-references__card">
+              <div class="bth-home-references__media"><img src="assets/img/brodotehna/ledo-optimized.jpg" alt="Ledo"></div>
+              <div class="bth-home-references__body">
+                <h3>Ledo</h3>
+                <p>Modernization and automation of ice cream production lines.</p>
+                <div class="bth-home-references__tags"><span>Croatia</span><span>Food Industry</span><span>Modernization</span></div>
+              </div>
+            </article>
+          </div>
+          <div class="bth-home-references__page" hidden>
+            <article class="bth-home-references__card">
+              <div class="bth-home-references__media"><img src="assets/img/brodotehna/airbus-optimized.jpg" alt="Airbus"></div>
+              <div class="bth-home-references__body">
+                <h3>Airbus</h3>
+                <p>Automation of cargo loading systems for the Beluga XL aircraft.</p>
+                <div class="bth-home-references__tags"><span>France</span><span>Aerospace</span><span>Automation</span></div>
+              </div>
+            </article>
+            <article class="bth-home-references__card">
+              <div class="bth-home-references__media"><img src="assets/img/brodotehna/alunorf-optimized.jpg" alt="AluNorf"></div>
+              <div class="bth-home-references__body">
+                <h3>AluNorf</h3>
+                <p>Warehouse management and logistics optimization for aluminium production.</p>
+                <div class="bth-home-references__tags"><span>Germany</span><span>Aluminium Industry</span><span>Logistics Optimization</span></div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Selected References -->
+
+    <!-- ======= Global reach ("Project Footprint") =======
+         Same gradient band as the Stats section above (and
+         .bth-locations elsewhere) - map on the left, text+CTA on the
+         right. No overlaid pin markers here (unlike Croatia-map.svg
+         on the Contact page) - world-map-locations.svg already has
+         its 10 location pins baked into the artwork itself as white
+         path shapes, not left for CSS to position. -->
+    <section class="bth-home-global">
+      <div class="bth-container bth-home-global__row">
+        <div class="bth-home-global__map" data-aos="fade-up">
+          <img src="assets/img/brodotehna/world-map-locations.svg" alt="World map showing Brodotehna project locations">
+        </div>
+        <div class="bth-home-global__copy" data-aos="fade-up">
+          <p class="bth-eyebrow">Project Footprint</p>
+          <h2 class="bth-section-title">Engineering Expertise Across Locations</h2>
+          <p>Brodotehna&rsquo;s systems and engineering teams support industrial and energy projects across different sites, environments and operational requirements.</p>
+          <a href="references.html" class="bth-btn bth-btn--outline">
+            <span>See References</span>
+            <span class="bth-btn__icon"><img src="assets/img/brodotehna/icon-arrow.svg" alt=""></span>
+          </a>
+        </div>
+      </div>
+    </section><!-- End Global reach -->
+
+    <!-- ======= Partners =======
+         Exact reuse of References' Partners section/content. -->
+    <section class="bth-partners">
+      <div class="bth-container">
+        <p class="bth-partners__label">Partners</p>
+        <div class="bth-partners__viewport" data-aos="fade-up">
+          <div class="bth-partners__row">
+            <img src="assets/img/brodotehna/partner-logo-1.svg" alt="Partner logo">
+            <img src="assets/img/brodotehna/partner-logo-2.svg" alt="Partner logo">
+            <img src="assets/img/brodotehna/partner-logo-3.svg" alt="Siemens">
+            <img src="assets/img/brodotehna/partner-logo-4.svg" alt="Voith">
+            <img src="assets/img/brodotehna/partner-logo-5.svg" alt="Partner logo">
+            <img src="assets/img/brodotehna/partner-logo-6.svg" alt="Andritz">
+          </div>
+          <div class="bth-partners__row" aria-hidden="true">
+            <img src="assets/img/brodotehna/partner-logo-1.svg" alt="">
+            <img src="assets/img/brodotehna/partner-logo-2.svg" alt="">
+            <img src="assets/img/brodotehna/partner-logo-3.svg" alt="">
+            <img src="assets/img/brodotehna/partner-logo-4.svg" alt="">
+            <img src="assets/img/brodotehna/partner-logo-5.svg" alt="">
+            <img src="assets/img/brodotehna/partner-logo-6.svg" alt="">
+          </div>
+        </div>
+      </div>
+    </section><!-- End Partners -->
+
+    <!-- ======= CTA =======
+         .bth-contact-cta reused as-is (same overlay, heading, body,
+         button CSS as References' closing CTA) - only the background
+         photo changes, via the --homepage modifier. -->
+    <section class="bth-contact-cta bth-contact-cta--homepage">
+      <div class="bth-contact-cta__overlay"></div>
+      <div class="bth-container bth-contact-cta__inner" data-aos="fade-up">
+        <h2 class="bth-contact-cta__heading">Let&rsquo;s <span>B</span>uild Reliable Control Together</h2>
+        <div class="bth-contact-cta__body">
+          <p>Have a project that requires advanced automation, energy management or industrial control? Talk to our engineering team and let&rsquo;s find the right solution for your system.</p>
+          <a href="contact.html" class="bth-btn">
+            <span>Contact us</span>
+            <span class="bth-btn__icon"><img src="assets/img/brodotehna/icon-arrow.svg" alt=""></span>
+          </a>
+        </div>
+      </div>
+    </section><!-- End CTA -->
 
   </main><!-- End #main -->
 
@@ -114,10 +487,10 @@
         <div class="col bth-footer__col">
           <h4>Company</h4>
           <ul>
-            <li><a href="#">About Brodotehna</a></li>
+            <li><a href="company.html">About Brodotehna</a></li>
             <li><a href="references.html">References</a></li>
             <li><a href="#">Partners</a></li>
-            <li><a href="#">Careers</a></li>
+            <li><a href="careers.html">Careers</a></li>
             <li><a href="contact.html">Contact</a></li>
           </ul>
         </div>
@@ -154,7 +527,7 @@
   <!-- End Footer -->
 
   <a href="#" class="scroll-top d-flex align-items-center justify-content-center">
-    <img src="assets/img/brodotehna/Arrow-up.svg" alt="" width="17" height="17">
+    <img src="assets/img/brodotehna/icon-scroll-top.svg" alt="" width="17" height="17">
   </a>
 
   <div id="preloader">
