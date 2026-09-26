@@ -36,6 +36,47 @@
   box-sizing: border-box;
 }
 
+/* Every letter B/b in the page's visible text gets this color,
+   site-wide (see the TreeWalker in brodotehna.js that wraps each
+   letter in .bth-accent-b, and the surrounding run of text next to it
+   in .bth-accent-run). Both are reset here with !important rather
+   than relying on being unstyled by default: they're bare <span>s
+   with no other hook, so wherever the JS runs inside a component that
+   happens to style plain `span` descendants (a tag-pill's
+   padding+background+inline-flex+gap, for one real example), that
+   styling would otherwise land on these too - not just breaking their
+   own box, but (for .bth-accent-run) turning it into a gap-applying
+   flex container that pries the letter away from the rest of the
+   word all over again, one level deeper than the fix for the same
+   failure mode on the *component's own* multi-child containers.
+   !important is safe here since nothing else in this stylesheet uses
+   it - these two classes are the only ones that need to unconditionally
+   win regardless of which component's CSS happens to be in scope. */
+.bth-accent-run,
+.bth-accent-b {
+  display: inline !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  gap: 0 !important;
+  box-shadow: none !important;
+  /* color:inherit is the fix for a second variant of the same
+     collision: .bth-contact-cta__heading span (color:#54d4ff, meant
+     for the ONE hand-placed <span>B</span>) also matches .bth-accent-
+     -run, since it's a bare span descendant too - without this, the
+     wrapper inherited that blue and colored its ENTIRE run of plain
+     text (e.g. all of "uild Reliable Control Together", not just the
+     single "b" in "reliable"), not merely the single-letter padding/
+     background bug the rest of this block already guards against. */
+  color: inherit !important;
+}
+
+.bth-accent-b {
+  color: #54d4ff !important;
+}
+
 html {
   margin: 0;
 }
@@ -726,17 +767,56 @@ html {
   overflow: hidden;
 }
 
+/* saturate+contrast is a cheap, uniform color grade over on-site
+   phone photos shot under mismatched lighting (fluorescent yellow
+   casts, camera flash) - it can't fix framing/focus, but it evens out
+   the color temperature across different photos so they read as one
+   consistent set rather than each carrying its own site's lighting. */
+/* grayscale(1) first strips ALL of each photo's own inconsistent
+   lighting color (the fluorescent yellow cast, camera flash, etc.) -
+   only the tonal range (light/dark) survives. The ::after gradient
+   below then repaints that tonal range with the brand's own two
+   colors via mix-blend-mode:color, which takes hue/saturation from
+   the gradient and luminosity from the (now-grayscale) image beneath
+   it - a true duotone. This reads as a deliberate, uniform photo
+   treatment across every reference card regardless of how differently
+   each one was actually lit/shot, instead of asking a plain
+   saturate/contrast filter to paper over real color differences. */
+/* saturate+contrast is a cheap, uniform color grade over on-site
+   phone photos shot under mismatched lighting (fluorescent yellow
+   casts, camera flash) - it can't fix framing/focus, but it evens out
+   the color temperature across different photos so they read as one
+   consistent set rather than each carrying its own site's lighting.
+   (A full duotone via grayscale+mix-blend-mode was tried here too,
+   but read as too heavy-handed - lost too much of the real photo.) */
+/* grayscale strips each photo's own inconsistent lighting color
+   (fluorescent yellow casts, camera flash) - only tone/contrast
+   survives. The brand-gradient ::after below then washes back in via
+   mix-blend-mode:soft-light at well under full opacity - soft-light
+   only pushes midtones toward the overlay's hue instead of fully
+   recoloring the image the way the earlier color-blend duotone did,
+   so it reads as "your photo, brand-tinted" rather than a filter that
+   erased it. */
+/* No grayscale this time - keeps the photo's own real color instead
+   of replacing it. saturate/contrast still evens out the worst of
+   each site's lighting a little, and the brand-gradient ::after below
+   (soft-light, low opacity) only nudges the result toward the site's
+   blue-teal palette rather than recoloring it - the lightest of the
+   three treatments tried here. */
 .bth-reference-card__media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: saturate(0.9) contrast(1.06);
 }
 
 .bth-reference-card__media::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(18, 43, 61, 0.2), rgba(18, 43, 61, 0.6));
+  background: linear-gradient(135deg, var(--bth-dark) 0%, var(--bth-primary) 100%);
+  mix-blend-mode: soft-light;
+  opacity: 0.5;
 }
 
 .bth-reference-card__content {
@@ -1017,8 +1097,8 @@ html {
   position: absolute;
   inset: 0;
   background: rgba(18, 43, 61, 0.16);
-  backdrop-filter: blur(5.55px);
-  -webkit-backdrop-filter: blur(5.55px);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
 .bth-contact-cta__inner {
@@ -3403,11 +3483,16 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   font-size: 16px;
 }
 
+/* Same size as --lg below, on purpose - "Established in 2013" reading
+   noticeably smaller than "60"/"42+" (the other two timeline stats)
+   looked like an inconsistency rather than an intentional hierarchy,
+   even though only --lg's own position (left instead of right) is
+   actually meaningful here. */
 .bth-company-timeline__stat strong {
   font-family: var(--bth-font-heading);
   font-weight: 600;
-  font-size: 40px;
-  letter-spacing: -1.6px;
+  font-size: clamp(48px, 4vw, 76px);
+  letter-spacing: -3px;
 }
 
 .bth-company-timeline__stat--lg {
@@ -3415,17 +3500,8 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   right: auto;
 }
 
-.bth-company-timeline__stat--lg strong {
-  font-size: clamp(48px, 4vw, 76px);
-  letter-spacing: -3px;
-}
-
 @media (max-width: 991px) {
   .bth-company-timeline__stat strong {
-    font-size: 28px;
-  }
-
-  .bth-company-timeline__stat--lg strong {
     font-size: 44px;
   }
 }
@@ -3684,16 +3760,23 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   overflow: hidden;
 }
 
-/* .bth-container is the positioning context for the two pins below
-   (not the map) - that's what lets them sit in toward the container
-   rather than pinned to its raw edge, while the map graphic itself
-   stays .bth-locations__map's own fixed size instead of stretching to
-   the container's full width. */
 .bth-company-vision__inner {
   position: relative;
 }
 
+/* position:relative on the MAP itself (not .__inner, the full-width
+   .bth-container) is the fix for a real bug: the two pins were
+   siblings of the map, absolutely positioned against the section's
+   full container width - fine-ish at typical desktop widths, but on
+   a wide screen the map (capped at 560px, centered) sat nowhere near
+   where "8% from the container's edge" actually landed, reading as a
+   tiny map with two oversized cards floating far off to either side.
+   Pins are now nested INSIDE this element in the HTML (matching
+   .bth-locations__map's own working pin setup on the Contact page),
+   so their percentages are relative to the map's own box and scale
+   with it at any width. */
 .bth-company-vision__map {
+  position: relative;
   max-width: 380px;
   margin: 0 auto;
 }
@@ -3704,6 +3787,12 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   }
 }
 
+@media (min-width: 1400px) {
+  .bth-company-vision__map {
+    max-width: 860px;
+  }
+}
+
 .bth-company-vision__map img {
   width: 100%;
   height: auto;
@@ -3711,32 +3800,55 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   opacity: 0.85;
 }
 
+/* width:240px is load-bearing and explicit, not left to auto-sizing -
+   this absolutely positioned box was stretching to fill nearly the
+   map's full width regardless of which single offset (left OR right)
+   was set instead of shrinking to its content, despite that being
+   what width:auto (the default) and width:fit-content should both do
+   here per the shrink-to-fit algorithm - neither budged it. The
+   240px card was then just sitting at the start edge of that
+   invisible full-width box, reading as if left/right had no effect on
+   its position at all (both corner pins landed in the same spot). An
+   explicit width matching the card's own (see .__card below) sidesteps
+   the auto-sizing question entirely instead of continuing to fight it.
+   Bottom-anchored (vision) so the card grows UPWARD from that point
+   instead of down - same reason .bth-locations__pin--zadar is bottom-
+   anchored: with no bottom padding on this section (matching
+   .bth-locations exactly), a taller top-anchored card ran past the
+   section's own bottom edge and got clipped by overflow:hidden. 2%
+   insets (not the old 8-10%) since these percentages are now relative
+   to the map's own, much smaller box instead of the full
+   .bth-container - the old values left enough of a gap on a
+   ~2000px-wide container to read as two corner cards, but against the
+   map itself they pulled both cards in toward the middle far enough
+   to overlap each other. */
 .bth-company-vision__pin {
   position: absolute;
+  width: min(400px, 46%);
 }
 
-/* Bottom-anchored so the card grows UPWARD from this point instead of
-   down - same reason .bth-locations__pin--zadar is bottom-anchored:
-   with no bottom padding on this section (matching .bth-locations
-   exactly), a taller top-anchored card here ran past the section's
-   own bottom edge and got clipped by overflow:hidden. */
 .bth-company-vision__pin--vision {
-  left: 8%;
-  bottom: 10%;
+  left: 2%;
+  bottom: 2%;
 }
 
 .bth-company-vision__pin--mission {
-  right: 8%;
-  top: 8%;
+  right: 2%;
+  top: 2%;
 }
 
+/* Same min(400px, 46%) as .bth-company-vision__pin above, on purpose -
+   the pin's own explicit width has to match the card's real rendered
+   width (see the pin's comment for why it can't just be width:auto),
+   so both are kept in sync here rather than one relying on the
+   other's shrink-to-fit sizing to line up. */
 .bth-company-vision__card {
   background: rgba(30, 80, 110, 0.55);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
   border-radius: 16px;
-  padding: 20px 24px;
-  width: min(350px, 58vw);
+  padding: 18px 22px;
+  width: min(400px, 46%);
   box-shadow: -10px -10px 30px rgba(255, 255, 255, 0.15), 10px 10px 34px rgba(12, 23, 42, 0.08);
 }
 
@@ -3768,7 +3880,7 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   font-family: var(--bth-font-heading);
   font-weight: 300;
   font-size: 14.5px;
-  line-height: 1.5;
+  line-height: 1.4;
   color: #fff;
   margin: 0;
 }
@@ -3782,21 +3894,41 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
    fixed gap - a % split (like desktop uses) can't guarantee that gap
    here, since these cards run 3-4 lines and the map itself (the only
    thing that normally gives this box its height) is short. min-height
-   below reserves room for both stacked cards - absolutely positioned
+   below (now on .__map, the pins' actual positioning context since
+   they moved inside it - it was mistakenly on .__inner, the full
+   .bth-container, which had no effect on the map's own short height)
+   reserves room for both stacked cards - absolutely positioned
    children don't otherwise grow their containing block, so without it
    the second card would overflow past .bth-company-vision's own
    overflow:hidden and get clipped. */
 @media (max-width: 767px) {
-  .bth-company-vision__inner {
+  .bth-company-vision__map {
     min-height: 420px;
   }
 
-  .bth-company-vision__pin--vision {
-    top: 220px;
+  .bth-company-vision__pin {
+    width: min(280px, 80vw);
   }
 
+  /* bottom:auto resets the base rule's bottom:2% - with both top and
+     bottom set on an absolutely-positioned, auto-height element, its
+     height gets stretched to fit exactly between the two instead of
+     sizing to its own content, which isn't what this fixed top offset
+     is going for. */
+  .bth-company-vision__pin--vision {
+    top: 220px;
+    bottom: auto;
+  }
+
+  /* left:2% (not the base rule's right:2%) - stacked vertically here
+     rather than diagonal corners, so both pins need the SAME
+     horizontal anchor or they'd sit at different left offsets (right:
+     2% of a narrow mobile map lands well to the left of left:2%'s own
+     position) instead of lining up in a clean column. */
   .bth-company-vision__pin--mission {
     top: 0;
+    left: 2%;
+    right: auto;
   }
 
   .bth-company-vision__card {
@@ -4786,7 +4918,35 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   font-size: 16px;
 }
 
+/* This block must come AFTER the unconditional .bth-home-stats__row/
+   __intro rules above - an earlier attempt placed the same overrides
+   before them in the file, and since a media-scoped rule doesn't
+   outrank an unconditional one of equal specificity, source order
+   alone decided the tie and the unconditional (desktop) values won
+   even on mobile, squeezing the intro and the 4 stats onto one
+   420px-tall row and blowing the section height out. */
 @media (max-width: 991px) {
+  /* Column stacking (not the desktop row's nowrap) - nowrap exists to
+     stop the stats grid wrapping onto its own line at ~1440px; with
+     no direction override here it also forced the intro column and
+     the 4 stats to squeeze onto one row at mobile widths, overlapping
+     everything. */
+  .bth-home-stats__row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+  }
+
+  /* flex-basis:auto (not the desktop 420px) - in a column flex
+     container flex-basis sets HEIGHT, not width, so the desktop
+     value left the intro column 420px tall regardless of its actual
+     content, with the stats grid tacked on below it doing the same -
+     hundreds of pixels of dead space between the button and the
+     numbers. */
+  .bth-home-stats__intro {
+    flex-basis: auto;
+  }
+
   .bth-home-stats__grid {
     justify-content: flex-start;
     gap: 30px 40px;
@@ -5414,9 +5574,16 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   overflow: hidden;
 }
 
+/* justify-content:center - the map (max 560px) and text (max 480px)
+   don't grow past their own caps, so on a very wide screen (.bth-
+   container itself goes up to 2400px) the row's actual content was
+   only ever going to be ~1100px wide regardless, and left it hugging
+   the left edge with a large dead gap on the right at that point
+   instead of sitting centered in the available space. */
 .bth-home-global__row {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: clamp(40px, 6vw, 90px);
 }
 

@@ -12,6 +12,74 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
+   * Brand accent: every letter B/b in the page's visible text (every
+   * page, site-wide) gets wrapped and colored #54d4ff - the same
+   * color already used for the hand-picked "B" accents on the
+   * homepage (Brodotehna/Built/Battery/Build). A TreeWalker over text
+   * nodes is the only way to do this for every occurrence rather than
+   * just the few spots someone manually wrapped a letter in a span -
+   * it only ever touches actual rendered text nodes, so element
+   * attributes (alt, placeholder, href, input values) are untouched
+   * by construction, not by an explicit exclusion.
+   */
+  function colorAccentLetters() {
+    const SKIP_TAGS = new Set(['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEXTAREA', 'TITLE', 'SVG']);
+
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        if (!node.nodeValue || !/[bB]/.test(node.nodeValue)) return NodeFilter.FILTER_REJECT;
+        const parent = node.parentElement;
+        if (!parent || SKIP_TAGS.has(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+
+    const targets = [];
+    let node;
+    while ((node = walker.nextNode())) targets.push(node);
+
+    targets.forEach((textNode) => {
+      const parts = textNode.nodeValue.split(/([bB])/);
+      // Everything goes inside ONE wrapper span (not a DocumentFragment
+      // of loose sibling nodes) - a flex/grid parent with `gap` (e.g.
+      // .bth-icon-list li) applies that gap between every direct child
+      // it sees, including each fragment of a split text node. Swapping
+      // one text node for 3+ sibling nodes turned 1 gap (icon-to-text)
+      // into several (also between "Utility Su"/the B span/"stations"),
+      // visibly prying the letter away from the rest of the word. A
+      // single wrapper keeps the parent's child count - and its gaps -
+      // exactly as they were. It gets .bth-accent-run so brodotehna.css
+      // can force it (and every .bth-accent-b letter span) back to a
+      // neutral inline box - a bare, class-less <span> can still be
+      // caught by a page rule that targets plain `span` inside some
+      // component (e.g. .bth-reference-card__meta span, styled as a
+      // padded/backgrounded inline-flex tag-pill for its OWN spans).
+      // That doesn't just re-introduce the flex-gap bug one level
+      // deeper (on the wrapper) - the padding+background land on the
+      // single-letter .bth-accent-b span too, since it's a `span`
+      // descendant of the same component just the same, visually
+      // padding the "B" like its own little pill. Both classes are
+      // reset with !important in CSS rather than JS inline styles, so
+      // the fix stays declarative and covers properties beyond
+      // display (padding/background/border/gap/etc.) in one place.
+      const wrapper = document.createElement('span');
+      wrapper.className = 'bth-accent-run';
+      parts.forEach((part) => {
+        if (part === 'b' || part === 'B') {
+          const span = document.createElement('span');
+          span.className = 'bth-accent-b';
+          span.textContent = part;
+          wrapper.appendChild(span);
+        } else if (part) {
+          wrapper.appendChild(document.createTextNode(part));
+        }
+      });
+      textNode.parentNode.replaceChild(wrapper, textNode);
+    });
+  }
+  colorAccentLetters();
+
+  /**
    * Mobile nav: Bootstrap's own Collapse component (data-bs-toggle on
    * the navbar-toggler) handles open/close - this just closes the
    * menu after a link is picked, which Bootstrap doesn't do on its own
