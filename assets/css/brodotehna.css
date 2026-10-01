@@ -1167,6 +1167,12 @@ html {
   padding: 100px 0 20px;
 }
 
+/* R&D page only - Figma has the footer on --bth-bg-light there
+   specifically; every other page's footer screen is plain white. */
+.bth-footer--light-page {
+  background: var(--bth-bg-light);
+}
+
 @media (max-width: 991px) {
   .bth-footer {
     padding: 60px 0 30px;
@@ -1603,6 +1609,27 @@ html {
   padding: clamp(50px, 7vw, 100px) 0;
 }
 
+/* R&D page, Section 1 only: that row holds a showcase card (see
+   .bth-solutions-card__showcase) in its right column instead of this
+   component's usual plain text+buttons - on the component's own
+   --bth-bg-page background (#f0f3f5, nearly identical to the card's
+   own #eff1f5) the card barely reads as a card at all. White restores
+   the contrast the card relies on everywhere else it's used (inside
+   .bth-solutions-list, which is plain white). */
+.bth-solutions-intro--white {
+  background: #fff;
+}
+
+/* Figma has this one card (the EU logos + Digitalization blurb) on
+   --bth-bg-light (#f6f9fb, the site's standard light-card color used
+   everywhere else) rather than .bth-solutions-card__showcase's own
+   #eff1f5 - scoped to this page's instance only, so the shared
+   component's own aEMS-style cards on the Solutions page are
+   untouched. */
+.bth-solutions-intro--white .bth-solutions-card__showcase {
+  background: var(--bth-bg-light);
+}
+
 .bth-solutions-intro__eyebrow {
   display: flex;
   align-items: center;
@@ -1912,6 +1939,244 @@ html {
   width: 100%;
   height: auto;
   display: block;
+}
+
+/* UKUS card only: the source graphic already has its own rounded
+   corners baked in with real alpha transparency (not a rectangle),
+   so the wrapper's own radius/shadow/clip would double up against
+   it and show a mismatched sliver at each corner. Dropping them
+   lets the image's transparent corners blend straight into the
+   card's own light-gray background behind it instead. */
+.bth-solutions-card__showcase-media--transparent {
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+
+/* SCADA card only: two overlapping screenshots instead of one -
+   back image top-left, front image bottom-right, each with its own
+   rounded corners/shadow. Needs overflow visible + an aspect-ratio
+   on the wrapper since both images are taken out of flow via
+   position:absolute (so the wrapper has nothing else to size itself
+   by) and must be allowed to spill past the wrapper's own box. */
+.bth-solutions-card__showcase-media--stacked {
+  position: relative;
+  overflow: visible;
+  box-shadow: none;
+  border-radius: 0;
+  aspect-ratio: 4 / 3;
+}
+
+.bth-solutions-card__showcase-media--stacked img {
+  position: absolute;
+  width: 92%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 16px 32px rgba(18, 43, 61, 0.16);
+}
+
+.bth-solutions-card__showcase-media--stacked .bth-solutions-card__showcase-media-back {
+  top: 0;
+  left: 0;
+}
+
+.bth-solutions-card__showcase-media--stacked .bth-solutions-card__showcase-media-front {
+  right: 0;
+  bottom: 0;
+}
+
+/*--------------------------------------------------------------
+# EU funding logos + Project information + Co-funded box
+(R&D page only) - a row of official co-financing logos, a
+label/value project-facts table, and a "Co-funded by the EU" card
+combining both, reusing .bth-solutions-card__showcase's light-card
+look rather than inventing a new one.
+--------------------------------------------------------------*/
+.bth-eu-logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.bth-eu-logos__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.bth-eu-logos__item img {
+  height: 64px;
+  width: auto;
+}
+
+.bth-eu-logos__item span {
+  font-family: var(--bth-font-heading);
+  font-weight: 700;
+  font-size: 11.5px;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--bth-nav-text);
+}
+
+.bth-eu-logos__logo {
+  height: 48px;
+  width: auto;
+  margin-top: 8px;
+}
+
+.bth-solutions-card__subheading {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--bth-nav-text);
+  margin: 40px 0 18px;
+}
+
+/* Project information - a real <table>, not a hand-rolled grid: the
+   label column's border-right naturally forms one continuous
+   divider line (table cell borders have no gaps between rows under
+   border-collapse), and the value column's width/wrapping is native
+   table layout instead of something that needs to be fought with
+   calc() or grid auto-placement order. */
+.bth-project-info {
+  background: var(--bth-bg-light);
+  border-radius: 20px;
+  padding: clamp(24px, 3vw, 40px);
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.bth-project-info th {
+  text-align: right;
+  vertical-align: middle;
+  font-family: var(--bth-font-label);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  color: var(--bth-muted);
+  white-space: nowrap;
+  border-right: 1px solid var(--bth-border);
+  padding: 11px clamp(16px, 2vw, 28px) 11px 0;
+}
+
+.bth-project-info td {
+  vertical-align: middle;
+  font-family: var(--bth-font-heading);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--bth-nav-text);
+  padding: 11px 0 11px clamp(16px, 2vw, 28px);
+}
+
+@media (max-width: 575px) {
+  .bth-project-info,
+  .bth-project-info tbody,
+  .bth-project-info tr,
+  .bth-project-info th,
+  .bth-project-info td {
+    display: block;
+  }
+
+  .bth-project-info tr {
+    padding: 10px 0;
+  }
+
+  .bth-project-info th {
+    text-align: left;
+    white-space: normal;
+    border-right: 0;
+    padding: 0 0 4px;
+  }
+
+  .bth-project-info td {
+    padding: 0;
+  }
+}
+
+/* Co-funded by the EU - text+links on the left, logos on the right,
+   optional disclaimer spanning the full width underneath. */
+.bth-eu-funding {
+  background: var(--bth-bg-light);
+  border-radius: 20px;
+  padding: clamp(24px, 3vw, 40px);
+  margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.bth-eu-funding__content {
+  flex: 1 1 420px;
+}
+
+.bth-eu-funding__content h4 {
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--bth-nav-text);
+  margin: 0 0 14px;
+}
+
+.bth-eu-funding__content p {
+  font-family: var(--bth-font-heading);
+  font-weight: 400;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--bth-nav-text);
+  margin: 0 0 18px;
+  max-width: 500px;
+}
+
+.bth-eu-funding__links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bth-eu-funding__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--bth-primary);
+  font-family: var(--bth-font-heading);
+  font-weight: 500;
+  font-size: 14.5px;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.bth-eu-funding__link img {
+  width: 14px;
+  height: 14px;
+}
+
+.bth-eu-funding__link:hover {
+  text-decoration: underline;
+}
+
+.bth-eu-funding__logos {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+  max-width: 320px;
+}
+
+.bth-eu-funding__disclaimer {
+  flex-basis: 100%;
+  font-family: var(--bth-font-heading);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--bth-muted);
+  border-top: 1px solid var(--bth-border);
+  padding-top: 18px;
+  margin-top: 4px;
 }
 
 /*--------------------------------------------------------------
@@ -2884,7 +3149,11 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
 
 /* --- Contact form --- */
 .bth-contact-form {
-  padding: 80px 0 90px;
+  /* Fluid instead of the old flat 80px/90px, which never shrank on
+     mobile - stacked on top of .bth-contact-form__intro's own mobile
+     padding, it left a much bigger gap under the Locations section
+     than any other section-to-section transition on the page. */
+  padding: clamp(40px, 8vw, 80px) 0 clamp(50px, 9vw, 90px);
   background: #fff;
 }
 
@@ -4632,6 +4901,10 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   background: var(--bth-bg-light);
   border-radius: 30px;
   padding: 36px;
+  /* Same backstop as .bth-contact-form__fields, for the same Cloudflare
+     Turnstile grid min-width issue - see the comment there. */
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .bth-careers-apply__card h3 {
@@ -4707,7 +4980,31 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   background-image: url("../img/brodotehna/homepage-hero-bg-optimized.jpg");
   background-size: cover;
   background-position: center;
-  padding: clamp(100px, 11vw, 180px) 0;
+  display: flex;
+  align-items: center;
+  padding: 40px 0;
+  /* Always exactly fill the screen below the sticky navbar (70px,
+     its real measured height - getBoundingClientRect(), not the 82px
+     .bth-page-header's own min-height subtracts elsewhere, which left
+     a 12px gap of the next section peeking in at the bottom), so the
+     whole hero is visible without scrolling on first load, on any
+     screen size - svh (not vh) so mobile browsers' address-bar
+     show/hide doesn't leave it just short of the fold; the plain vh
+     line is a fallback for browsers without svh support and is simply
+     overridden where it's known. */
+  min-height: calc(100vh - 70px);
+  min-height: calc(100svh - 70px);
+}
+
+@media (max-width: 991px) {
+  .bth-home-hero {
+    /* Below 991px the navbar switches to position:fixed (see
+       .bth-navbar's own media query) and #main gets padding-top:74px
+       to compensate instead, so the hero itself only needs to fill
+       what's left of the screen after that reserved space. */
+    min-height: calc(100vh - 74px);
+    min-height: calc(100svh - 74px);
+  }
 }
 
 .bth-home-hero::before {

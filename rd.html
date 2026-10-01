@@ -65,56 +65,51 @@
     <!-- ======= Page Header ======= -->
     <section class="bth-page-header bth-page-header--page-bg">
       <div class="bth-container" data-aos="fade-up">
-        <p class="bth-eyebrow">R&amp;D</p>
-        <h1>Research, Development &amp; Digitalization</h1>
-        <p>Brodotehna continuously invests in digitalizing its own operations and in research and innovation projects that advance energy and industrial control technology, several of them co-financed by the European Union.</p>
+        <p class="bth-eyebrow">Research &amp; Innovation</p>
+        <h1>Driving Innovation Through Technology</h1>
       </div>
     </section><!-- End Page Header -->
 
-    <!-- ======= Section 1: Digitalization ======= -->
-    <section class="bth-solutions-intro">
+    <!-- ======= Section 1: Digital Transformation =======
+         Left: intro text. Right: a .bth-solutions-card__showcase-style
+         light card (reused as-is) holding the EU/OPKIK/ESIF funding
+         logos plus the Digitalizacija poduzeća project blurb, instead
+         of the plain paragraph+buttons this component usually holds.
+         --white: see the modifier's comment in brodotehna.css - the
+         card's own gray barely shows against this component's usual
+         page-gray background. -->
+    <section class="bth-solutions-intro bth-solutions-intro--white">
       <div class="bth-container">
         <div class="row align-items-start" data-aos="fade-up">
           <div class="col-lg-6">
             <div class="bth-solutions-intro__eyebrow">
-              <span>01/</span>
-              <span>Digitalization</span>
+              <span>01</span>
+              <span>Digital Transformation</span>
             </div>
-            <h2 class="bth-solutions-intro__heading">Digitalizing Our Operations</h2>
+            <h2 class="bth-solutions-intro__heading">Building a Smarter Digital Foundation</h2>
+            <p class="bth-solutions-intro__copy">
+              Through the implementation of modern digital tools and ERP solutions, we are improving internal processes, increasing efficiency and creating a stronger foundation for future growth.
+            </p>
           </div>
           <div class="col-lg-6">
-            <p class="bth-solutions-intro__copy">
-              Brodotehna digitalized its internal operations through the introduction of a company-wide <b>ERP system</b>, streamlining planning, resource management and internal processes while strengthening employees' digital competencies across the organization.
-            </p>
+            <div class="bth-solutions-card__showcase">
+              <div class="bth-eu-logos">
+                <div class="bth-eu-logos__item">
+                  <img src="assets/img/brodotehna/logo-eu-funded.svg" alt="European Union">
+                  <span>Funded by<br>the European Union</span>
+                </div>
+                <img class="bth-eu-logos__logo" src="assets/img/brodotehna/logo-opkik.svg" alt="Operativni program Konkurentnost i kohezija">
+                <img class="bth-eu-logos__logo" src="assets/img/brodotehna/logo-esif.svg" alt="Europski strukturni i investicijski fondovi">
+              </div>
+              <div class="bth-eu-funding__content" style="margin-top:24px;">
+                <h4>Digitalization of Brodotehna</h4>
+                <p>The project focused on the digital transformation of Brodotehna through the implementation of an ERP system, new digital solutions and the development of employees&rsquo; digital skills.</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section><!-- End Section 1 -->
-
-    <!-- ======= Digitalization details ======= -->
-    <section class="bth-industries">
-      <div class="row g-0">
-        <div class="col-lg-6">
-          <div class="bth-industries__copy" data-aos="fade-up">
-            <p class="bth-eyebrow">Project Digitalizacija poduzeća Brodotehna d.o.o.</p>
-            <h2 class="bth-section-title">Digitalization <span class="bth-fw-light">Through ERP</span></h2>
-            <p>A 12-month initiative for the digital transformation of the company through the acquisition of digital solutions and the development of employees' digital skills.</p>
-            <div class="bth-industries__lists">
-              <ul class="bth-icon-list">
-                <li><img class="bth-icon-list__bullet" src="assets/img/brodotehna/icon-arrow-blue.svg" alt="">Duration: Dec 2022 - Dec 2023</li>
-                <li><img class="bth-icon-list__bullet" src="assets/img/brodotehna/icon-arrow-blue.svg" alt="">Company-wide ERP implementation</li>
-                <li><img class="bth-icon-list__bullet" src="assets/img/brodotehna/icon-arrow-blue.svg" alt="">Co-financed by the European Union</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="bth-industries__media" data-aos="fade-up">
-            <img src="assets/img/brodotehna/solution-aems-dashboard-mockup.png" alt="ERP and digital systems dashboard">
-          </div>
-        </div>
-      </div>
-    </section><!-- End Digitalization details -->
 
     <!-- ======= Section 2: R&I Projects =======
          Same sticky-sidebar + stacked-cards pattern as the Solutions
@@ -126,10 +121,15 @@
         <div class="row align-items-start" data-aos="fade-up">
           <div class="col-lg-6">
             <div class="bth-solutions-intro__eyebrow">
-              <span>02/</span>
-              <span>R&amp;I Projects</span>
+              <span>02</span>
+              <span>Research &amp; Development</span>
             </div>
-            <h2 class="bth-solutions-intro__heading">Research &amp; Innovation Projects</h2>
+            <h2 class="bth-solutions-intro__heading">Developing the Energy Systems of Tomorrow</h2>
+          </div>
+          <div class="col-lg-6">
+            <p class="bth-solutions-intro__copy">
+              Through research, technology and strategic partnerships, we develop advanced solutions for smarter, more flexible and more efficient energy systems.
+            </p>
           </div>
         </div>
       </div>
@@ -153,39 +153,103 @@
             <div class="bth-solutions-cards">
 
               <article class="bth-solutions-card" id="project-1" data-short="aVPP" data-title="Advanced Virtual Power Plant" data-aos="fade-up">
-                <h3>Advanced Virtual Power Plant (aVPP)</h3>
-                <p>A cloud-based virtual power plant platform using artificial intelligence, machine learning and advanced optimization algorithms to automate the operation of energy portfolios for aggregators. Developed in partnership with the Faculty of Electrical Engineering and Computing, University of Zagreb, and co-financed by the European Union through the Competitiveness and Cohesion Programme 2021-2027.</p>
+                <h3>Advanced Virtual Power Plant</h3>
+                <p><b>Smart energy management at portfolio scale.</b> aVPP is an advanced virtual power plant solution that combines cloud technology, artificial intelligence, machine learning and advanced optimization algorithms to enable automated management of distributed energy resources. The solution supports portfolio optimization, forecasting, centralized asset management, real-time monitoring and participation in energy and ancillary service markets.</p>
                 <div class="bth-solutions-card__showcase">
                   <div class="bth-solutions-card__features">
                     <h4>Key features</h4>
                     <ul>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Portfolio optimization and forecasting</li>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Centralized power plant management and monitoring</li>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Day-ahead and intraday scheduling</li>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Ancillary services integration with HOPS</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Portfolio monitoring</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>AI-powered forecasting</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Market participation</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Energy trading optimization</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Flexible asset dispatch</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Performance analytics</li>
                     </ul>
                   </div>
                   <div class="bth-solutions-card__showcase-media">
-                    <img src="assets/img/brodotehna/solution-card-placeholder-optimized.jpg" alt="Placeholder image - to be replaced">
+                    <img src="assets/img/brodotehna/solution-avpp-dashboard-mockup-optimized.jpg" alt="aVPP dashboard showing market position, exposure, KPI cards and long/short exposure timeline">
                   </div>
+                </div>
+
+                <h4 class="bth-solutions-card__subheading">Project information</h4>
+                <table class="bth-project-info">
+                  <tr><th>Project Lead</th><td>Brodotehna d.o.o.</td></tr>
+                  <tr><th>Project Partner</th><td>University of Zagreb, Faculty of Electrical Engineering and Computing (FER)</td></tr>
+                  <tr><th>Project Duration</th><td>January 2026 &ndash; January 2029</td></tr>
+                  <tr><th>Total Project Value</th><td>&euro;2,038,099.15</td></tr>
+                  <tr><th>Grant Funding</th><td>&euro;1,511,032.36</td></tr>
+                  <tr><th>Project Manager</th><td>Renato Sirovina</td></tr>
+                </table>
+
+                <div class="bth-eu-funding">
+                  <div class="bth-eu-funding__content">
+                    <h4>Co-funded by the European Union</h4>
+                    <p>The aVPP project is co-funded by the European Union through the European Regional Development Fund (ERDF) under the Competitiveness and Cohesion Programme 2021&ndash;2027.</p>
+                    <div class="bth-eu-funding__links">
+                      <a href="#" class="bth-eu-funding__link"><span>More information about EU funding</span><img src="assets/img/brodotehna/icon-arrow-blue.svg" alt=""></a>
+                    </div>
+                  </div>
+                  <div class="bth-eu-funding__logos">
+                    <div class="bth-eu-logos__item">
+                      <img src="assets/img/brodotehna/logo-eu-funded.svg" alt="European Union">
+                      <span>Funded by<br>the European Union</span>
+                    </div>
+                    <img src="assets/img/brodotehna/logo-fer.svg" alt="Faculty of Electrical Engineering and Computing" style="height:64px;width:auto;">
+                  </div>
+                  <p class="bth-eu-funding__disclaimer">Funded by the European Union through the European Regional Development Fund. Views and opinions expressed are those of the authors only and do not necessarily reflect those of the European Union or the European Commission.</p>
                 </div>
               </article>
 
-              <article class="bth-solutions-card" id="project-2" data-short="UKUS" data-title="Universal Communication &amp; Control System" data-aos="fade-up">
-                <h3>Universal Communication &amp; Control System (UKUS)</h3>
-                <p>A research project led by the Faculty of Electrical Engineering and Computing with Brodotehna as industry partner, developing a universal communication and control application that integrates data from industrial and energy facilities into a central repository for process optimization. Co-financed by the European Regional Development Fund through the Competitiveness and Cohesion Operational Programme 2014-2020.</p>
+              <article class="bth-solutions-card" id="project-2" data-short="UKUS" data-title="UKUS - Universal Communication &amp; Control System" data-aos="fade-up">
+                <h3>UKUS - Universal Communication &amp; Control System</h3>
+                <p><b>Connecting industrial systems through smarter communication and control.</b> UKUS is a research and development project focused on creating a universal communication and control platform for industrial plants, with a particular focus on energy facilities. The solution integrates communication and control modules, centralizes plant data and enables advanced analysis and process optimization. Support for different industrial communication protocols allows the platform to connect a wide range of systems and equipment within a unified environment.</p>
                 <div class="bth-solutions-card__showcase">
                   <div class="bth-solutions-card__features">
-                    <h4>Key features</h4>
+                    <h4>Key capabilities</h4>
                     <ul>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Compatible with all major industrial protocols</li>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Centralized facility data repository</li>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Integrated process-optimization algorithms</li>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Supports data-driven decision making</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Industrial communication</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Centralized data management</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Process optimization</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Data acquisition &amp; analytics</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>System integration</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Decision support &amp; control</li>
                     </ul>
                   </div>
-                  <div class="bth-solutions-card__showcase-media">
-                    <img src="assets/img/brodotehna/solution-card-placeholder-optimized.jpg" alt="Placeholder image - to be replaced">
+                  <div class="bth-solutions-card__showcase-media bth-solutions-card__showcase-media--transparent">
+                    <img src="assets/img/brodotehna/rd-ukus-banner-optimized.png" alt="UKUS - Universal Communication and Control System logo">
+                  </div>
+                </div>
+
+                <h4 class="bth-solutions-card__subheading">Project information</h4>
+                <table class="bth-project-info">
+                  <tr><th>Project</th><td>Universal Communication &amp; Control System for Industrial Plants (UKUS)</td></tr>
+                  <tr><th>Project Code</th><td>KK.01.1.1.07.0034</td></tr>
+                  <tr><th>Project Lead</th><td>University of Zagreb, Faculty of Electrical Engineering and Computing (FER)</td></tr>
+                  <tr><th>Project Partner</th><td>Brodotehna d.o.o.</td></tr>
+                  <tr><th>Project Duration</th><td>December 2020 &ndash; December 2023</td></tr>
+                  <tr><th>Total Project Value</th><td>HRK 7,959,826.83</td></tr>
+                  <tr><th>EU Co-Funding</th><td>HRK 6,295,049.28</td></tr>
+                  <tr><th>Programme</th><td>Operational Programme Competitiveness and Cohesion 2014&ndash;2020</td></tr>
+                </table>
+
+                <div class="bth-eu-funding">
+                  <div class="bth-eu-funding__content">
+                    <h4>Co-funded by the European Union</h4>
+                    <p>The UKUS project was co-funded by the European Union through the European Regional Development Fund (ERDF) under the Operational Programme Competitiveness and Cohesion 2014&ndash;2020.</p>
+                    <div class="bth-eu-funding__links">
+                      <a href="#" class="bth-eu-funding__link"><span>More information about EU funding</span><img src="assets/img/brodotehna/icon-arrow-blue.svg" alt=""></a>
+                      <a href="#" class="bth-eu-funding__link"><span>Operational Programme Competitiveness and Cohesion</span><img src="assets/img/brodotehna/icon-arrow-blue.svg" alt=""></a>
+                    </div>
+                  </div>
+                  <div class="bth-eu-funding__logos">
+                    <div class="bth-eu-logos__item">
+                      <img src="assets/img/brodotehna/logo-eu-funded.svg" alt="European Union">
+                      <span>Funded by<br>the European Union</span>
+                    </div>
+                    <img src="assets/img/brodotehna/logo-fer.svg" alt="Faculty of Electrical Engineering and Computing" style="height:64px;width:auto;">
+                    <img src="assets/img/brodotehna/logo-opkik.svg" alt="Operativni program Konkurentnost i kohezija" style="height:36px;width:auto;align-self:flex-end;">
+                    <img src="assets/img/brodotehna/logo-esif.svg" alt="Europski strukturni i investicijski fondovi" style="height:48px;width:auto;align-self:flex-end;">
                   </div>
                 </div>
               </article>
@@ -196,31 +260,10 @@
       </div>
     </section><!-- End Section 2 -->
 
-    <!-- ======= CTA ======= -->
-    <section class="bth-solutions-cta">
-      <div class="row g-0 align-items-center">
-        <div class="col-lg-6">
-          <div class="bth-solutions-cta__media" data-aos="fade-up">
-            <img src="assets/img/brodotehna/photo-cta-card-optimized.jpg" alt="Brodotehna engineering team">
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="bth-solutions-cta__content" data-aos="fade-up">
-            <h2><span class="bth-fw-light">Have a question for us?</span><span class="bth-fw-semibold">Get in touch.</span></h2>
-            <p>Get in touch with us for more information about Brodotehna's R&amp;D and digitalization projects.</p>
-            <a href="contact.html" class="bth-btn">
-              <span>Contact us</span>
-              <span class="bth-btn__icon"><img src="assets/img/brodotehna/icon-arrow.svg" alt=""></span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section><!-- End CTA -->
-
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
-  <footer class="bth-footer">
+  <footer class="bth-footer bth-footer--light-page">
     <div class="bth-container">
       <div class="bth-footer__top row row-cols-1 row-cols-sm-2 row-cols-md-5 gy-5" data-aos="fade-up">
         <div class="col bth-footer__col">
