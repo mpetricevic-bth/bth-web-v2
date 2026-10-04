@@ -141,11 +141,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabs = document.querySelectorAll('.bth-solutions-tabs [data-target]');
     const nameEl = document.querySelector('.bth-solutions-sidebar__name');
     const titleEl = document.querySelector('.bth-solutions-sidebar__title');
+    // Siemens Xcelerator link in the sidebar - aEMS-specific, so it
+    // only shows while that card is the one currently in view.
+    const siemensLink = document.querySelector('#bthSiemensLink');
 
     const setActive = (card) => {
       tabs.forEach(tab => tab.classList.toggle('active', tab.dataset.target === card.id));
       if (nameEl) nameEl.textContent = card.dataset.short || '';
       if (titleEl) titleEl.textContent = card.dataset.title || '';
+      if (siemensLink) siemensLink.hidden = card.dataset.short !== 'aEMS';
     };
 
     const observer = new IntersectionObserver((entries) => {
@@ -351,14 +355,42 @@ document.addEventListener('DOMContentLoaded', () => {
    * name in place of its placeholder text once one is picked.
    */
   const uploadInput = document.getElementById('cf-documents');
+  const MAX_UPLOAD_BYTES = 10 * 1024 * 1024; // keep in sync with Uploads:MaxBytes in the ContactApi backend
+  const ALLOWED_UPLOAD_EXTENSIONS = ['.pdf', '.doc', '.docx'];
+
+  function validateUploadFile(file) {
+    if (!file) return null;
+    if (file.size > MAX_UPLOAD_BYTES) {
+      return `File is too large (max ${MAX_UPLOAD_BYTES / 1024 / 1024} MB).`;
+    }
+    const ext = file.name.slice(file.name.lastIndexOf('.')).toLowerCase();
+    if (!ALLOWED_UPLOAD_EXTENSIONS.includes(ext)) {
+      return 'File must be a PDF, DOC or DOCX.';
+    }
+    return null;
+  }
+
   if (uploadInput) {
     const uploadLabel = uploadInput.closest('.bth-contact-form__upload');
     const uploadText = uploadLabel?.querySelector('span');
     const defaultText = uploadText?.textContent ?? '';
 
     uploadInput.addEventListener('change', () => {
+      const file = uploadInput.files?.[0];
+      // This is a convenience check only - it just saves the visitor a
+      // round trip to the server for an obviously-wrong file. The real
+      // enforcement (size + actual file-content signature, not just the
+      // extension) happens server-side in ContactApi, since anything
+      // client-side is trivially bypassed.
+      const error = validateUploadFile(file);
+      if (error) {
+        uploadInput.value = '';
+        if (uploadText) uploadText.textContent = defaultText;
+        window.alert(error);
+        return;
+      }
       if (uploadText) {
-        uploadText.textContent = uploadInput.files?.[0]?.name || defaultText;
+        uploadText.textContent = file?.name || defaultText;
       }
     });
   }
@@ -390,41 +422,66 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // position/documentName only exist on the Open Application form -
-      // optional chaining keeps this the same handler for contact.html's
-      // plain inquiry form, where they're just absent from the payload.
+      // position/cf-documents only exist on the Open Application form -
+      // their presence is what tells this shared handler which form (and
+      // which endpoint/request shape) it's dealing with.
+      const positionInput = document.getElementById('cf-position');
+      const isCareerForm = !!positionInput;
       const documentFile = document.getElementById('cf-documents')?.files?.[0];
 
-      const payload = {
-        name: document.getElementById('cf-name')?.value ?? '',
-        phone: document.getElementById('cf-phone')?.value ?? '',
-        message: document.getElementById('cf-message')?.value ?? '',
-        email: document.getElementById('cf-email')?.value ?? '',
-        website: document.getElementById('cf-website')?.value ?? '',
-        consent: document.getElementById('cf-consent')?.checked ?? false,
-        turnstileToken: token
-      };
+      if (documentFile) {
+        const uploadError = validateUploadFile(documentFile);
+        if (uploadError) {
+          setStatus(uploadError);
+          return;
+        }
+      }
 
-      const position = document.getElementById('cf-position')?.value;
-      if (position) payload.position = position;
+      const name = document.getElementById('cf-name')?.value ?? '';
+      const phone = document.getElementById('cf-phone')?.value ?? '';
+      const message = document.getElementById('cf-message')?.value ?? '';
+      const email = document.getElementById('cf-email')?.value ?? '';
+      const website = document.getElementById('cf-website')?.value ?? '';
+      const consent = document.getElementById('cf-consent')?.checked ?? false;
 
-      // The actual file's bytes aren't sent here - JSON.stringify can't
-      // carry a File, and switching this endpoint to multipart/form-data
-      // is a backend contract change outside this form's scope. The
-      // filename travels as a signal so a reviewer at least knows a CV
-      // was attached; wiring the real upload needs backend support.
-      if (documentFile) payload.documentName = documentFile.name;
+      let requestUrl;
+      let requestBody;
+      let requestHeaders;
+
+      if (isCareerForm) {
+        // multipart/form-data, not JSON - that's the only way to carry
+        // the CV's actual bytes to the backend (JSON.stringify can't
+        // hold a File). The careers endpoint on ContactApi expects
+        // exactly these field names.
+        requestUrl = '/api/careers/apply';
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('phone', phone);
+        formData.append('email', email);
+        formData.append('position', positionInput?.value ?? '');
+        formData.append('message', message);
+        formData.append('website', website);
+        formData.append('consent', String(consent));
+        formData.append('turnstileToken', token);
+        if (documentFile) formData.append('documents', documentFile);
+        requestBody = formData;
+        requestHeaders = undefined; // let the browser set the multipart boundary
+      } else {
+        requestUrl = '/api/contact';
+        requestBody = JSON.stringify({
+          name, phone, message, email, website, consent, turnstileToken: token
+        });
+        requestHeaders = { 'Content-Type': 'application/json' };
+      }
 
       submitButton.disabled = true;
       setStatus('Sending...');
 
       try {
-        const response = await fetch('/api/contact', {
+        const response = await fetch(requestUrl, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
+          headers: requestHeaders,
+          body: requestBody
         });
 
         const result = await response.json().catch(() => null);

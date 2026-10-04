@@ -1941,6 +1941,32 @@ html {
   display: block;
 }
 
+/* Small external-link line below a card's showcase - same recipe as
+   .bth-eu-funding__link (R&D page) - blue text + arrow, not a full
+   .bth-btn, since this just points off to a partner page rather than
+   being a primary action. */
+.bth-solutions-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 20px;
+  color: var(--bth-primary);
+  font-family: var(--bth-font-heading);
+  font-weight: 500;
+  font-size: 14.5px;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.bth-solutions-card__link img {
+  width: 14px;
+  height: 14px;
+}
+
+.bth-solutions-card__link:hover {
+  text-decoration: underline;
+}
+
 /* UKUS card only: the source graphic already has its own rounded
    corners baked in with real alpha transparency (not a rectangle),
    so the wrapper's own radius/shadow/clip would double up against
@@ -1951,38 +1977,6 @@ html {
   border-radius: 0;
   box-shadow: none;
   overflow: visible;
-}
-
-/* SCADA card only: two overlapping screenshots instead of one -
-   back image top-left, front image bottom-right, each with its own
-   rounded corners/shadow. Needs overflow visible + an aspect-ratio
-   on the wrapper since both images are taken out of flow via
-   position:absolute (so the wrapper has nothing else to size itself
-   by) and must be allowed to spill past the wrapper's own box. */
-.bth-solutions-card__showcase-media--stacked {
-  position: relative;
-  overflow: visible;
-  box-shadow: none;
-  border-radius: 0;
-  aspect-ratio: 4 / 3;
-}
-
-.bth-solutions-card__showcase-media--stacked img {
-  position: absolute;
-  width: 92%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 16px 32px rgba(18, 43, 61, 0.16);
-}
-
-.bth-solutions-card__showcase-media--stacked .bth-solutions-card__showcase-media-back {
-  top: 0;
-  left: 0;
-}
-
-.bth-solutions-card__showcase-media--stacked .bth-solutions-card__showcase-media-front {
-  right: 0;
-  bottom: 0;
 }
 
 /*--------------------------------------------------------------
@@ -2859,7 +2853,13 @@ look rather than inventing a new one.
 
 .bth-contact-info__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* auto-fit/minmax instead of a hardcoded repeat(4, 1fr) - now that
+     there are two office-address cards instead of one, a fixed
+     4-column grid would leave the 5th card alone on its own
+     nearly-empty row. This settles into 5 even columns at this
+     card count without needing to touch it again if that count ever
+     changes. */
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
 }
 
@@ -5434,6 +5434,91 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
 
   .bth-home-solutions__label em {
     font-size: 13px;
+  }
+}
+
+/* --- Siemens Xcelerator banner ---
+   Thin band between the Solutions bento and Use Cases - same brand
+   gradient color stops as .bth-home-stats further up (just a
+   shallower angle here, per Figma), sized by its own content/padding
+   rather than a fixed min-height since it's meant to read as a slim
+   strip, not a full section. The button reuses .bth-btn--outline
+   as-is (already the established white-outline-on-gradient style
+   from .bth-home-stats' own "More About Us" button) - no new button
+   variant needed. */
+.bth-home-xcelerator {
+  background: linear-gradient(19.08deg, rgb(0, 144, 193) 19.8%, rgb(54, 255, 218) 221.67%);
+  padding: 24px 0;
+}
+
+.bth-home-xcelerator__row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.bth-home-xcelerator__logo {
+  flex-shrink: 0;
+  display: block;
+  height: 56px;
+  width: auto;
+}
+
+.bth-home-xcelerator__divider {
+  flex-shrink: 0;
+  align-self: stretch;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.bth-home-xcelerator__text {
+  flex: 1 1 320px;
+  color: #fff;
+}
+
+.bth-home-xcelerator__text h3 {
+  margin: 0 0 4px;
+  font-family: var(--bth-font-heading);
+  font-weight: 600;
+  font-size: clamp(19px, 0.6vw + 16px, 24px);
+  color: #fff;
+}
+
+.bth-home-xcelerator__text p {
+  margin: 0;
+  font-family: var(--bth-font-heading);
+  font-weight: 400;
+  font-size: 14.5px;
+  color: #fff;
+}
+
+.bth-home-xcelerator .bth-btn {
+  flex-shrink: 0;
+}
+
+@media (max-width: 767px) {
+  .bth-home-xcelerator__row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .bth-home-xcelerator__divider {
+    display: none;
+  }
+
+  /* flex:1 1 320px only makes sense along the row layout's horizontal
+     axis (grow to fill leftover width) - once the column direction
+     above makes that axis vertical instead, the same rule stretches
+     this block to fill the container's height, shoving the button
+     down with a large gap above it. */
+  .bth-home-xcelerator__text {
+    flex: none;
+  }
+
+  .bth-home-xcelerator .bth-btn {
+    width: 100%;
+    justify-content: space-between;
   }
 }
 
