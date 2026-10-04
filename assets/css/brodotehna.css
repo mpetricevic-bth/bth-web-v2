@@ -2394,6 +2394,35 @@ look rather than inventing a new one.
   }
 }
 
+/* Shared edge-fade affordance for genuinely user-scrollable strips
+   (.bth-services-tabs-row here, .bth-careers-expect__row and
+   .bth-home-references__pages further down - NOT .bth-partners__
+   viewport, whose marquee loops forever and never has a real start/
+   end). edgeFadeScrollInit() in brodotehna.js adds this class plus
+   the --start/--end modifiers once the strip has actually scrolled to
+   an edge, so the fade on that side drops out instead of permanently
+   implying there's more to scroll in a direction that has none. The
+   unmodified two-sided fade below is just the pre-JS/fallback state. */
+.bth-edge-fade-scroll {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 40px), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 40px), transparent);
+}
+
+.bth-edge-fade-scroll.bth-edge-fade-scroll--start {
+  -webkit-mask-image: linear-gradient(90deg, #000, #000 calc(100% - 40px), transparent);
+  mask-image: linear-gradient(90deg, #000, #000 calc(100% - 40px), transparent);
+}
+
+.bth-edge-fade-scroll.bth-edge-fade-scroll--end {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px, #000);
+  mask-image: linear-gradient(90deg, transparent, #000 24px, #000);
+}
+
+.bth-edge-fade-scroll.bth-edge-fade-scroll--start.bth-edge-fade-scroll--end {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
 .bth-services-tabs-row {
   display: flex;
   align-items: center;
@@ -2403,14 +2432,6 @@ look rather than inventing a new one.
   padding: 12px;
   overflow-x: auto;
   scrollbar-width: none;
-  /* Already genuinely scrollable (the hidden native scrollbar is the
-     only thing missing) - without any affordance a cut-off last tab
-     just looks clipped/broken rather than "scroll for more", so fade
-     the trailing edge the same way .bth-partners__viewport already
-     does for its marquee. Fades both edges since the row can overflow
-     on either side once scrolled partway. */
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 40px), transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 40px), transparent);
 }
 
 .bth-services-tabs-row::-webkit-scrollbar {
@@ -4825,8 +4846,6 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   gap: 20px;
   overflow-x: auto;
   scrollbar-width: none;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 40px), transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 40px), transparent);
 }
 
 .bth-careers-expect__row::-webkit-scrollbar {
@@ -5447,6 +5466,12 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
    from .bth-home-stats' own "More About Us" button) - no new button
    variant needed. */
 .bth-home-xcelerator {
+  /* Plain-color fallback before the gradient - if a browser (or a
+     data-saver mode that strips background images on cellular, which
+     some mobile Chrome builds do) ever fails to render the gradient
+     for any reason, this still gives the white text/border above it
+     something other than the page's white background to sit on. */
+  background: rgb(0, 144, 193);
   background: linear-gradient(19.08deg, rgb(0, 144, 193) 19.8%, rgb(54, 255, 218) 221.67%);
   padding: 24px 0;
 }
@@ -5712,11 +5737,6 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   background: linear-gradient(180deg, #fff 0%, var(--bth-bg-page) 100%);
 }
 
-/* Grid with named areas (not flex) so .nav - a sibling of .intro and
-   .pages now, not nested inside .intro - can sit under the intro copy
-   on desktop but move below the cards on mobile: the grid-template-
-   areas override below is the only thing that has to change to move
-   it, instead of relocating markup or juggling flex `order`. */
 .bth-home-references__row {
   display: grid;
   grid-template-columns: 380px 1fr;
@@ -5753,6 +5773,12 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   }
 }
 
+/* Same circle + hover language as .bth-btn__icon (the navbar's
+   Contact Us button): white circle at rest, brand gradient fill on
+   hover, icon flips from dark to white with it - just a free-standing
+   button here instead of living inside a .bth-btn. No page counter
+   between them (just the two buttons) - the strip below is freely
+   scrollable, these just nudge it by one card. */
 .bth-home-references__nav {
   grid-area: nav;
   display: flex;
@@ -5760,10 +5786,6 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   gap: 22px;
 }
 
-/* Same circle + hover language as .bth-btn__icon (the navbar's
-   Contact Us button): white circle at rest, brand gradient fill on
-   hover, icon flips from dark to white with it - just a free-standing
-   button here instead of living inside a .bth-btn. */
 .bth-home-references__nav-btn {
   width: 50px;
   height: 50px;
@@ -5799,26 +5821,36 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   transform: rotate(180deg);
 }
 
-.bth-home-references__counter {
-  font-family: var(--bth-font-heading);
-  font-weight: 300;
-  font-size: 22px;
-  color: #63676b;
-}
-
+/* Free horizontal scroll strip, same pattern as .bth-careers-expect__row
+   elsewhere on the site - no paging/counter, the whole 10-card list is
+   always in the DOM and just scrolls. flex-basis is a fixed px (not
+   1 1 0 splitting the row) so cards keep a consistent width regardless
+   of how many happen to fit in the visible area, with the next card
+   peeking in at the edge as a scroll affordance. Native scrollbar
+   hidden (scrollbar-width/::-webkit-scrollbar) - the edge-fade mask
+   itself comes from .bth-edge-fade-scroll (added by JS), same as
+   .bth-careers-expect__row - the prev/next buttons are the intended
+   way to scroll, this is just a fallback for trackpad/touch. */
 .bth-home-references__pages {
   grid-area: pages;
   min-width: 0;
-}
-
-.bth-home-references__page {
   display: flex;
   gap: 22px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.bth-home-references__pages::-webkit-scrollbar {
+  display: none;
 }
 
 .bth-home-references__card {
-  flex: 1 1 0;
+  flex: 0 0 380px;
   min-width: 0;
+  scroll-snap-align: start;
   background: #fff;
   border: 1px solid var(--bth-border);
   border-radius: 30px;
@@ -5876,9 +5908,6 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   border-radius: 21px;
 }
 
-/* Stacked order: intro copy, then the cards, then prev/next+counter
-   below them - matches the design's own mobile reference, which puts
-   navigation after the content it navigates rather than above it. */
 @media (max-width: 991px) {
   .bth-home-references__row {
     grid-template-columns: 1fr;
@@ -5892,24 +5921,11 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
     justify-content: center;
   }
 
-  /* Cards stay side by side (not stacked) and become a swipeable
-     "peek" row - flex-basis:88% (not 1 1 0) leaves the next card
-     visibly peeking in at the edge as a scroll affordance, the same
-     partial-second-card look the design's own mobile reference shows.
-     scroll-snap-align quantizes the swipe to land on a card instead of
-     stopping mid-scroll. Prev/next still switch between PAGES (pairs)
-     as before - this scroll is an additional way to move between the
-     2 cards within the currently visible page. */
-  .bth-home-references__page {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding-bottom: 4px;
-    -webkit-overflow-scrolling: touch;
-  }
-
+  /* flex-basis:88% (not the desktop 380px) leaves the next card
+     visibly peeking in at the edge as a scroll affordance, matching
+     the narrower viewport. */
   .bth-home-references__card {
-    flex: 0 0 88%;
-    scroll-snap-align: start;
+    flex-basis: 88%;
   }
 }
 

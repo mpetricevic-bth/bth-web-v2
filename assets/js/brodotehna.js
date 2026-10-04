@@ -12,6 +12,37 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
+   * Edge-fade scroll strips (.bth-edge-fade-scroll, see brodotehna.css)
+   * - the fade on either side should only show while there's actually
+   * more content to reveal that way, not sit there permanently
+   * implying a direction that has nothing left to scroll to. Applies
+   * to every genuinely user-scrollable strip that uses this fade
+   * (NOT .bth-partners__viewport, whose marquee loops forever and
+   * never reaches a real start/end).
+   */
+  function edgeFadeScrollInit() {
+    const els = document.querySelectorAll(
+      '.bth-services-tabs-row, .bth-careers-expect__row, .bth-home-references__pages'
+    );
+    els.forEach(el => {
+      el.classList.add('bth-edge-fade-scroll');
+
+      const update = () => {
+        const atStart = el.scrollLeft <= 1;
+        const atEnd = el.scrollLeft >= el.scrollWidth - el.clientWidth - 1;
+        el.classList.toggle('bth-edge-fade-scroll--start', atStart);
+        el.classList.toggle('bth-edge-fade-scroll--end', atEnd);
+      };
+
+      update();
+      el.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      window.addEventListener('load', update);
+    });
+  }
+  edgeFadeScrollInit();
+
+  /**
    * Brand accent: every letter B/b in the page's visible text (every
    * page, site-wide) gets wrapped and colored #54d4ff - the same
    * color already used for the hand-picked "B" accents on the
@@ -324,28 +355,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /**
-   * Homepage: Selected References carousel - unlike every other
-   * carousel on the site (free horizontal scroll), this one has a
-   * real "1/5" page counter in the design, so prev/next step through
-   * discrete pages (2 cards each) via [hidden] instead of scrollBy.
-   * Wraps around at both ends rather than disabling the buttons.
+   * Homepage: Selected References card strip - same scrollBy-on-click
+   * idea as the "What to expect" row above, just scoped to its own
+   * nav buttons/card selectors.
    */
-  const referencesPages = document.querySelectorAll('.bth-home-references__page');
-  if (referencesPages.length) {
-    const counterCurrent = document.querySelector('.bth-home-references__counter-current');
-    let currentPage = 0;
-
-    const showPage = (index) => {
-      referencesPages[currentPage].hidden = true;
-      currentPage = (index + referencesPages.length) % referencesPages.length;
-      referencesPages[currentPage].hidden = false;
-      if (counterCurrent) counterCurrent.textContent = currentPage + 1;
-    };
-
+  const referencesRow = document.querySelector('.bth-home-references__pages');
+  if (referencesRow) {
+    const firstRefCard = referencesRow.querySelector('.bth-home-references__card');
     document.querySelectorAll('.bth-home-references__nav-btn').forEach(btn => {
       btn.addEventListener('click', () => {
+        const step = (firstRefCard?.offsetWidth ?? 380) + 22;
         const direction = btn.classList.contains('bth-home-references__nav-btn--prev') ? -1 : 1;
-        showPage(currentPage + direction);
+        referencesRow.scrollBy({ left: step * direction, behavior: 'smooth' });
       });
     });
   }

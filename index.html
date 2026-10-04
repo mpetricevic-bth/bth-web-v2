@@ -268,14 +268,13 @@
     </section><!-- End Use cases -->
 
     <!-- ======= Selected References =======
-         Intro column (eyebrow/heading/copy/prev-next+counter) fixed
-         width, same recipe as .bth-company-defines__row/__intro, next
-         to a paginated carousel - 5 pages of 2 cards each (10 projects
-         total), only one page visible at a time, advanced via
-         brodotehna.js instead of free horizontal scroll like the other
-         carousels on the site, to match the "1/5" counter in the
-         design. Card content/photos reused verbatim from
-         references.html where a project already has a page there. -->
+         Intro column (eyebrow/heading/copy/prev-next) fixed width,
+         same recipe as .bth-company-defines__row/__intro, next to a
+         free-scroll strip of all 10 projects - like every other
+         carousel on the site (native scrollbar hidden, edge-fade mask,
+         prev/next nudge via scrollBy, no page counter). Card content/
+         photos reused verbatim from references.html where a project
+         already has a page there. -->
     <section class="bth-home-references">
       <div class="bth-container bth-home-references__row">
         <div class="bth-home-references__intro" data-aos="fade-up">
@@ -283,110 +282,95 @@
           <h2 class="bth-section-title">Projects That Prove the Work</h2>
           <p class="bth-home-references__copy">Brodotehna solutions are implemented worldwide - from modernization to complete system delivery.</p>
         </div>
-        <!-- Own grid area (not nested in .intro) so it can sit below
-             the intro column on desktop but move below the cards on
-             mobile via grid-template-areas, instead of being stuck
-             wherever its DOM position puts it in the stacked column. -->
         <div class="bth-home-references__nav">
           <button type="button" class="bth-home-references__nav-btn bth-home-references__nav-btn--prev" aria-label="Previous">
             <img src="assets/img/brodotehna/icon-arrow-dark.svg" alt="">
           </button>
-          <span class="bth-home-references__counter"><span class="bth-home-references__counter-current">1</span>/<span class="bth-home-references__counter-total">5</span></span>
           <button type="button" class="bth-home-references__nav-btn bth-home-references__nav-btn--next" aria-label="Next">
             <img src="assets/img/brodotehna/icon-arrow-dark.svg" alt="">
           </button>
         </div>
         <div class="bth-home-references__pages" data-aos="fade-up">
-          <div class="bth-home-references__page">
-            <article class="bth-home-references__card">
-              <div class="bth-home-references__media"><img src="assets/img/brodotehna/perucica-optimized.jpg" alt="HPP Perućica"></div>
-              <div class="bth-home-references__body">
-                <h3>HPP Perućica</h3>
-                <p>Modernization of turbine governors and unit control systems</p>
-                <div class="bth-home-references__tags"><span>Montenegro</span><span>Hydropower</span><span>Modernization</span></div>
-              </div>
-            </article>
-            <article class="bth-home-references__card">
-              <div class="bth-home-references__media"><img src="assets/img/brodotehna/moco-moco-optimized.jpg" alt="HPP Moco Moco"></div>
-              <div class="bth-home-references__body">
-                <h3>HPP Moco Moco</h3>
-                <p>Engineering and commissioning of control, protection and electrical systems for a new hydropower plant.</p>
-                <div class="bth-home-references__tags"><span>Guyana</span><span>Hydropower</span><span>New Plant</span></div>
-              </div>
-            </article>
-          </div>
-          <div class="bth-home-references__page" hidden>
-            <article class="bth-home-references__card">
-              <div class="bth-home-references__media"><img src="assets/img/brodotehna/kumu-optimized.jpg" alt="HPP Kumu"></div>
-              <div class="bth-home-references__body">
-                <h3>HPP Kumu</h3>
-                <p>Control, protection and electrical systems for a new hydropower plant.</p>
-                <div class="bth-home-references__tags"><span>Guyana</span><span>Hydropower</span><span>New Plant</span></div>
-              </div>
-            </article>
-            <article class="bth-home-references__card">
-              <div class="bth-home-references__media"><img src="assets/img/brodotehna/zimbabwe-optimized.jpg" alt="HPP Great Zimbabwe"></div>
-              <div class="bth-home-references__body">
-                <h3>HPP Great Zimbabwe</h3>
-                <p>Engineering and delivery of control, protection and electrical systems for a new hydropower plant.</p>
-                <div class="bth-home-references__tags"><span>Zimbabwe</span><span>Hydropower</span><span>New Plant</span></div>
-              </div>
-            </article>
-          </div>
-          <div class="bth-home-references__page" hidden>
-            <article class="bth-home-references__card">
-              <div class="bth-home-references__media"><img src="assets/img/brodotehna/nam-mit-luong-optimized.jpg" alt="HPP Nam Mit Luong"></div>
-              <div class="bth-home-references__body">
-                <h3>HPP Nam Mit Luong</h3>
-                <p>Control, protection and medium-voltage systems for a new hydropower plant.</p>
-                <div class="bth-home-references__tags"><span>Vietnam</span><span>Hydropower</span><span>New Plant</span></div>
-              </div>
-            </article>
-            <article class="bth-home-references__card">
-              <div class="bth-home-references__media"><img src="assets/img/brodotehna/rdf-albioma-optimized.jpg" alt="RDF Albioma Les Bois Rouge"></div>
-              <div class="bth-home-references__body">
-                <h3>RDF Albioma Les Bois Rouge</h3>
-                <p>Automation and electrical systems for a new RDF boiler as part of a plant expansion.</p>
-                <div class="bth-home-references__tags"><span>Reunion</span><span>Waste-to-Energy</span><span>Plant Expansion</span></div>
-              </div>
-            </article>
-          </div>
-          <div class="bth-home-references__page" hidden>
-            <article class="bth-home-references__card">
-              <div class="bth-home-references__media"><img src="assets/img/brodotehna/montsinery-optimized.jpg" alt="BE Montsinery"></div>
-              <div class="bth-home-references__body">
-                <h3>BE Montsinery</h3>
-                <p>Control and instrumentation systems for a new biomass power plant.</p>
-                <div class="bth-home-references__tags"><span>French Guiana</span><span>Biomass</span><span>New Plant</span></div>
-              </div>
-            </article>
-            <article class="bth-home-references__card">
-              <div class="bth-home-references__media"><img src="assets/img/brodotehna/ledo-optimized.jpg" alt="Ledo"></div>
-              <div class="bth-home-references__body">
-                <h3>Ledo</h3>
-                <p>Modernization and automation of ice cream production lines.</p>
-                <div class="bth-home-references__tags"><span>Croatia</span><span>Food Industry</span><span>Modernization</span></div>
-              </div>
-            </article>
-          </div>
-          <div class="bth-home-references__page" hidden>
-            <article class="bth-home-references__card">
-              <div class="bth-home-references__media"><img src="assets/img/brodotehna/airbus-optimized.jpg" alt="Airbus"></div>
-              <div class="bth-home-references__body">
-                <h3>Airbus</h3>
-                <p>Automation of cargo loading systems for the Beluga XL aircraft.</p>
-                <div class="bth-home-references__tags"><span>France</span><span>Aerospace</span><span>Automation</span></div>
-              </div>
-            </article>
-            <article class="bth-home-references__card">
-              <div class="bth-home-references__media"><img src="assets/img/brodotehna/alunorf-optimized.jpg" alt="AluNorf"></div>
-              <div class="bth-home-references__body">
-                <h3>AluNorf</h3>
-                <p>Warehouse management and logistics optimization for aluminium production.</p>
-                <div class="bth-home-references__tags"><span>Germany</span><span>Aluminium Industry</span><span>Logistics Optimization</span></div>
-              </div>
-            </article>
-          </div>
+          <article class="bth-home-references__card">
+            <div class="bth-home-references__media"><img src="assets/img/brodotehna/perucica-optimized.jpg" alt="HPP Perućica"></div>
+            <div class="bth-home-references__body">
+              <h3>HPP Perućica</h3>
+              <p>Modernization of turbine governors and unit control systems</p>
+              <div class="bth-home-references__tags"><span>Montenegro</span><span>Hydropower</span><span>Modernization</span></div>
+            </div>
+          </article>
+          <article class="bth-home-references__card">
+            <div class="bth-home-references__media"><img src="assets/img/brodotehna/moco-moco-optimized.jpg" alt="HPP Moco Moco"></div>
+            <div class="bth-home-references__body">
+              <h3>HPP Moco Moco</h3>
+              <p>Engineering and commissioning of control, protection and electrical systems for a new hydropower plant.</p>
+              <div class="bth-home-references__tags"><span>Guyana</span><span>Hydropower</span><span>New Plant</span></div>
+            </div>
+          </article>
+          <article class="bth-home-references__card">
+            <div class="bth-home-references__media"><img src="assets/img/brodotehna/kumu-optimized.jpg" alt="HPP Kumu"></div>
+            <div class="bth-home-references__body">
+              <h3>HPP Kumu</h3>
+              <p>Control, protection and electrical systems for a new hydropower plant.</p>
+              <div class="bth-home-references__tags"><span>Guyana</span><span>Hydropower</span><span>New Plant</span></div>
+            </div>
+          </article>
+          <article class="bth-home-references__card">
+            <div class="bth-home-references__media"><img src="assets/img/brodotehna/zimbabwe-optimized.jpg" alt="HPP Great Zimbabwe"></div>
+            <div class="bth-home-references__body">
+              <h3>HPP Great Zimbabwe</h3>
+              <p>Engineering and delivery of control, protection and electrical systems for a new hydropower plant.</p>
+              <div class="bth-home-references__tags"><span>Zimbabwe</span><span>Hydropower</span><span>New Plant</span></div>
+            </div>
+          </article>
+          <article class="bth-home-references__card">
+            <div class="bth-home-references__media"><img src="assets/img/brodotehna/nam-mit-luong-optimized.jpg" alt="HPP Nam Mit Luong"></div>
+            <div class="bth-home-references__body">
+              <h3>HPP Nam Mit Luong</h3>
+              <p>Control, protection and medium-voltage systems for a new hydropower plant.</p>
+              <div class="bth-home-references__tags"><span>Vietnam</span><span>Hydropower</span><span>New Plant</span></div>
+            </div>
+          </article>
+          <article class="bth-home-references__card">
+            <div class="bth-home-references__media"><img src="assets/img/brodotehna/rdf-albioma-optimized.jpg" alt="RDF Albioma Les Bois Rouge"></div>
+            <div class="bth-home-references__body">
+              <h3>RDF Albioma Les Bois Rouge</h3>
+              <p>Automation and electrical systems for a new RDF boiler as part of a plant expansion.</p>
+              <div class="bth-home-references__tags"><span>Reunion</span><span>Waste-to-Energy</span><span>Plant Expansion</span></div>
+            </div>
+          </article>
+          <article class="bth-home-references__card">
+            <div class="bth-home-references__media"><img src="assets/img/brodotehna/montsinery-optimized.jpg" alt="BE Montsinery"></div>
+            <div class="bth-home-references__body">
+              <h3>BE Montsinery</h3>
+              <p>Control and instrumentation systems for a new biomass power plant.</p>
+              <div class="bth-home-references__tags"><span>French Guiana</span><span>Biomass</span><span>New Plant</span></div>
+            </div>
+          </article>
+          <article class="bth-home-references__card">
+            <div class="bth-home-references__media"><img src="assets/img/brodotehna/ledo-optimized.jpg" alt="Ledo"></div>
+            <div class="bth-home-references__body">
+              <h3>Ledo</h3>
+              <p>Modernization and automation of ice cream production lines.</p>
+              <div class="bth-home-references__tags"><span>Croatia</span><span>Food Industry</span><span>Modernization</span></div>
+            </div>
+          </article>
+          <article class="bth-home-references__card">
+            <div class="bth-home-references__media"><img src="assets/img/brodotehna/airbus-optimized.jpg" alt="Airbus"></div>
+            <div class="bth-home-references__body">
+              <h3>Airbus</h3>
+              <p>Automation of cargo loading systems for the Beluga XL aircraft.</p>
+              <div class="bth-home-references__tags"><span>France</span><span>Aerospace</span><span>Automation</span></div>
+            </div>
+          </article>
+          <article class="bth-home-references__card">
+            <div class="bth-home-references__media"><img src="assets/img/brodotehna/alunorf-optimized.jpg" alt="AluNorf"></div>
+            <div class="bth-home-references__body">
+              <h3>AluNorf</h3>
+              <p>Warehouse management and logistics optimization for aluminium production.</p>
+              <div class="bth-home-references__tags"><span>Germany</span><span>Aluminium Industry</span><span>Logistics Optimization</span></div>
+            </div>
+          </article>
         </div>
       </div>
     </section><!-- End Selected References -->
