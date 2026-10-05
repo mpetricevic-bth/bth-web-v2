@@ -172,15 +172,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabs = document.querySelectorAll('.bth-solutions-tabs [data-target]');
     const nameEl = document.querySelector('.bth-solutions-sidebar__name');
     const titleEl = document.querySelector('.bth-solutions-sidebar__title');
-    // Siemens Xcelerator link in the sidebar - aEMS-specific, so it
-    // only shows while that card is the one currently in view.
-    const siemensLink = document.querySelector('#bthSiemensLink');
 
     const setActive = (card) => {
       tabs.forEach(tab => tab.classList.toggle('active', tab.dataset.target === card.id));
       if (nameEl) nameEl.textContent = card.dataset.short || '';
       if (titleEl) titleEl.textContent = card.dataset.title || '';
-      if (siemensLink) siemensLink.hidden = card.dataset.short !== 'aEMS';
     };
 
     const observer = new IntersectionObserver((entries) => {

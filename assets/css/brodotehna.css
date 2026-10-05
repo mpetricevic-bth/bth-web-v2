@@ -1077,7 +1077,7 @@ html {
 .bth-contact-cta {
   position: relative;
   overflow: hidden;
-  background-image: url("../img/brodotehna/background-contact.png");
+  background-image: url("../img/brodotehna/background-contact-optimized.jpg");
   background-size: cover;
   background-position: center bottom;
   padding: clamp(60px, 9vw, 120px) 0;
@@ -1949,7 +1949,10 @@ html {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-top: 20px;
+  /* Sits between the card's h3 and p now (was below the sidebar title
+     before) - h3's own margin-bottom already provides the gap above,
+     so just a bottom margin here to space it from the paragraph. */
+  margin: 0 0 18px;
   color: var(--bth-primary);
   font-family: var(--bth-font-heading);
   font-weight: 500;
