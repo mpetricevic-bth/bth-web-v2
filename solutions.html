@@ -25,6 +25,10 @@
        bootstrap-icons aren't loaded here either) -->
   <link href="assets/css/brodotehna.css" rel="stylesheet">
 
+
+  <!-- Umami Analytics -->
+  <script defer src="https://analytics.brodotehna.eu/script.js" data-website-id="29f206f9-b267-4615-98bd-b09cdf3c040b"></script>
+
 </head>
 
 <body class="bth-page">
@@ -91,6 +95,9 @@
             <p class="bth-solutions-intro__copy">
               Brodotehna develops advanced software and control solutions for <b>hydropower</b> and <b>power generation</b>, <b>battery energy</b> storage systems (BESS) and pumped storage, <b>virtual power plants</b>, <b>microgrids</b>, and industrial systems. Our solutions combine automation, forecasting, optimization, and real-time monitoring to help operators improve reliability, efficiency, and system performance.
             </p>
+            <p class="bth-solutions-intro__copy">
+              All of them run on our <b>Energy Platform</b> — a modular, customizable technology foundation combining connectivity, data storage, rule execution and computation, tested for large-scale data ingestion and high-speed processing.
+            </p>
             <div class="bth-solutions-intro__buttons">
               <a href="#bthSolutionsList" class="bth-btn">
                 <span>Explore solutions</span>
@@ -125,6 +132,7 @@
                 <button type="button" data-target="solution-5">05/</button>
                 <button type="button" data-target="solution-6">06/</button>
                 <button type="button" data-target="solution-7">07/</button>
+                <button type="button" data-target="solution-8">08/</button>
               </div>
               <p class="bth-solutions-sidebar__name">aEMS</p>
               <p class="bth-solutions-sidebar__title">Advanced Energy Management System</p>
@@ -179,7 +187,28 @@
                 </div>
               </article>
 
-              <article class="bth-solutions-card" id="solution-3" data-short="aMGC" data-title="Advanced Microgrid Controller" data-aos="fade-up">
+              <article class="bth-solutions-card" id="solution-3" data-short="aVPP Forecast" data-title="aVPP Forecast" data-aos="fade-up">
+                <h3>aVPP Forecast</h3>
+                <p>The aVPP Forecast API uses advanced analytics, statistical models and AI to forecast day-ahead and intraday electricity prices, system imbalance direction and balancing energy prices, supporting energy trading optimization, portfolio management and energy resource management.</p>
+                <div class="bth-solutions-card__showcase">
+                  <div class="bth-solutions-card__features">
+                    <h4>Key features</h4>
+                    <ul>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Day-ahead price forecasting</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Intraday price forecasting</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>System imbalance direction forecasting</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Balancing energy price forecasting</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>AI &amp; statistical forecasting models</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Energy trading &amp; portfolio optimization</li>
+                    </ul>
+                  </div>
+                  <div class="bth-solutions-card__showcase-media">
+                    <img src="assets/img/brodotehna/solution-avppforecast-dashboard-mockup-optimized.jpg" alt="Python code editor used for aVPP Forecast price and imbalance forecasting models">
+                  </div>
+                </div>
+              </article>
+
+              <article class="bth-solutions-card" id="solution-4" data-short="aMGC" data-title="Advanced Microgrid Controller" data-aos="fade-up">
                 <h3>Advanced Microgrid Controller</h3>
                 <p>A control solution for microgrids that supports optimized energy flow, forecasting, dispatch and stable operation in grid-connected or islanded mode.</p>
                 <div class="bth-solutions-card__showcase">
@@ -200,7 +229,7 @@
                 </div>
               </article>
 
-              <article class="bth-solutions-card" id="solution-4" data-short="aHydroBESS" data-title="Hydro, Pumped Storage &amp; Battery Energy Storage Optimization" data-aos="fade-up">
+              <article class="bth-solutions-card" id="solution-5" data-short="aHydroBESS" data-title="Hydro, Pumped Storage &amp; Battery Energy Storage Optimization" data-aos="fade-up">
                 <h3>Hydro, Pumped Storage &amp; Battery Energy Storage Optimization</h3>
                 <p>A dedicated solution for optimizing hydropower plants, pumped storage plants, and battery energy storage systems, including cascade management and hybrid operation.</p>
                 <div class="bth-solutions-card__showcase">
@@ -221,7 +250,7 @@
                 </div>
               </article>
 
-              <article class="bth-solutions-card" id="solution-5" data-short="SCADA" data-title="Supervisory Control and Data Acquisition" data-aos="fade-up">
+              <article class="bth-solutions-card" id="solution-6" data-short="SCADA" data-title="Supervisory Control and Data Acquisition" data-aos="fade-up">
                 <h3>Supervisory Control and Data Acquisition</h3>
                 <p>We design and develop fully customized SCADA solutions tailored to each customer's process and operational requirements. From concept to commissioning, we deliver complete, reliable monitoring and control systems.</p>
                 <div class="bth-solutions-card__showcase">
@@ -241,7 +270,7 @@
                 </div>
               </article>
 
-              <article class="bth-solutions-card" id="solution-6" data-short="aHydroControl" data-title="aHydroControl" data-aos="fade-up">
+              <article class="bth-solutions-card" id="solution-7" data-short="aHydroControl" data-title="aHydroControl" data-aos="fade-up">
                 <h3>aHydroControl</h3>
                 <p>Advanced turbine regulation and automated unit control for hydropower plants, combining governor control, start/stop sequences, synchronization, and auxiliary system management on a reliable PLC platform.</p>
                 <div class="bth-solutions-card__showcase">
@@ -262,7 +291,7 @@
                 </div>
               </article>
 
-              <article class="bth-solutions-card" id="solution-7" data-short="aBoiler" data-title="aBoiler" data-aos="fade-up">
+              <article class="bth-solutions-card" id="solution-8" data-short="aBoiler" data-title="aBoiler" data-aos="fade-up">
                 <h3>aBoiler</h3>
                 <p>Intelligent boiler and combustion control for biomass and CHP plants, combining fuel and air regulation, process sequencing, and auxiliary system management on a robust PLC platform.</p>
                 <div class="bth-solutions-card__showcase">
@@ -332,9 +361,9 @@
           <ul>
             <li><a href="solutions.html#solution-1">aEMS</a></li>
             <li><a href="solutions.html#solution-2">aVPP</a></li>
-            <li><a href="solutions.html#solution-3">aMGC</a></li>
-            <li><a href="solutions.html#solution-4">aHydroBESS</a></li>
-            <li><a href="solutions.html#solution-5">SCADA</a></li>
+            <li><a href="solutions.html#solution-4">aMGC</a></li>
+            <li><a href="solutions.html#solution-5">aHydroBESS</a></li>
+            <li><a href="solutions.html#solution-6">SCADA</a></li>
             <li><a href="#">Industrial Automation</a></li>
           </ul>
         </div>
