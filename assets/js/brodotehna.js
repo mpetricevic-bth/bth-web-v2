@@ -18,11 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
    * implying a direction that has nothing left to scroll to. Applies
    * to every genuinely user-scrollable strip that uses this fade
    * (NOT .bth-partners__viewport, whose marquee loops forever and
-   * never reaches a real start/end).
+   * never reaches a real start/end, and NOT .bth-home-references__pages,
+   * which the client asked to leave with no edge treatment at all).
    */
   function edgeFadeScrollInit() {
     const els = document.querySelectorAll(
-      '.bth-services-tabs-row, .bth-careers-expect__row, .bth-home-references__pages'
+      '.bth-services-tabs-row, .bth-careers-expect__row'
     );
     els.forEach(el => {
       el.classList.add('bth-edge-fade-scroll');
@@ -41,6 +42,67 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   edgeFadeScrollInit();
+
+  /**
+   * Selected References strip - desktop mouse scrolling. With no
+   * prev/next buttons and a hidden native scrollbar, a desktop mouse
+   * (unlike a trackpad, which already sends its own horizontal deltas
+   * on a two-finger swipe) has no way to move this strip - a mouse
+   * wheel's vertical deltaY does nothing against a horizontal-only
+   * overflow track. Two independent ways to move it, both standard
+   * patterns for this kind of strip:
+   *  1. Wheel redirect: a vertical wheel tick (deltaY dominant over
+   *     deltaX) scrolls the strip horizontally instead of doing
+   *     nothing - trackpad gestures, whose deltaX is already
+   *     dominant, pass through untouched rather than fighting this.
+   *  2. Click-and-drag pan: mousedown+move pans the strip 1:1 with
+   *     the cursor, cursor switches to grab/grabbing as the visual
+   *     cue. A small drag-distance threshold (3px) keeps an
+   *     accidental single click from being treated as a drag.
+   * Both just assign scrollLeft directly (no scroll-behavior:smooth)
+   * so the strip tracks the input in real time instead of queuing up
+   * a separate eased animation per event, which is what reads as
+   * fluid here - an animated catch-up per wheel tick would lag and
+   * stutter instead.
+   */
+  function referencesScrollInit() {
+    const strip = document.querySelector('.bth-home-references__pages');
+    if (!strip) return;
+
+    strip.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        strip.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
+
+    let isDown = false;
+    let dragged = false;
+    let startX = 0;
+    let startScroll = 0;
+
+    strip.addEventListener('mousedown', (e) => {
+      isDown = true;
+      dragged = false;
+      startX = e.pageX;
+      startScroll = strip.scrollLeft;
+      strip.classList.add('bth-home-references__pages--dragging');
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      const delta = e.pageX - startX;
+      if (Math.abs(delta) > 3) dragged = true;
+      if (dragged) e.preventDefault();
+      strip.scrollLeft = startScroll - delta;
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDown = false;
+      strip.classList.remove('bth-home-references__pages--dragging');
+    });
+  }
+  referencesScrollInit();
 
   /**
    * Brand accent: every letter B/b in the page's visible text (every
@@ -292,12 +354,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const animateCount = (el) => {
       const target = parseInt(el.dataset.countTo, 10);
       const suffix = el.dataset.countSuffix || '';
-      const duration = 1200;
+      const duration = 2200;
       const start = performance.now();
 
       const step = (now) => {
         const progress = Math.min((now - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
+        // Power of 7 (not quartic) ease-out - an even stronger
+        // tail-off so the last few numbers visibly tick slowly before
+        // settling, instead of the deceleration being over too
+        // quickly to read.
+        const eased = 1 - Math.pow(1 - progress, 7);
         el.textContent = Math.round(eased * target) + suffix;
         if (progress < 1) requestAnimationFrame(step);
       };

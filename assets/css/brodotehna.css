@@ -352,7 +352,8 @@ html {
 .bth-services-panel .bth-btn:hover,
 .bth-contact-form .bth-btn:hover,
 .bth-page-header .bth-btn:hover,
-.bth-careers-apply .bth-btn:hover {
+.bth-careers-apply .bth-btn:hover,
+.bth-home-references__intro .bth-btn:hover {
   background: var(--bth-bg-light);
   border-color: var(--bth-primary);
   backdrop-filter: none;
@@ -1196,6 +1197,20 @@ html {
 .bth-footer__top {
   --bs-gutter-x: 60px;
   padding-bottom: 45px;
+}
+
+/* Below md, row-cols-2 pairs the footer's columns up two-per-row
+   instead of stacking every one full-width - but the brand column's
+   170px-wide logo (.bth-footer__brand img) doesn't fit a 50%-width
+   column at small phone sizes. Force just that first column onto its
+   own full-width row; the remaining columns (Products/Solutions/
+   Company/Get in touch) still wrap into a clean 2x2 grid beneath it
+   since they're ordinary row-cols-2 flex children. */
+@media (max-width: 767.98px) {
+  .bth-footer__top > .bth-footer__col:first-child {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
 }
 
 .bth-footer__brand {
@@ -2398,10 +2413,11 @@ look rather than inventing a new one.
 }
 
 /* Shared edge-fade affordance for genuinely user-scrollable strips
-   (.bth-services-tabs-row here, .bth-careers-expect__row and
-   .bth-home-references__pages further down - NOT .bth-partners__
-   viewport, whose marquee loops forever and never has a real start/
-   end). edgeFadeScrollInit() in brodotehna.js adds this class plus
+   (.bth-services-tabs-row here and .bth-careers-expect__row - NOT
+   .bth-partners__viewport, whose marquee loops forever and never has
+   a real start/end, and NOT .bth-home-references__pages, which the
+   client asked to leave with no edge treatment at all).
+   edgeFadeScrollInit() in brodotehna.js adds this class plus
    the --start/--end modifiers once the strip has actually scrolled to
    an edge, so the fade on that side drops out instead of permanently
    implying there's more to scroll in a direction that has none. The
@@ -5276,6 +5292,28 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   }
 }
 
+/* Below 576px the intro column's flex-direction:column (set just
+   above) leaves the grid too narrow for the desktop flex-wrap row to
+   naturally pair two 150px items plus their 40px gap (it needs 340px,
+   phones this narrow only have ~300-315px to give it) - every item
+   fell onto its own row despite there being clear room for a 2-up
+   pairing. An explicit 2-column grid pairs them unconditionally
+   instead of leaving it to how much width happens to be left over.
+   Left scoped to just this range (not the full 991px block above) so
+   tablet widths keep the natural flex-wrap, which already reflows
+   into 2-4 per row as space allows. */
+@media (max-width: 575.98px) {
+  .bth-home-stats__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px 20px;
+  }
+
+  .bth-home-stats__item {
+    max-width: none;
+  }
+}
+
 /* --- Solutions bento ---
    The 5 primary solutions (the same 5 the footer's Solutions column
    links to) as a photo bento: 1 tall featured tile (aEMS) + 4 regular
@@ -5424,12 +5462,30 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   color: #54d4ff;
 }
 
+/* Hidden until the tile is hovered/focused (max-height, not
+   display:none, since display can't be transitioned) - the 100px cap
+   is just a generous ceiling for the transition to animate toward,
+   not the actual rendered height, which overflow:hidden still clamps
+   to the real (shorter) text content. Written generically against any
+   .bth-home-solutions__label em, so it applies the same way to every
+   tile, not just the featured one that currently has description
+   text. */
 .bth-home-solutions__label em {
   font-style: normal;
   font-family: var(--bth-font-heading);
   font-weight: 300;
   font-size: 14px;
   color: #fff;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.25s ease;
+}
+
+.bth-home-solutions__item:hover .bth-home-solutions__label em,
+.bth-home-solutions__item:focus-visible .bth-home-solutions__label em {
+  max-height: 100px;
+  opacity: 1;
 }
 
 /* display:flex below 992px (not another grid-template tweak) - a
@@ -5454,8 +5510,14 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
     font-size: 17px;
   }
 
+  /* Always visible here (not gated behind :hover/:focus-visible like
+     the desktop rule above) - touch devices have no hover state, so
+     the hover-reveal would otherwise leave this text permanently
+     unreachable below the desktop breakpoint. */
   .bth-home-solutions__label em {
     font-size: 13px;
+    max-height: 100px;
+    opacity: 1;
   }
 }
 
@@ -5586,35 +5648,36 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   }
 }
 
-/* 3 explicit flex rows (not one CSS grid) - each row in the design
-   has its OWN mix of tile widths (e.g. row 1 is 399/399/467/330, row 2
-   is 675/468/468), which a single grid's shared column tracks can't
-   express. Every tile's flex-basis (set inline in the HTML, in px,
-   matching the design 1:1) grows/shrinks together via flex-grow/shrink
-   so a row keeps its tiles' relative proportions at any width, instead
-   of every tile just being equal. */
+/* Uniform flex-wrap grid (not CSS grid) - 4 equal columns on desktop,
+   2 on mobile (see the media query below). Every card shares the same
+   flex-basis, so a full row is perfectly even; flex-wrap means a
+   short last row (fewer cards than the column count) still has its
+   cards grow to fill the row instead of leaving empty trailing
+   columns, which a plain CSS grid wouldn't do on its own. With
+   exactly 8 cards both the 4-col and 2-col layouts divide evenly
+   anyway, but this keeps it correct if a card is ever added/removed. */
 .bth-home-usecases__grid {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px;
 }
 
-.bth-home-usecases__row {
-  display: flex;
-  gap: 20px;
-}
-
-.bth-home-usecases__card,
-.bth-home-usecases__photo {
-  flex: 1 1 0;
-  min-width: 0;
-}
-
+/* min-height (not a fixed height) - a 2-line title like "Control
+   Centers & Virtual Power Plants" needs more room than a 1-line one
+   like "Hydropower", and align-items:flex-start above (not the
+   flex default stretch) means that growth doesn't force every other
+   card sharing its row to stretch to match, so short-title cards
+   stay at the 190px floor while long-title ones grow taller - matches
+   the design, where row 2's two 2-line cards are visibly taller than
+   their row-mates instead of every card being forced to one height. */
 .bth-home-usecases__card {
+  flex: 1 1 calc(25% - 9px);
+  min-width: 240px;
   background: #fff;
   border-radius: 24px;
   padding: 24px 22px;
-  height: 190px;
+  min-height: 190px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -5664,45 +5727,17 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   margin: 0;
 }
 
-.bth-home-usecases__photo {
-  border-radius: 24px;
-  overflow: hidden;
-  height: 190px;
-}
-
-.bth-home-usecases__photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* Below 992px this becomes one continuous 2-column grid in source
-   order, not 3 stacked single-column rows - display:contents on each
-   .row un-boxes it (the row stops being a layout element, without
-   removing its cards/photos from the DOM) so every tile becomes a
-   direct grid item of .bth-home-usecases__grid and auto-flows across
-   2 columns. align-items is grid's own default (stretch), so a card
-   next to a tall photo in the same row stretches to match it - the
-   inline flex-basis values from the desktop row layout are simply
-   ignored once their parent isn't display:flex any more. */
+/* Below 992px, 2 equal columns instead of 4 - same flex-wrap idea as
+   the desktop grid above, just a different flex-basis split. */
 @media (max-width: 991px) {
   .bth-home-usecases__grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  .bth-home-usecases__row {
-    display: contents;
+    gap: 12px;
   }
 
   .bth-home-usecases__card {
+    flex-basis: calc(50% - 6px);
+    min-width: 100px;
     height: auto;
-    min-height: 175px;
-  }
-
-  .bth-home-usecases__photo {
     min-height: 175px;
   }
 
@@ -5718,10 +5753,6 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
 @media (max-width: 480px) {
   .bth-home-usecases__card {
     padding: 20px 18px;
-    min-height: 150px;
-  }
-
-  .bth-home-usecases__photo {
     min-height: 150px;
   }
 }
@@ -5743,9 +5774,7 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
 .bth-home-references__row {
   display: grid;
   grid-template-columns: 380px 1fr;
-  grid-template-areas:
-    "intro pages"
-    "nav   pages";
+  grid-template-areas: "intro pages";
   align-items: start;
   column-gap: clamp(40px, 6vw, 90px);
   row-gap: 18px;
@@ -5756,6 +5785,15 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   display: flex;
   flex-direction: column;
   gap: 18px;
+}
+
+/* align-self:flex-start (not the column's default stretch) - .bth-btn
+   is inline-flex and normally hugs its own content width, but as a
+   flex-column child here it was stretching to the full 380px column
+   width instead, leaving a large empty gradient past the icon circle
+   instead of a snug pill around the text. */
+.bth-home-references__intro .bth-btn {
+  align-self: flex-start;
 }
 
 .bth-home-references__intro h2 {
@@ -5776,84 +5814,46 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   }
 }
 
-/* Same circle + hover language as .bth-btn__icon (the navbar's
-   Contact Us button): white circle at rest, brand gradient fill on
-   hover, icon flips from dark to white with it - just a free-standing
-   button here instead of living inside a .bth-btn. No page counter
-   between them (just the two buttons) - the strip below is freely
-   scrollable, these just nudge it by one card. */
-.bth-home-references__nav {
-  grid-area: nav;
-  display: flex;
-  align-items: center;
-  gap: 22px;
-}
-
-.bth-home-references__nav-btn {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: none;
-  background: #fff;
-  box-shadow: 1px 1px 12px 0 rgba(107, 145, 207, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  flex-shrink: 0;
-  padding: 0;
-  transition: background 0.3s;
-}
-
-.bth-home-references__nav-btn:hover {
-  background: linear-gradient(83deg, var(--bth-primary) 24.5%, var(--bth-teal) 139.66%);
-  box-shadow: none;
-}
-
-.bth-home-references__nav-btn img {
-  width: 17px;
-  height: 17px;
-  transition: filter 0.3s;
-}
-
-.bth-home-references__nav-btn:hover img {
-  filter: brightness(0) invert(1);
-}
-
-.bth-home-references__nav-btn--prev img {
-  transform: rotate(180deg);
-}
-
 /* Free horizontal scroll strip, same pattern as .bth-careers-expect__row
-   elsewhere on the site - no paging/counter, the whole 10-card list is
-   always in the DOM and just scrolls. flex-basis is a fixed px (not
-   1 1 0 splitting the row) so cards keep a consistent width regardless
-   of how many happen to fit in the visible area, with the next card
-   peeking in at the edge as a scroll affordance. Native scrollbar
-   hidden (scrollbar-width/::-webkit-scrollbar) - the edge-fade mask
-   itself comes from .bth-edge-fade-scroll (added by JS), same as
-   .bth-careers-expect__row - the prev/next buttons are the intended
-   way to scroll, this is just a fallback for trackpad/touch. */
+   elsewhere on the site - no paging/counter/buttons, the whole 6-card
+   list is always in the DOM and just scrolls (trackpad/touch/native
+   scrollbar, the last hidden via scrollbar-width/::-webkit-scrollbar,
+   plus wheel-redirect and click-drag for a desktop mouse - see
+   referencesScrollInit() in brodotehna.js). No scroll-snap - it forced
+   every scroll gesture to come to rest on a card boundary, which read
+   as jerky/stuck rather than a fluid free scroll. flex-basis is a
+   fixed px (not 1 1 0 splitting the row) so cards keep a consistent
+   width regardless of how many happen to fit in the visible area,
+   with the next card peeking in at the edge as a scroll affordance. */
 .bth-home-references__pages {
   grid-area: pages;
   min-width: 0;
   display: flex;
   gap: 22px;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
   padding-bottom: 4px;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  cursor: grab;
 }
 
 .bth-home-references__pages::-webkit-scrollbar {
   display: none;
 }
 
+/* referencesScrollInit() in brodotehna.js toggles this during an
+   active click-drag pan - user-select:none only while dragging (not
+   permanently) so a card's text stays selectable the rest of the
+   time, and dragging doesn't smear a text selection across the
+   strip as the cursor moves. */
+.bth-home-references__pages--dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
 .bth-home-references__card {
   flex: 0 0 380px;
   min-width: 0;
-  scroll-snap-align: start;
   background: #fff;
   border: 1px solid var(--bth-border);
   border-radius: 30px;
@@ -5895,33 +5895,12 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   margin: 0;
 }
 
-.bth-home-references__tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.bth-home-references__tags span {
-  background: var(--bth-bg-light);
-  color: #04aae3;
-  font-family: var(--bth-font-heading);
-  font-weight: 500;
-  font-size: 13.5px;
-  padding: 6px 12px;
-  border-radius: 21px;
-}
-
 @media (max-width: 991px) {
   .bth-home-references__row {
     grid-template-columns: 1fr;
     grid-template-areas:
       "intro"
-      "pages"
-      "nav";
-  }
-
-  .bth-home-references__nav {
-    justify-content: center;
+      "pages";
   }
 
   /* flex-basis:88% (not the desktop 380px) leaves the next card
