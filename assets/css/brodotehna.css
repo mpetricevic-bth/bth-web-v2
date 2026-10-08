@@ -5391,6 +5391,36 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   grid-row: 2 / 3;
 }
 
+/* "Our Products" bento variant - 1 featured + 3 regular (4 tiles) vs
+   the 5-tile layout above. Added as a modifier on the grid, not a
+   rewrite of the rules above, since every selector here is 3 compound
+   parts (.grid--products + .item + :nth-child) vs the 2 parts above
+   (.item + :nth-child) - naturally higher specificity, so these apply
+   cleanly inside a .bth-home-solutions__grid--products container
+   without needing to touch or scope the original 5-tile rules at all.
+   Reuses the same 3-col/2-row track sizing as the base grid; only the
+   last tile's placement differs (spans both remaining columns on row
+   2, full-width, instead of sharing that row with a 5th tile). */
+.bth-home-solutions__grid--products .bth-home-solutions__item--featured {
+  grid-column: 1 / 2;
+  grid-row: 1 / 3;
+}
+
+.bth-home-solutions__grid--products .bth-home-solutions__item:nth-child(2) {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+}
+
+.bth-home-solutions__grid--products .bth-home-solutions__item:nth-child(3) {
+  grid-column: 3 / 4;
+  grid-row: 1 / 2;
+}
+
+.bth-home-solutions__grid--products .bth-home-solutions__item:nth-child(4) {
+  grid-column: 2 / 4;
+  grid-row: 2 / 3;
+}
+
 /* > (direct child) not a descendant selector - without it this also
    matched the icon badge's own nested <img> below, stretching that
    24x24 glyph to inset:0/100%/100% (an invisible, cropped smear
