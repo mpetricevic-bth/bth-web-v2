@@ -353,7 +353,8 @@ html {
 .bth-contact-form .bth-btn:hover,
 .bth-page-header .bth-btn:hover,
 .bth-careers-apply .bth-btn:hover,
-.bth-home-references__intro .bth-btn:hover {
+.bth-home-references__intro .bth-btn:hover,
+.bth-home-products__head .bth-btn:hover {
   background: var(--bth-bg-light);
   border-color: var(--bth-primary);
   backdrop-filter: none;
@@ -5556,6 +5557,26 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   background: #fff;
 }
 
+/* Heading + "See More" link to products.html on one row, same
+   bth-btn--outline style as the removed Project Footprint CTA
+   elsewhere on this page - wraps to a stacked layout once the row
+   gets too tight for both (small tablets/phones) rather than
+   squeezing the heading. Only .bth-home-products uses this row; the
+   Solutions section's heading keeps its plain .bth-home-solutions__head
+   with no button. */
+.bth-home-products__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  margin-bottom: 40px;
+}
+
+.bth-home-products__head .bth-home-solutions__head {
+  margin-bottom: 0;
+}
+
 /* A 5-column grid with a floor on each column (minmax(240px, 1fr)),
    not a fixed-px tile size - on a wide screen the 1fr side lets the 5
    columns stretch and share out the container's full width evenly
@@ -5593,6 +5614,22 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
 
 .bth-home-products__grid .bth-home-solutions__item {
   height: clamp(260px, 18vw, 420px);
+}
+
+/* On phones the 18vw clamp above has already bottomed out at its
+   260px floor (18vw stops mattering well before 700px), and the grid
+   column floor below is likewise maxed out shrinking - both read as
+   slightly cramped next to the rest of the page at that width, so
+   this nudges just the phone-width floor up a bit rather than
+   touching the vw-scaling that already works fine from tablet up. */
+@media (max-width: 575px) {
+  .bth-home-products__grid {
+    grid-template-columns: repeat(5, minmax(270px, 1fr));
+  }
+
+  .bth-home-products__grid .bth-home-solutions__item {
+    height: 300px;
+  }
 }
 
 /* Products tiles show their own light product-card compositions
