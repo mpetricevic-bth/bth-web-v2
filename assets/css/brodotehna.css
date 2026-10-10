@@ -5556,11 +5556,43 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
   background: #fff;
 }
 
+/* A 5-column grid with a floor on each column (minmax(240px, 1fr)),
+   not a fixed-px tile size - on a wide screen the 1fr side lets the 5
+   columns stretch and share out the container's full width evenly
+   (no leftover gap on an oversized monitor), while the 240px floor
+   stops them shrinking past that on a narrower one; once 5 floored
+   columns plus gaps no longer fit the container, the grid itself
+   overflows and this (with overflow-x:auto below) is what turns it
+   into the intended slider (wheel-redirect + click-drag pan, see
+   productsScrollInit() in brodotehna.js) - the same rule produces
+   both a filled static row and a scrollable strip, there's no
+   breakpoint switching between two different layouts. Height scales
+   with viewport width too (clamp, same vw-based approach used for
+   the featured Solutions tile elsewhere on this page) so the tiles
+   grow/shrink together rather than just stretching wider and staying
+   the same height. */
 .bth-home-products__grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-auto-rows: clamp(300px, 26vw, 400px);
+  grid-template-columns: repeat(5, minmax(240px, 1fr));
   gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  cursor: grab;
+}
+
+.bth-home-products__grid::-webkit-scrollbar {
+  display: none;
+}
+
+.bth-home-products__grid--dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.bth-home-products__grid .bth-home-solutions__item {
+  height: clamp(260px, 18vw, 420px);
 }
 
 /* Products tiles show their own light product-card compositions
@@ -5585,41 +5617,6 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
 
 .bth-home-products__grid .bth-home-solutions__accent {
   color: var(--bth-primary);
-}
-
-/* Below 991px there's no room for 5 equal columns, but shrinking them
-   down into a stacked single column (like the Solutions bento above
-   does) would squash these tiles away from their intended size - so
-   this becomes a free horizontal scroll strip instead, same pattern
-   as .bth-home-references__pages (wheel-redirect + click-drag pan for
-   a desktop mouse, see productsScrollInit() in brodotehna.js), with
-   each tile kept at a fixed width/height close to its desktop size
-   rather than stretched to fill the viewport. */
-@media (max-width: 991px) {
-  .bth-home-products__grid {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    gap: 16px;
-    padding-bottom: 4px;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    cursor: grab;
-  }
-
-  .bth-home-products__grid::-webkit-scrollbar {
-    display: none;
-  }
-
-  .bth-home-products__grid--dragging {
-    cursor: grabbing;
-    user-select: none;
-  }
-
-  .bth-home-products__grid .bth-home-solutions__item {
-    flex: 0 0 260px;
-    height: 320px;
-  }
 }
 
 /* --- Siemens Xcelerator banner ---

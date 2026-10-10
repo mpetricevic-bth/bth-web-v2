@@ -105,16 +105,18 @@ document.addEventListener('DOMContentLoaded', () => {
   referencesScrollInit();
 
   /**
-   * Our Products bento - below 991px (see .bth-home-products__grid in
-   * brodotehna.css) it switches from a 5-column grid to a free
-   * horizontal scroll strip so the tiles keep their size instead of
-   * being squashed into a stack. Same wheel-redirect + click-drag pan
-   * as referencesScrollInit() above, guarded by scrollWidth >
-   * clientWidth so neither kicks in at >=991px, where the grid has no
-   * overflow and a stray wheel-redirect would otherwise block normal
-   * page scrolling. Also suppresses the click on the dragged tile's
-   * <a> after a real drag (unlike the reference cards, which aren't
-   * links) so panning the strip doesn't accidentally navigate away.
+   * Our Products bento (.bth-home-products__grid in brodotehna.css) is
+   * a fixed-size-tile row at every width, not a grid that squeezes
+   * down past a breakpoint - whether it's actually scrollable is just
+   * whatever scrollWidth > clientWidth happens to be at the current
+   * viewport, no media query involved on the JS side either. Same
+   * wheel-redirect + click-drag pan as referencesScrollInit() above,
+   * guarded by that check so neither kicks in once a wide enough
+   * screen fits all 5 tiles with no overflow - a stray wheel-redirect
+   * would otherwise block normal page scrolling there. Also suppresses
+   * the click on the dragged tile's <a> after a real drag (unlike the
+   * reference cards, which aren't links) so panning the strip doesn't
+   * accidentally navigate away.
    */
   function productsScrollInit() {
     const strip = document.querySelector('.bth-home-products__grid');
