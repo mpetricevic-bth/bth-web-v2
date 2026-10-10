@@ -108,60 +108,45 @@
     </section><!-- End Section 1 -->
 
     <!-- ======= Section 2: solutions list =======
-         Left: sticky sidebar with 01-07 tabs + the current solution's
+         Left: sticky sidebar with 01-06 tabs + the current solution's
          name/title, updated by scroll position (see brodotehna.js).
-         Right: the 7 solution cards, stacked. Below 992px the sidebar
+         Right: the 6 solution cards, stacked. Below 992px the sidebar
          becomes a plain (non-sticky) tab row above the stacked cards -
-         see the media query in brodotehna.css. The other 4 (aEMS, aVPP,
-         aVPP Forecast, aMGC) moved to products.html as the client's
-         standalone named products. Card ids solution-3/4 keep their
-         original ids but were repurposed in place (aHydroControl ->
-         Digital Governor, aBoiler -> Boiler Control) per the client's
-         "Control Products" deck slide, so footer/homepage links keyed
-         to those ids didn't need renumbering - only their link text
-         changed. solution-5/6/7 are new, appended at the end. -->
+         see the media query in brodotehna.css. aEMS, aVPP, aVPP
+         Forecast and aMGC moved to products.html as the client's
+         standalone named products; aHydroBESS later moved there too
+         (as solution-5) since the client considers it a product, not a
+         solution - its old id (solution-1) was simply dropped rather
+         than renumbered, so the remaining cards (solution-2..7) kept
+         their ids and every footer/homepage link to them unchanged;
+         only the tab buttons' own display numbers shifted down to
+         01-06 while their data-target attributes still point at the
+         original ids. Card ids solution-3/4 keep their original ids
+         but were repurposed in place (aHydroControl -> Digital
+         Governor, aBoiler -> Boiler Control) per the client's "Control
+         Products" deck slide - same reasoning, link text changed but
+         not the id. solution-5/6/7 (now Hydro Control System/Remote
+         Control Center/OT Cybersecurity) were appended at the end. -->
     <section class="bth-solutions-list" id="bthSolutionsList">
       <div class="bth-container">
         <div class="row">
           <div class="col-lg-4">
             <div class="bth-solutions-sidebar">
               <div class="bth-solutions-tabs">
-                <button type="button" data-target="solution-1" class="active">01/</button>
-                <button type="button" data-target="solution-2">02/</button>
-                <button type="button" data-target="solution-3">03/</button>
-                <button type="button" data-target="solution-4">04/</button>
-                <button type="button" data-target="solution-5">05/</button>
-                <button type="button" data-target="solution-6">06/</button>
-                <button type="button" data-target="solution-7">07/</button>
+                <button type="button" data-target="solution-2" class="active">01/</button>
+                <button type="button" data-target="solution-3">02/</button>
+                <button type="button" data-target="solution-4">03/</button>
+                <button type="button" data-target="solution-5">04/</button>
+                <button type="button" data-target="solution-6">05/</button>
+                <button type="button" data-target="solution-7">06/</button>
               </div>
-              <p class="bth-solutions-sidebar__name">aHydroBESS</p>
-              <p class="bth-solutions-sidebar__title">Hydro, Pumped Storage &amp; Battery Energy Storage Optimization</p>
+              <p class="bth-solutions-sidebar__name">SCADA</p>
+              <p class="bth-solutions-sidebar__title">Supervisory Control and Data Acquisition</p>
             </div>
           </div>
 
           <div class="col-lg-8">
             <div class="bth-solutions-cards">
-              <article class="bth-solutions-card" id="solution-1" data-short="aHydroBESS" data-title="Hydro, Pumped Storage &amp; Battery Energy Storage Optimization" data-aos="fade-up">
-                <h3>Hydro, Pumped Storage &amp; Battery Energy Storage Optimization</h3>
-                <p>A dedicated solution for optimizing hydropower plants, pumped storage plants, and battery energy storage systems, including cascade management and hybrid operation.</p>
-                <div class="bth-solutions-card__showcase">
-                  <div class="bth-solutions-card__features">
-                    <h4>Key features</h4>
-                    <ul>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Hydro production forecasting</li>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Reservoir optimization</li>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Pumped storage scheduling</li>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Battery optimization</li>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Cascade management</li>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Hybrid asset coordination</li>
-                    </ul>
-                  </div>
-                  <div class="bth-solutions-card__showcase-media bth-solutions-card__showcase-media--transparent">
-                    <img src="assets/img/brodotehna/solution-ahydrobess-dashboard-mockup-optimized.png" alt="aHydroBESS dashboard showing hydro plant topology, reservoirs and control units">
-                  </div>
-                </div>
-              </article>
-
               <article class="bth-solutions-card" id="solution-2" data-short="SCADA" data-title="Supervisory Control and Data Acquisition" data-aos="fade-up">
                 <h3>Supervisory Control and Data Acquisition</h3>
                 <p>We design and develop fully customized SCADA solutions tailored to each customer's process and operational requirements. From concept to commissioning, we deliver complete, reliable monitoring and control systems.</p>
@@ -281,7 +266,7 @@
                     </ul>
                   </div>
                   <div class="bth-solutions-card__showcase-media">
-                    <img src="assets/img/brodotehna/solution-amgc-dashboard-mockup-optimized.jpg" alt="OT Cybersecurity dashboard showing network monitoring and security status">
+                    <img src="assets/img/brodotehna/solution-amgc-dashboard-mockup-optimized.png" alt="OT Cybersecurity dashboard showing network monitoring and security status">
                   </div>
                 </div>
               </article>
@@ -338,13 +323,13 @@
             <li><a href="products.html#solution-2">aVPP</a></li>
             <li><a href="products.html#solution-3">aVPP Forecast</a></li>
             <li><a href="products.html#solution-4">aMGC</a></li>
+            <li><a href="products.html#solution-5">aHydroBESS</a></li>
           </ul>
         </div>
 
         <div class="col bth-footer__col">
           <h4>Solutions</h4>
           <ul>
-            <li><a href="solutions.html#solution-1">aHydroBESS</a></li>
             <li><a href="solutions.html#solution-2">SCADA</a></li>
             <li><a href="solutions.html#solution-3">Digital Governor</a></li>
             <li><a href="solutions.html#solution-4">Boiler Control</a></li>

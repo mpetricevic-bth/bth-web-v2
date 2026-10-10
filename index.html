@@ -123,14 +123,85 @@
       </div>
     </section><!-- End Stats -->
 
+    <!-- ======= Products bento =======
+         The 5 standalone named products from products.html, in their
+         own .bth-home-products section (grey bg, see brodotehna.css)
+         so it reads as visually distinct from the white Our Solutions
+         bento below - plain equal-column row instead of that section's
+         1-featured+4-regular layout (.bth-home-products__grid, not
+         .bth-home-solutions__grid). Reuses .bth-home-solutions__item/
+         __icon/__label for cosmetics only (photo/icon/label/hover are
+         generic styling, not tied to that section's grid). Comes
+         BEFORE the Solutions bento in source order (client asked for
+         Products to lead). Photos are each product's own purpose-made
+         "Product Card" composition (client-supplied, blurred full-bleed
+         background with floating UI elements - designed for exactly
+         this bento-tile treatment), not the dashboard screenshots used
+         on the Products page itself. -->
+    <section class="bth-home-products">
+      <div class="bth-container">
+        <div class="bth-home-solutions__head" data-aos="fade-up">
+          <p class="bth-eyebrow">Our Products</p>
+          <h2 class="bth-section-title">Software Products for Energy Systems</h2>
+        </div>
+        <div class="bth-home-products__grid" data-aos="fade-up">
+          <a href="products.html#solution-1" class="bth-home-solutions__item">
+            <img src="assets/img/brodotehna/product-card-aems-optimized.jpg" alt="aEMS product card showing cost savings and analytics widgets">
+            <span class="bth-home-solutions__icon"><img src="assets/img/brodotehna/icon-settings-filter.svg" alt=""></span>
+            <span class="bth-home-solutions__label">
+              <b>aEMS - advanced Energy Management System</b>
+              <em>Optimize energy production, storage and consumption.</em>
+            </span>
+          </a>
+          <a href="products.html#solution-2" class="bth-home-solutions__item">
+            <img src="assets/img/brodotehna/product-card-avpp-optimized.jpg" alt="aVPP product card showing market position and exposure widgets">
+            <span class="bth-home-solutions__icon"><img src="assets/img/brodotehna/icon-filter-settings-sort.svg" alt=""></span>
+            <span class="bth-home-solutions__label">
+              <b>aVPP - Advanced Virtual Power Plant</b>
+              <em>Coordinate distributed energy resources as one system.</em>
+            </span>
+          </a>
+          <a href="products.html#solution-3" class="bth-home-solutions__item">
+            <img src="assets/img/brodotehna/product-card-avppforecast-optimized.jpg" alt="aVPP Forecast product card showing price forecasting widgets">
+            <span class="bth-home-solutions__icon"><img src="assets/img/brodotehna/icon-imac-computer.svg" alt=""></span>
+            <span class="bth-home-solutions__label">
+              <b>aVPP Forecast</b>
+              <em>Forecast electricity prices and system imbalance with AI.</em>
+            </span>
+          </a>
+          <a href="products.html#solution-4" class="bth-home-solutions__item">
+            <img src="assets/img/brodotehna/product-card-amgc-optimized.jpg" alt="aMGC product card showing microgrid runtime widgets">
+            <span class="bth-home-solutions__icon"><img src="assets/img/brodotehna/icon-cellular-network.svg" alt=""></span>
+            <span class="bth-home-solutions__label">
+              <b>aMGC - advanced Microgrid Controller</b>
+              <em>Control and optimize microgrid operation in real time.</em>
+            </span>
+          </a>
+          <a href="products.html#solution-5" class="bth-home-solutions__item">
+            <img src="assets/img/brodotehna/product-card-ahydrobess-optimized.jpg" alt="aHydroBESS product card showing hydro plant topology widgets">
+            <span class="bth-home-solutions__icon"><img src="assets/img/brodotehna/icon-battery-generator.svg" alt=""></span>
+            <span class="bth-home-solutions__label">
+              <b>aHydro<span class="bth-home-solutions__accent">B</span>ESS - Hydro &amp; <span class="bth-home-solutions__accent">B</span>attery Optimization System</b>
+              <em>Optimize hydropower and battery storage operation.</em>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section><!-- End Products bento -->
+
     <!-- ======= Solutions bento =======
-         Curated 5 of the Solutions page's 7 cards (same "not exhaustive"
+         Curated 5 of the Solutions page's 6 cards (same "not exhaustive"
          precedent the single combined bento used before the Products
          page split) as a photo bento - 1 tall featured tile + 4 regular
          in a 3-equal-column grid, same gradient-overlay-on-photo
-         technique as .bth-company-timeline__media/__stat. Photos are
-         reused placeholders (not every tile has its own dedicated
-         photo yet) - swap for real photography per tile when available. -->
+         technique as .bth-company-timeline__media/__stat. aHydroBESS
+         was dropped from here (moved to the Products bento above, see
+         its own section comment) and SCADA promoted to featured in its
+         place; Remote Control Center added as the 5th tile to keep the
+         curated count at 5, leaving OT Cybersecurity as the only
+         solution not featured on the homepage. Photos are reused
+         placeholders (not every tile has its own dedicated photo yet) -
+         swap for real photography per tile when available. -->
     <section class="bth-home-solutions">
       <div class="bth-container">
         <div class="bth-home-solutions__head" data-aos="fade-up">
@@ -138,15 +209,7 @@
           <h2 class="bth-section-title">Engineering Solutions for Energy and Industry</h2>
         </div>
         <div class="bth-home-solutions__grid" data-aos="fade-up">
-          <a href="solutions.html#solution-1" class="bth-home-solutions__item bth-home-solutions__item--featured">
-            <img src="assets/img/brodotehna/homepage-solution-ahydrobess-optimized.jpg" alt="Battery energy storage cabinet">
-            <span class="bth-home-solutions__icon"><img src="assets/img/brodotehna/icon-battery-generator.svg" alt=""></span>
-            <span class="bth-home-solutions__label">
-              <b>aHydro<span class="bth-home-solutions__accent">B</span>ESS - Hydro &amp; <span class="bth-home-solutions__accent">B</span>attery Optimization System</b>
-              <em>Optimize hydropower and battery storage operation.</em>
-            </span>
-          </a>
-          <a href="solutions.html#solution-2" class="bth-home-solutions__item">
+          <a href="solutions.html#solution-2" class="bth-home-solutions__item bth-home-solutions__item--featured">
             <img src="assets/img/brodotehna/homepage-solution-aems-optimized.jpg" alt="Software code overlaying a server room">
             <span class="bth-home-solutions__icon"><img src="assets/img/brodotehna/icon-imac-computer.svg" alt=""></span>
             <span class="bth-home-solutions__label">
@@ -178,60 +241,17 @@
               <em>Integrated control for small and medium hydropower plants.</em>
             </span>
           </a>
+          <a href="solutions.html#solution-6" class="bth-home-solutions__item">
+            <img src="assets/img/brodotehna/homepage-solution-ahydrobess-optimized.jpg" alt="Battery energy storage cabinet">
+            <span class="bth-home-solutions__icon"><img src="assets/img/brodotehna/icon-cloud-zap.svg" alt=""></span>
+            <span class="bth-home-solutions__label">
+              <b>Remote Control Center</b>
+              <em>Centralized monitoring and control of distributed plants.</em>
+            </span>
+          </a>
         </div>
       </div>
     </section><!-- End Solutions bento -->
-
-    <!-- ======= Products bento =======
-         The 4 standalone named products from products.html - 1
-         featured tile + 3 regular. Same .bth-home-solutions cosmetics
-         as the Solutions bento above (photo/icon/label/hover are
-         generic, not section-specific), but its own grid placement via
-         the .bth-home-solutions__grid--products modifier (see
-         brodotehna.css) since there are 4 tiles here, not 5. Photos
-         are reused placeholders, same caveat as the Solutions bento. -->
-    <section class="bth-home-solutions">
-      <div class="bth-container">
-        <div class="bth-home-solutions__head" data-aos="fade-up">
-          <p class="bth-eyebrow">Our Products</p>
-          <h2 class="bth-section-title">Software Products for Energy Systems</h2>
-        </div>
-        <div class="bth-home-solutions__grid bth-home-solutions__grid--products" data-aos="fade-up">
-          <a href="products.html#solution-1" class="bth-home-solutions__item bth-home-solutions__item--featured">
-            <img src="assets/img/brodotehna/homepage-solution-avpp-optimized.jpg" alt="Solar and battery storage site">
-            <span class="bth-home-solutions__icon"><img src="assets/img/brodotehna/icon-settings-filter.svg" alt=""></span>
-            <span class="bth-home-solutions__label">
-              <b>aEMS - advanced Energy Management System</b>
-              <em>Optimize energy production, storage and consumption.</em>
-            </span>
-          </a>
-          <a href="products.html#solution-2" class="bth-home-solutions__item">
-            <img src="assets/img/brodotehna/homepage-solution-amgc-optimized.jpg" alt="High-voltage transmission tower">
-            <span class="bth-home-solutions__icon"><img src="assets/img/brodotehna/icon-filter-settings-sort.svg" alt=""></span>
-            <span class="bth-home-solutions__label">
-              <b>aVPP - Advanced Virtual Power Plant</b>
-              <em>Coordinate distributed energy resources as one system.</em>
-            </span>
-          </a>
-          <a href="products.html#solution-3" class="bth-home-solutions__item">
-            <img src="assets/img/brodotehna/homepage-solution-scada-optimized.jpg" alt="Solar panel array close-up">
-            <span class="bth-home-solutions__icon"><img src="assets/img/brodotehna/icon-imac-computer.svg" alt=""></span>
-            <span class="bth-home-solutions__label">
-              <b>aVPP Forecast</b>
-              <em>Forecast electricity prices and system imbalance with AI.</em>
-            </span>
-          </a>
-          <a href="products.html#solution-4" class="bth-home-solutions__item">
-            <img src="assets/img/brodotehna/homepage-solution-aems-optimized.jpg" alt="Software code overlaying a server room">
-            <span class="bth-home-solutions__icon"><img src="assets/img/brodotehna/icon-cellular-network.svg" alt=""></span>
-            <span class="bth-home-solutions__label">
-              <b>aMGC - advanced Microgrid Controller</b>
-              <em>Control and optimize microgrid operation in real time.</em>
-            </span>
-          </a>
-        </div>
-      </div>
-    </section><!-- End Products bento -->
 
     <!-- ======= Siemens Xcelerator banner ======= -->
     <section class="bth-home-xcelerator">
@@ -479,13 +499,13 @@
             <li><a href="products.html#solution-2">aVPP</a></li>
             <li><a href="products.html#solution-3">aVPP Forecast</a></li>
             <li><a href="products.html#solution-4">aMGC</a></li>
+            <li><a href="products.html#solution-5">aHydroBESS</a></li>
           </ul>
         </div>
 
         <div class="col bth-footer__col">
           <h4>Solutions</h4>
           <ul>
-            <li><a href="solutions.html#solution-1">aHydroBESS</a></li>
             <li><a href="solutions.html#solution-2">SCADA</a></li>
             <li><a href="solutions.html#solution-3">Digital Governor</a></li>
             <li><a href="solutions.html#solution-4">Boiler Control</a></li>

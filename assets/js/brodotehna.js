@@ -105,6 +105,76 @@ document.addEventListener('DOMContentLoaded', () => {
   referencesScrollInit();
 
   /**
+   * Our Products bento - below 991px (see .bth-home-products__grid in
+   * brodotehna.css) it switches from a 5-column grid to a free
+   * horizontal scroll strip so the tiles keep their size instead of
+   * being squashed into a stack. Same wheel-redirect + click-drag pan
+   * as referencesScrollInit() above, guarded by scrollWidth >
+   * clientWidth so neither kicks in at >=991px, where the grid has no
+   * overflow and a stray wheel-redirect would otherwise block normal
+   * page scrolling. Also suppresses the click on the dragged tile's
+   * <a> after a real drag (unlike the reference cards, which aren't
+   * links) so panning the strip doesn't accidentally navigate away.
+   */
+  function productsScrollInit() {
+    const strip = document.querySelector('.bth-home-products__grid');
+    if (!strip) return;
+
+    const canScroll = () => strip.scrollWidth > strip.clientWidth;
+
+    /* Once the strip has run out of room in the direction the wheel
+       is pushing (already at its start/end), let the event fall
+       through untouched instead of preventDefault-ing it - that's
+       what hands scrolling back to the page so a continued downward
+       wheel at the strip's end (or upward at its start) carries on
+       scrolling the page itself rather than getting stuck trapped
+       horizontally. */
+    strip.addEventListener('wheel', (e) => {
+      if (!canScroll()) return;
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+
+      const atStart = strip.scrollLeft <= 0;
+      const atEnd = strip.scrollLeft >= strip.scrollWidth - strip.clientWidth - 1;
+      if ((e.deltaY < 0 && atStart) || (e.deltaY > 0 && atEnd)) return;
+
+      e.preventDefault();
+      strip.scrollLeft += e.deltaY;
+    }, { passive: false });
+
+    let isDown = false;
+    let dragged = false;
+    let startX = 0;
+    let startScroll = 0;
+
+    strip.addEventListener('mousedown', (e) => {
+      if (!canScroll()) return;
+      isDown = true;
+      dragged = false;
+      startX = e.pageX;
+      startScroll = strip.scrollLeft;
+      strip.classList.add('bth-home-products__grid--dragging');
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      const delta = e.pageX - startX;
+      if (Math.abs(delta) > 3) dragged = true;
+      if (dragged) e.preventDefault();
+      strip.scrollLeft = startScroll - delta;
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDown = false;
+      strip.classList.remove('bth-home-products__grid--dragging');
+    });
+
+    strip.addEventListener('click', (e) => {
+      if (dragged) e.preventDefault();
+    }, true);
+  }
+  productsScrollInit();
+
+  /**
    * Brand accent: every letter B/b in the page's visible text (every
    * page, site-wide) gets wrapped and colored #54d4ff - the same
    * color already used for the hand-picked "B" accents on the

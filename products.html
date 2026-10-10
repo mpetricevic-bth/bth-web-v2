@@ -115,13 +115,17 @@
     </section><!-- End Section 1 -->
 
     <!-- ======= Section 2: products list =======
-         Left: sticky sidebar with 01-04 tabs + the current product's
+         Left: sticky sidebar with 01-05 tabs + the current product's
          name/title, updated by scroll position (see brodotehna.js).
-         Right: the 4 product cards, stacked. Below 992px the sidebar
+         Right: the 5 product cards, stacked. Below 992px the sidebar
          becomes a plain (non-sticky) tab row above the stacked cards -
-         see the media query in brodotehna.css. Split out of
-         solutions.html - these 4 are the client's standalone named
-         products, the rest stayed on the Solutions page. -->
+         see the media query in brodotehna.css. aEMS/aVPP/aVPP Forecast/
+         aMGC split out of solutions.html originally, as the client's
+         standalone named products; aHydroBESS moved here later (as
+         solution-5) since the client considers it a product too - its
+         old solutions.html id (solution-1) was simply dropped there
+         rather than renumbered. -->
+    <section class="bth-solutions-list" id="bthSolutionsList">
     <section class="bth-solutions-list" id="bthSolutionsList">
       <div class="bth-container">
         <div class="row">
@@ -132,6 +136,7 @@
                 <button type="button" data-target="solution-2">02/</button>
                 <button type="button" data-target="solution-3">03/</button>
                 <button type="button" data-target="solution-4">04/</button>
+                <button type="button" data-target="solution-5">05/</button>
               </div>
               <p class="bth-solutions-sidebar__name">aEMS</p>
               <p class="bth-solutions-sidebar__title">Advanced Energy Management System</p>
@@ -223,7 +228,28 @@
                     </ul>
                   </div>
                   <div class="bth-solutions-card__showcase-media">
-                    <img src="assets/img/brodotehna/solution-amgc-dashboard-mockup-optimized.jpg" alt="aMGC dashboard showing microgrid runtime data, energy statistics, revenue and alarms">
+                    <img src="assets/img/brodotehna/solution-amgc-dashboard-mockup-optimized.png" alt="aMGC dashboard showing microgrid runtime data, energy statistics, revenue and alarms">
+                  </div>
+                </div>
+              </article>
+
+              <article class="bth-solutions-card" id="solution-5" data-short="aHydroBESS" data-title="Hydro, Pumped Storage &amp; Battery Energy Storage Optimization" data-aos="fade-up">
+                <h3>Hydro, Pumped Storage &amp; Battery Energy Storage Optimization</h3>
+                <p>A dedicated solution for optimizing hydropower plants, pumped storage plants, and battery energy storage systems, including cascade management and hybrid operation.</p>
+                <div class="bth-solutions-card__showcase">
+                  <div class="bth-solutions-card__features">
+                    <h4>Key features</h4>
+                    <ul>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Hydro production forecasting</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Reservoir optimization</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Pumped storage scheduling</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Battery optimization</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Cascade management</li>
+                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Hybrid asset coordination</li>
+                    </ul>
+                  </div>
+                  <div class="bth-solutions-card__showcase-media">
+                    <img src="assets/img/brodotehna/solution-ahydrobess-dashboard-mockup-optimized.png" alt="aHydroBESS dashboard showing hydro plant topology, reservoirs and control units">
                   </div>
                 </div>
               </article>
@@ -280,13 +306,13 @@
             <li><a href="products.html#solution-2">aVPP</a></li>
             <li><a href="products.html#solution-3">aVPP Forecast</a></li>
             <li><a href="products.html#solution-4">aMGC</a></li>
+            <li><a href="products.html#solution-5">aHydroBESS</a></li>
           </ul>
         </div>
 
         <div class="col bth-footer__col">
           <h4>Solutions</h4>
           <ul>
-            <li><a href="solutions.html#solution-1">aHydroBESS</a></li>
             <li><a href="solutions.html#solution-2">SCADA</a></li>
             <li><a href="solutions.html#solution-3">Digital Governor</a></li>
             <li><a href="solutions.html#solution-4">Boiler Control</a></li>
