@@ -2224,6 +2224,15 @@ look rather than inventing a new one.
   background: #fff;
 }
 
+/* Careers' "CTA: Portfolio" instance only - it sits right after
+   .bth-careers-open, which uses the site's standard page gray
+   (--bth-bg-page), so the base class's paler --bth-bg-light (close
+   enough to white that it reads as a mismatch/seam against that
+   neighbor) is swapped for the same standard gray here instead. */
+.bth-solutions-cta--gray {
+  background: var(--bth-bg-page);
+}
+
 /* Company page only - the CTA's row is text-column-then-media-column
    in the HTML (so it reads left-to-right on desktop), but stacked
    below Bootstrap's lg breakpoint that put the text above the photo;
@@ -4101,22 +4110,20 @@ a.bth-contact-info__card:hover .bth-contact-info__icon .bth-contact-info__icon-h
    .bth-locations__map's own working pin setup on the Contact page),
    so their percentages are relative to the map's own box and scale
    with it at any width. */
+/* Fluid vw-based scaling (not the two fixed-px breakpoint jumps this
+   used to have, 560px at 768px and topping out at 860px from 1400px
+   up) - those left the map (and the cards, sized relative to it)
+   stuck at a small fixed size no matter how wide the section/viewport
+   got beyond 1400px, reading as a tiny graphic lost in a lot of empty
+   gradient on a large monitor. This keeps growing continuously past
+   that point instead, roughly passing through the old 560px/860px
+   values at 768px/1400px so nothing jumps at the familiar tablet
+   breakpoint, capped at 1400px so it still leaves room inside
+   .bth-container at any realistic width. */
 .bth-company-vision__map {
   position: relative;
-  max-width: 380px;
+  max-width: clamp(380px, 47.5vw + 195px, 1400px);
   margin: 0 auto;
-}
-
-@media (min-width: 768px) {
-  .bth-company-vision__map {
-    max-width: 560px;
-  }
-}
-
-@media (min-width: 1400px) {
-  .bth-company-vision__map {
-    max-width: 860px;
-  }
 }
 
 .bth-company-vision__map img {

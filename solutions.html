@@ -117,16 +117,18 @@
          standalone named products; aHydroBESS later moved there too
          (as solution-5) since the client considers it a product, not a
          solution - its old id (solution-1) was simply dropped rather
-         than renumbered, so the remaining cards (solution-2..7) kept
-         their ids and every footer/homepage link to them unchanged;
-         only the tab buttons' own display numbers shifted down to
-         01-06 while their data-target attributes still point at the
-         original ids. Card ids solution-3/4 keep their original ids
-         but were repurposed in place (aHydroControl -> Digital
-         Governor, aBoiler -> Boiler Control) per the client's "Control
-         Products" deck slide - same reasoning, link text changed but
-         not the id. solution-5/6/7 (now Hydro Control System/Remote
-         Control Center/OT Cybersecurity) were appended at the end. -->
+         than renumbered, so the remaining cards kept their ids and
+         every footer/homepage link to them unchanged; only the tab
+         buttons' own display numbers shifted to match. Card ids
+         solution-3/4 keep their original ids but were repurposed in
+         place (aHydroControl -> Digital Governor, aBoiler -> Boiler
+         Control) per the client's "Control Products" deck slide - same
+         reasoning, link text changed but not the id. solution-5/6 (now
+         Hydro Control System/Remote Control Center) were appended at
+         the end. solution-7 (OT Cybersecurity) was removed later -
+         it's covered under Services instead (see services.html panel-4),
+         so its id was dropped the same way solution-1 was, rather than
+         renumbering 2-6 down. -->
     <section class="bth-solutions-list" id="bthSolutionsList">
       <div class="bth-container">
         <div class="row">
@@ -138,7 +140,6 @@
                 <button type="button" data-target="solution-4">03/</button>
                 <button type="button" data-target="solution-5">04/</button>
                 <button type="button" data-target="solution-6">05/</button>
-                <button type="button" data-target="solution-7">06/</button>
               </div>
               <p class="bth-solutions-sidebar__name">SCADA</p>
               <p class="bth-solutions-sidebar__title">Supervisory Control and Data Acquisition</p>
@@ -249,27 +250,6 @@
                   </div>
                 </div>
               </article>
-
-              <article class="bth-solutions-card" id="solution-7" data-short="OT Cybersecurity" data-title="OT Cybersecurity" data-aos="fade-up">
-                <h3>OT Cybersecurity</h3>
-                <p>End-to-end OT cybersecurity for industrial and energy systems, from risk assessment and network segmentation to continuous monitoring and incident response.</p>
-                <div class="bth-solutions-card__showcase">
-                  <div class="bth-solutions-card__features">
-                    <h4>Key features</h4>
-                    <ul>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Risk assessment</li>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Network segmentation</li>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Secure remote access</li>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Continuous monitoring</li>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Incident response</li>
-                      <li><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 9.3L7.8 11.5L12.5 6.8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Compliance support</li>
-                    </ul>
-                  </div>
-                  <div class="bth-solutions-card__showcase-media">
-                    <img src="assets/img/brodotehna/solution-amgc-dashboard-mockup-optimized.png" alt="OT Cybersecurity dashboard showing network monitoring and security status">
-                  </div>
-                </div>
-              </article>
             </div>
           </div>
         </div>
@@ -335,7 +315,6 @@
             <li><a href="solutions.html#solution-4">Boiler Control</a></li>
             <li><a href="solutions.html#solution-5">Hydro Control System</a></li>
             <li><a href="solutions.html#solution-6">Remote Control Center</a></li>
-            <li><a href="solutions.html#solution-7">OT Cybersecurity</a></li>
           </ul>
         </div>
 
